@@ -3,13 +3,12 @@
     <h1>Login Page</h1>
     <div>{{note}}</div>
     
-    <div class="col-md-2">
-    </div>
+    <div class="row">
 
-    <div class="col-md-4">
+    <div class="col-md-4 col-md-offset-2">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title"> Sign Up </h3>
+          <h3 class="panel-title"><span class="glyphicon glyphicon-plus-sign"></span>  Sign Up </h3>
         </div>
         <div class="panel-body">
           <signup></signup>
@@ -20,7 +19,7 @@
     <div class="col-md-4">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title"> Sign In </h3>
+          <h3 class="panel-title"><span class="glyphicon glyphicon-user"></span> Sign In </h3>
         </div>
         <div class="panel-body">
           <signin></signin>
@@ -28,7 +27,7 @@
       </div>
     </div>
 
-    <div class="col-md-2">
+
     </div>
 
 

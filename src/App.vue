@@ -16,7 +16,7 @@
 
         <ul class="nav navbar-nav navbar-right nav-login">
           <li role="separator" class="divider"></li>
-          <li><router-link to="/login">Login</router-link></li>
+          <li><router-link to="/login">Connexion</router-link></li>
         </ul>
       </nav>
     </div>

@@ -3,6 +3,8 @@
     
     <span>{{note}}</span>
 
+
+
   </div>
 </template>
 
