@@ -1,12 +1,14 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import vueResource from 'vue-resource'
 
 import Login from '@/components/login'
 import Home from '@/components/home'
 import User from '@/components/user'
-import Video from '@/components/video'
+import Movie from '@/components/video'
 
 Vue.use(Router)
+Vue.use(vueResource)
 
 export default new Router({
   routes: [
@@ -25,10 +27,10 @@ export default new Router({
       name: 'user',
       component: User
     },
-	{
+    {
       path: '/video',
-      name: 'video',
-      component: Video
+      name: 'movie',
+      component: Movie
     }
   ]
 })

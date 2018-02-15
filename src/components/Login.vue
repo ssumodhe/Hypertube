@@ -22,7 +22,10 @@
           <h3 class="panel-title"><span class="glyphicon glyphicon-user"></span> Sign In </h3>
         </div>
         <div class="panel-body">
-          <signin></signin>
+          <signin 
+          v-on:loginCredentials="checkCredentials" 
+          :errorMessage="errorMessage"
+          ></signin>
         </div>
       </div>
     </div>
@@ -42,11 +45,18 @@ export default{
   name: 'login',
   data(){
     return {
-      note: "This is the Login page. For: SignUp and SignIn"
+      note: "This is the Login page. For: SignUp and SignIn",
+      errorMessage: ""
     }
   },
   components: {
     Signup, Signin
+  },
+  methods:{
+    checkCredentials: function(form){
+      console.log('Email is ' + form.email)
+      console.log('Password is ' + form.password)
+    }
   }
 }
 </script>
