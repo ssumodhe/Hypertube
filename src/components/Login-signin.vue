@@ -4,19 +4,19 @@
     <span>{{note}}</span>
 
     <form @submit.prevent="submitSignIn">
-    	<div class="form-group has-feedback" v-bind:class="[emailSuccessClass]">
-    		<label for="email" class="control-label sr-only">
-    			email address
+    	<div class="form-group has-feedback" v-bind:class="[userSuccessClass]">
+    		<label for="signInUser" class="control-label sr-only">
+    			user name
     		</label>
-    		<input ref="txtEmail" type="email" id="email" class="form-control" name="email" placeholder="Email." @input="checkEmailValidation" required>
-    		<span  v-bind:class="[emailIconClass]"></span>
+    		<input ref="txtUser" type="text" id="signInUser" class="form-control" name="user" placeholder="UserName." @input="checkUserValidation" required>
+    		<span  v-bind:class="[userIconClass]"></span>
     	</div>
 
     	<div class="form-group has-feedback"  v-bind:class="[passwordSuccessClass]">
-    		<label for="password" id="password" class="control-label sr-only">
+    		<label for="signInPassword" class="control-label sr-only">
     			secret password
     		</label>
-    		<input ref="txtPassword" type="password" class="form-control" name="password" placeholder="Password." @input="checkPasswordValidation" pattern=".{6,}" required>
+    		<input ref="txtPassword"  id="signInPassword"  type="password" class="form-control" name="password" placeholder="Password." @input="checkPasswordValidation" pattern=".{6,}" required>
     		<span  v-bind:class="[passwordIconClass]"></span>
     		<small><mark>
     		Your password needs to be at least 6 chars long.
@@ -52,29 +52,32 @@ export default{
   data(){
     return {
       note: "Form sign In here",
-      emailSuccessClass: '',
+      userSuccessClass: '',
       passwordSuccessClass: '',
-      emailIconClass: '',
+      userIconClass: '',
       passwordIconClass: '',
       submitBtnDisabled: true,
       rememberMe: false
     }
   },
   mounted: function(){
-    let email = document.cookie.match('(^|;)\\s*' + 'email' + '\\s*=\\s*([^;]+)')
-    this.$refs.txtEmail.value = email ? email.pop() : ''
-    this.checkEmailValidation();
+    let user = document.cookie.match('(^|;)\\s*' + 'user' + '\\s*=\\s*([^;]+)')
+    this.$refs.txtUser.value = user ? user.pop() : ''
+    if(this.$refs.txtUser.checkValidity()){
+        this.userSuccessClass = "has-success"
+        this.userIconClass = "glyphicon glyphicon-ok form-control-feedback"
+      }
   },
   methods: {
-    checkEmailValidation: function(){
-      if(this.$refs.txtEmail.checkValidity()){
-        this.emailSuccessClass = "has-success"
-        this.emailIconClass = "glyphicon glyphicon-ok form-control-feedback"
+    checkUserValidation: function(){
+      if(this.$refs.txtUser.checkValidity()){
+        this.userSuccessClass = "has-success"
+        this.userIconClass = "glyphicon glyphicon-ok form-control-feedback"
         if(this.$refs.txtPassword.checkValidity())
           this.submitBtnDisabled = false
       } else{
-        this.emailSuccessClass = "has-error"
-        this.emailIconClass = "glyphicon glyphicon-remove form-control-feedback"
+        this.userSuccessClass = "has-error"
+        this.userIconClass = "glyphicon glyphicon-remove form-control-feedback"
         this.submitBtnDisabled = true
       }
     },
@@ -82,7 +85,7 @@ export default{
       if(this.$refs.txtPassword.checkValidity()){
         this.passwordSuccessClass = "has-success"
         this.passwordIconClass = "glyphicon glyphicon-ok form-control-feedback"
-        if(this.$refs.txtEmail.checkValidity())
+        if(this.$refs.txtUser.checkValidity())
           this.submitBtnDisabled = false
       } else{
         this.passwordSuccessClass = "has-error"
@@ -91,13 +94,13 @@ export default{
       }
     },
   	submitSignIn: function() {
-      let email = this.$refs.txtEmail.value.trim()
+      let user = this.$refs.txtUser.value.trim()
   		let password = this.$refs.txtPassword.value.trim()
-      this.$refs.txtEmail.value = ""
+      this.$refs.txtUser.value = ""
       this.$refs.txtPassword.value = ""
-      this.emailSuccessClass = ''
+      this.userSuccessClass = ''
       this.passwordSuccessClass = ''
-      this.emailIconClass = ''
+      this.userIconClass = ''
       this.passwordIconClass = ''
       this.submitBtnDisabled = true
 
@@ -106,19 +109,23 @@ export default{
         let date = new Date()
         date.setTime(date.getTime() + (30*25*60*60*1000))
         // current day + 30days for expiration time
-        document.cookie = 'email=' + email + '; expires=' + date.toUTCString() + '; path=/'
+        document.cookie = 'user=' + user + '; expires=' + date.toUTCString() + '; path=/'
       } else {
-        document.cookie = 'email=; expires=Sat, 8 Dec 1956 23:59:59 UTC; path:/;'
+        document.cookie = 'user=; expires=Sat, 8 Dec 1956 23:59:59 UTC; path:/;'
       }
 
       this.$emit('loginCredentials',
           {
-            'email': email,
+            'user': user,
             'password': password
           }
         )
+      // this.$router.push('/')
   	}
 
   }
 }
 </script>
+
+<style scoped>
+</style>

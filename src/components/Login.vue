@@ -54,7 +54,7 @@ export default{
   },
   methods:{
     checkCredentials: function(form){
-      console.log('Email is ' + form.email)
+      console.log('User is ' + form.user)
       console.log('Password is ' + form.password)
     }
   }
