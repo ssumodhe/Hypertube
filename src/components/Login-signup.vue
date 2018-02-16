@@ -44,6 +44,10 @@
     		</label>
     		<input ref="txtPassword" type="password" id="signUpPassword" class="form-control" name="password" placeholder="Password." @input="checkPasswordValidation" required>
     		<span  v-bind:class="[passwordIconClass]"></span>
+        <small><mark>
+        Your password needs to be at least 6 chars long.
+        <br> With lower and upper cases and digits.
+        </mark></small>
     	</div>
 
     	<div class="form-group has-feedback" v-bind:class="[checkPasswordSuccessClass]">
@@ -54,7 +58,7 @@
     		<span  v-bind:class="[checkPasswordIconClass]"></span>
     	</div>
 
-    	<input v-bind:disabled="submitBtnDisabled" class="btn btn-default" type="submit" value="Sign In!">
+    	<input v-bind:disabled="submitBtnDisabled" class="btn btn-default" type="submit" value="Sign Up!">
 
     </form>
 
@@ -89,8 +93,8 @@ export default{
   		if(this.$refs.txtEmail.checkValidity()){
 	        this.emailSuccessClass = "has-success"
 	        this.emailIconClass = "glyphicon glyphicon-ok form-control-feedback"
-	        // if(this.$refs.txtPassword.checkValidity())
-	        //   this.submitBtnDisabled = false
+	        if(this.checkAllValidation())
+	          this.submitBtnDisabled = false
 	    } else{
 	        this.emailSuccessClass = "has-error"
 	        this.emailIconClass = "glyphicon glyphicon-remove form-control-feedback"
@@ -101,8 +105,8 @@ export default{
 	  	if(this.$refs.txtUser.checkValidity()){
 	        this.userSuccessClass = "has-success"
 	        this.userIconClass = "glyphicon glyphicon-ok form-control-feedback"
-	        // if(this.$refs.txtPassword.checkValidity())
-	        //   this.submitBtnDisabled = false
+	        if(this.checkAllValidation())
+	          this.submitBtnDisabled = false
 	    } else{
 	        this.userSuccessClass = "has-error"
 	        this.userIconClass = "glyphicon glyphicon-remove form-control-feedback"
@@ -113,8 +117,8 @@ export default{
   		if(this.$refs.txtFirstName.checkValidity()){
 	        this.firstNameSuccessClass = "has-success"
 	        this.firstNameIconClass = "glyphicon glyphicon-ok form-control-feedback"
-	        // if(this.$refs.txtPassword.checkValidity())
-	        //   this.submitBtnDisabled = false
+	        if(this.checkAllValidation())
+	          this.submitBtnDisabled = false
 	    } else{
 	        this.firstNameSuccessClass = "has-error"
 	        this.firstNameIconClass = "glyphicon glyphicon-remove form-control-feedback"
@@ -125,8 +129,8 @@ export default{
   		if(this.$refs.txtLastName.checkValidity()){
 	        this.lastNameSuccessClass = "has-success"
 	        this.lastNameIconClass = "glyphicon glyphicon-ok form-control-feedback"
-	        // if(this.$refs.txtPassword.checkValidity())
-	        //   this.submitBtnDisabled = false
+	        if(this.checkAllValidation())
+	          this.submitBtnDisabled = false
 	    } else{
 	        this.lastNameSuccessClass = "has-error"
 	        this.lastNameIconClass = "glyphicon glyphicon-remove form-control-feedback"
@@ -137,8 +141,14 @@ export default{
   		if(this.$refs.txtPassword.checkValidity()){
         this.passwordSuccessClass = "has-success"
         this.passwordIconClass = "glyphicon glyphicon-ok form-control-feedback"
-        if(this.$refs.txtUser.checkValidity())
+        if(this.$refs.txtCheckPassword.value)
+          this.checkCheckPasswordValidation()
+        if(this.checkAllValidation())
           this.submitBtnDisabled = false
+        else{
+          console.log(this.checkAllValidation())
+          this.submitBtnDisabled = true
+        }
       } else{
         this.passwordSuccessClass = "has-error"
         this.passwordIconClass = "glyphicon glyphicon-remove form-control-feedback"
@@ -146,10 +156,27 @@ export default{
       }
   	},
   	checkCheckPasswordValidation: function(){
-  		//
+  		if(this.$refs.txtCheckPassword.value == this.$refs.txtPassword.value){
+        this.checkPasswordSuccessClass = "has-success"
+        this.checkPasswordIconClass = "glyphicon glyphicon-ok form-control-feedback"
+        if(this.checkAllValidation())
+          this.submitBtnDisabled = false
+      } else{
+        this.checkPasswordSuccessClass = "has-error"
+        this.checkPasswordIconClass = "glyphicon glyphicon-remove form-control-feedback"
+        this.submitBtnDisabled = true
+      }
   	},
   	checkAllValidation: function(){
-  		//
+  		if (this.$refs.txtEmail.checkValidity()
+        & this.$refs.txtUser.checkValidity()
+        & this.$refs.txtFirstName.checkValidity()
+        & this.$refs.txtLastName.checkValidity()
+        & this.$refs.txtPassword.checkValidity()
+        & (this.$refs.txtCheckPassword.value == this.$refs.txtPassword.value))
+        return true
+      else
+        return false
   	}
   }
 }

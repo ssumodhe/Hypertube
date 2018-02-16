@@ -18,10 +18,6 @@
     		</label>
     		<input ref="txtPassword"  id="signInPassword"  type="password" class="form-control" name="password" placeholder="Password." @input="checkPasswordValidation" pattern=".{6,}" required>
     		<span  v-bind:class="[passwordIconClass]"></span>
-    		<small><mark>
-    		Your password needs to be at least 6 chars long.
-    		<br> With lower and upper cases and digits.
-    		</mark></small>
     	</div>
 
       <div v-if="errorMessage" class="text-center text-danger">{{errorMessage}}
