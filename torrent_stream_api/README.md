@@ -1,22 +1,15 @@
-# README
+### HOW TO RUN ME:
+```shell
+export HYPERTUBE_DOWNLOAD_PATH="torrent/download/path"
+npm install
+node stream.js
+```
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+* convert a torrent url in base58,
+	exemple: http://www.torrent9.red/get_torrent/one-piece-813-vostfr.torrent => 368La1fSsTuDRmRXWaN3iJKdbZhPFtyVwETwbK8rZgHJZKbeT4Uu12MvJ2AmC3nPf8SkoVGadFvezhpJ9MAwvToR
 
-Things you may want to cover:
+* go to http://localhost:5555/url/368La1fSsTuDRmRXWaN3iJKdbZhPFtyVwETwbK8rZgHJZKbeT4Uu12MvJ2AmC3nPf8SkoVGadFvezhpJ9MAwvToR
+* wait 10 seconds (video is in autoplay mod)
 
-* Javascript version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+TODO:
+	Handle non downloading torrents :3
