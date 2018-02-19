@@ -46,11 +46,11 @@
     		<label for="signUpPassword" class="control-label sr-only">
     			secret password
     		</label>
-    		<input ref="txtPassword" type="password" id="signUpPassword" class="form-control" name="password" placeholder="Password." @input="checkPasswordValidation" pattern=".{6,}" required>
+    		<input ref="txtPassword" type="password" id="signUpPassword" class="form-control" name="password" placeholder="Password." @input="checkPasswordValidation" pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]+).{6,}$" required>
     		<span  v-bind:class="[passwordIconClass]"></span>
         <small><mark>
         Your password needs to be at least 6 chars long.
-        <br> With lower and upper cases and digits.
+        <br> With lower and upper cases and digits only.
         </mark></small>
     	</div>
 
