@@ -15,7 +15,7 @@
         buttonClass="ui button primary"
         :customStrings="{
         upload: '<h1>Upload it!</h1>',
-        drag: 'Drag and drop your image here'}">
+        drag: 'Drag and drop your profile picture here'}">
 
       </picture-input>
   </div>
