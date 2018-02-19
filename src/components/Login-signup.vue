@@ -21,6 +21,8 @@
     	</div>
 
     	<!-- Picture div -->
+      <uploadfile></uploadfile>
+      
 
     	<div class="form-group has-feedback" v-bind:class="[firstNameSuccessClass]">
     		<label for="firstName" class="control-label sr-only">
@@ -68,6 +70,8 @@
 </template>
 
 <script>
+import Uploadfile from '@/components/upload-file'
+
 export default{
   name: 'signup',
   data(){
@@ -87,6 +91,9 @@ export default{
       checkPasswordIconClass: '',
       submitBtnDisabled: true,
     }
+  },
+  components:{
+    Uploadfile
   },
   methods: {
   	checkEmailValidation: function(){
