@@ -92,6 +92,8 @@ export default{
   	submitSignIn: function() {
       let user = this.$refs.txtUser.value.trim()
   		let password = this.$refs.txtPassword.value.trim()
+
+      // Reset 
       this.$refs.txtUser.value = ""
       this.$refs.txtPassword.value = ""
       this.userSuccessClass = ''

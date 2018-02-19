@@ -3,7 +3,7 @@
     
     <span>{{note}}</span>
 
-    <form>
+    <form@submit.prevent="submitSignIn">
     	<div class="form-group has-feedback" v-bind:class="[emailSuccessClass]">
     		<label for="email" class="control-label sr-only">
     			email address
@@ -21,7 +21,9 @@
     	</div>
 
     	<!-- Picture div -->
-      <uploadfile></uploadfile>
+      <uploadfile
+        v-on:uploadedPicture="addPicture"
+      ></uploadfile>
       
 
     	<div class="form-group has-feedback" v-bind:class="[firstNameSuccessClass]">
@@ -90,6 +92,7 @@ export default{
       checkPasswordSuccessClass: '',
       checkPasswordIconClass: '',
       submitBtnDisabled: true,
+      picture: ''
     }
   },
   components:{
@@ -184,7 +187,56 @@ export default{
         return true
       else
         return false
-  	}
+  	},
+    addPicture: function(form) {
+      this.picture = form.picture 
+    },
+    submitSignIn: function() {
+      let email = this.$refs.txtEmail.value.trim()
+      let user = this.$refs.txtUser.value.trim()
+      let picture = this.picture
+      let firstName = this.$refs.txtFirstName.value.trim()
+      let lastName = this.$refs.txtLastName.value.trim()
+      let password = this.$refs.txtPassword.value.trim()
+      let checkPassword = this.$refs.txtCheckPassword.value.trim()
+
+      // Reset values is not necessary --> redirect at end of process -> all value automaticaly reset
+      // this.$refs.txtEmail.value = ""
+      // this.$refs.txtUser.value = ""
+      // this.$refs.txtFirstName.value = ""
+      // this.$refs.txtLastName.value = ""
+      // this.$refs.txtPassword.value = ""
+      // this.$refs.txtCheckPassword.value = ""
+      // this.emailSuccessClass = '',
+      // this.emailIconClass = '',
+      // this.userSuccessClass = '',
+      // this.userIconClass = '',
+      // this.firstNameSuccessClass = '',
+      // this.firstNameIconClass = '',
+      // this.lastNameSuccessClass = '',
+      // this.lastNameIconClass = '',
+      // this.passwordSuccessClass = '',
+      // this.passwordIconClass = '',
+      // this.checkPasswordSuccessClass = '',
+      // this.checkPasswordIconClass = '',
+      // this.submitBtnDisabled = true,
+      // this.picture = ''
+
+
+
+      this.$emit('signupInfos',
+          {
+            'email': email,
+            'user': user,
+            'picture': picture,
+            'firstName': firstName,
+            'lastName': lastName,
+            'password': password,
+            'checkPassword': checkPassword
+          }
+        )
+      // this.$router.push('/')
+    }
   }
 }
 </script>

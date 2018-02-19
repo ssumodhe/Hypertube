@@ -11,7 +11,9 @@
           <h3 class="panel-title"><span class="glyphicon glyphicon-plus-sign"></span>  Sign Up </h3>
         </div>
         <div class="panel-body">
-          <signup></signup>
+          <signup
+            v-on:signupInfos="checkInfos"
+          ></signup>
         </div>
       </div>
     </div>
@@ -56,6 +58,9 @@ export default{
     checkCredentials: function(form){
       console.log('User is ' + form.user)
       console.log('Password is ' + form.password)
+    },
+    checkInfos: function(form){
+      console.log(form)
     }
   }
 }

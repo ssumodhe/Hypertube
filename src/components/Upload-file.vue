@@ -1,3 +1,6 @@
+<!-- Source: -->
+<!-- https://alligator.io/vuejs/uploading-vue-picture-input/ -->
+
 <template>
   <div class="uploadfile">
     <picture-input
@@ -35,6 +38,12 @@ export default{
       console.log("New picture loaded");
       if (this.$refs.pictureInput.file) {
         this.image = this.$refs.pictureInput.file;
+        console.log(this.image)
+        this.$emit('uploadedPicture',
+          {
+            'picture': this.image,
+          }
+        )
       } else {
         console.log("Old browser. No support for Filereader API");
       }
@@ -64,5 +73,4 @@ export default{
   .uploadfile {
     margin-bottom: 20px;
   }
-
 </style>
