@@ -42,7 +42,7 @@
     		<label for="signUpPassword" class="control-label sr-only">
     			secret password
     		</label>
-    		<input ref="txtPassword" type="password" id="signUpPassword" class="form-control" name="password" placeholder="Password." @input="checkPasswordValidation" required>
+    		<input ref="txtPassword" type="password" id="signUpPassword" class="form-control" name="password" placeholder="Password." @input="checkPasswordValidation" pattern=".{6,}" required>
     		<span  v-bind:class="[passwordIconClass]"></span>
         <small><mark>
         Your password needs to be at least 6 chars long.
@@ -146,7 +146,6 @@ export default{
         if(this.checkAllValidation())
           this.submitBtnDisabled = false
         else{
-          console.log(this.checkAllValidation())
           this.submitBtnDisabled = true
         }
       } else{
@@ -156,7 +155,8 @@ export default{
       }
   	},
   	checkCheckPasswordValidation: function(){
-  		if(this.$refs.txtCheckPassword.value == this.$refs.txtPassword.value){
+  		if(this.$refs.txtCheckPassword.value == this.$refs.txtPassword.value
+        & this.$refs.txtPassword.checkValidity()){
         this.checkPasswordSuccessClass = "has-success"
         this.checkPasswordIconClass = "glyphicon glyphicon-ok form-control-feedback"
         if(this.checkAllValidation())
