@@ -49,4 +49,7 @@ export default{
 </script>
 
 <style scoped>
+  video{
+    border: 1px solid black;
+  }
 </style>
