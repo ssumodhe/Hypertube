@@ -235,7 +235,7 @@ export default{
             'checkPassword': checkPassword
           }
         )
-      // this.$router.push('/')
+      this.$router.push('/')
     }
   }
 }
