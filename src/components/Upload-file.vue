@@ -1,5 +1,6 @@
 <!-- Source: -->
 <!-- https://alligator.io/vuejs/uploading-vue-picture-input/ -->
+<!-- https://github.com/alessiomaffeis/vue-picture-input -->
 
 <template>
   <div class="uploadfile">
