@@ -1,0 +1,12 @@
+html, body {
+    height: 100%;
+}
+.wrapper {
+/*    min-height: 90%;
+    height: 100%;
+    margin: 0 auto -155px;*/
+}
+footer {
+    font-family: "Josefin Slab";
+    text-align: center;
+}
