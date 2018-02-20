@@ -32,5 +32,7 @@ export default new Router({
       name: 'movie',
       component: Movie
     }
-  ]
+  ],
+  mode: 'history'
+  // to avoid # in url
 })
