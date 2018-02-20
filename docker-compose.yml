@@ -1,12 +1,21 @@
 version: '3'
+
+networks:
+  proxy:
+    external: true
+  hypertube_network:
+    external: false
+
 services:
-  db:
+  postgres:
     image: postgres
-  web:
+    networks:
+      - hypertube_network
+  hypertubeapi:
     build:
       context: ./backend_api
-    environment:
-      SIGNUP_REDIRECT_URL: http://192.168.99.100:3000
+      environment:
+      SIGNUP_REDIRECT_URL: https://hypertubeapi.tpayet.com
       DEVISE_SECRET_KEY: f43b6591c23441cb247edc0c3a0f4372e1c56a9e85db26be9aed687fdb2ed919d0f4fad63c6e9753a99194ffc5fde756ce595350cb4bbcbadfe0b3d820df7120
       SECRET_KEY_BASE: b2c9b3355c83d4ccd536fdc50f04293d6a43ef332ff6383fcb11158281d3e1a6c24c0d4904d82062cde8d531f74cc98c5ab75f9cfa637cb4cd5b4d943161afc7
     command: rails s -p 3000 -b '0.0.0.0'
@@ -15,4 +24,13 @@ services:
     ports:
       - "3000:3000"
     depends_on:
-      - db
+      - postgres
+    labels:
+      - traefik.backend=hypertubeapi
+      - traefik.frontend.rule=Host:hypertubeapi.tpayet.com
+      - traefik.docker.network=proxy
+      - traefik.port=3000
+    networks:
+      - proxy
+      - hypertube_network
+
