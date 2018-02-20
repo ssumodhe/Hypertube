@@ -1,22 +1,21 @@
-# README
+# trying
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+> A Vue.js project
 
-Things you may want to cover:
+## Build Setup
 
-* Javascript version
+``` bash
+# install dependencies
+npm install
 
-* System dependencies
+# serve with hot reload at localhost:8080
+npm run dev
 
-* Configuration
+# build for production with minification
+npm run build
 
-* Database creation
+# build for production and view the bundle analyzer report
+npm run build --report
+```
 
-* Database initialization
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
