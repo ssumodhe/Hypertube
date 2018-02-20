@@ -1,18 +1,3 @@
-/*
-HOW TO RUN ME:
-	- export HYPERTUBE_DOWNLOAD_PATH="torrent/download/path"
-	- npm install
-	- node stream.js
-	- convert a torrent url in base58,
-		exemple: http://www.torrent9.red/get_torrent/one-piece-813-vostfr.torrent => 368La1fSsTuDRmRXWaN3iJKdbZhPFtyVwETwbK8rZgHJZKbeT4Uu12MvJ2AmC3nPf8SkoVGadFvezhpJ9MAwvToR
-
-	- go to http://localhost:5555/url/368La1fSsTuDRmRXWaN3iJKdbZhPFtyVwETwbK8rZgHJZKbeT4Uu12MvJ2AmC3nPf8SkoVGadFvezhpJ9MAwvToR
-	- wait 10 seconds (video is in autoplay mod)
-
-	TODO:
-		Handle non downloading torrents :3
-*/
-
 const fs = require('fs');
 const parseTorrent = require('parse-torrent');
 const app = require('express')();
@@ -51,6 +36,7 @@ const getFile = (url, callback) => {
 const streamVideo = (req, res, n) => {
 	return new Promise((resolve, reject)=>{
 		try {
+			console.log('start streaming');
 			req.params.path = bs58.decode(req.params.path).toString('ascii');
 			console.log('path:', req.params.path);
 			const fileStream = fs.createReadStream(req.params.path);
@@ -97,17 +83,27 @@ const streamVideo = (req, res, n) => {
 	});
 }
 
-const sendStream = (res, downloadPath, torrentParsed)=>{
+const sendHtml = (res, downloadPath, torrentParsed)=>{
+	const url = downloadPath+'/'+(torrentParsed.files.sort((a, b)=>{return b.length - a.length}))[0].name;
+
 	res.writeHead(200);
-	res.write(`<html><body><video controls width="400px" autoplay onerror="console.log('error video');return 0;"><source src="http://localhost:5555/video/${bs58.encode(Buffer.from(downloadPath+'/'+(torrentParsed.files.sort((a, b)=>{return b.length - a.length}))[0].name))}" type="video/mp4" onerror="console.log('error source');return 0;"></video></body>
+	res.write(`<html><body><video controls width="400px" autoplay onerror="console.log('error video');return 0;"><source src="http://localhost:5555/video/${bs58.encode(Buffer.from(url))}" type="video/mp4" onerror="console.log('error source');return 0;"></video></body>
 	</html>`);
 	res.end();
 	return 0;
 }
 
+/*
+:url is the file path base58 encoded,
+need to change that into an unguessable token linked to the movie and the user who asked it
+*/
 app.get('/url/:url', (req, res)=>{
+	if (!/^[a-km-zA-HJ-NP-Z1-9]{1,}$/.test(req.params.url)) {
+		res.sendStatus(404);
+		res.end();
+		return 0;
+	}
 	const url = bs58.decode(req.params.url).toString('ascii');
-	// console.log('url:',url);
 
 	getFile(url, (err, file) => {
 		if (err) {
@@ -128,8 +124,7 @@ app.get('/url/:url', (req, res)=>{
 		}
 		/* Handle if file has been already downloaded ------------------------*/
 		if (fs.existsSync(downloadPath+'/'+torrentParsed.files.sort((a, b)=>{return b.length - a.length})[0].name)) {
-			console.log('tt');
-			sendStream(res, downloadPath, torrentParsed);
+			sendHtml(res, downloadPath, torrentParsed);
 		} else {
 			const engine = torrentStream(torrentRaw);
 			let path = ""
@@ -149,7 +144,7 @@ app.get('/url/:url', (req, res)=>{
 				});
 			});
 			setTimeout(()=>{
-				sendStream(res, downloadPath, torrentParsed);
+				sendHtml(res, downloadPath, torrentParsed);
 			}, 10000);
 		}
 	});
