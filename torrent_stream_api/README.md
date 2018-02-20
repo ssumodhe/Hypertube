@@ -11,5 +11,6 @@ node stream.js
 * go to http://localhost:5555/url/368La1fSsTuDRmRXWaN3iJKdbZhPFtyVwETwbK8rZgHJZKbeT4Uu12MvJ2AmC3nPf8SkoVGadFvezhpJ9MAwvToR
 * wait 10 seconds (video is in autoplay mode)
 
-TODO:
-	Handle non downloading torrents :3
+### TODO:
+* Handle non downloading torrents :3
+* stream from mkv

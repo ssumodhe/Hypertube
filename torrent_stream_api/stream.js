@@ -13,8 +13,6 @@ HOW TO RUN ME:
 		Handle non downloading torrents :3
 */
 
-
-
 const fs = require('fs');
 const parseTorrent = require('parse-torrent');
 const app = require('express')();
@@ -22,6 +20,10 @@ const ffmpeg = require('fluent-ffmpeg');
 const torrentStream = require('torrent-stream');
 const https = require('http');
 const bs58 = require('bs58');
+
+if (!fs.existsSync('torrents')) {
+	fs.mkdirSync('torrents');
+}
 
 const getFile = (url, callback) => {
 	https.get(url, res => {
@@ -82,6 +84,7 @@ const streamVideo = (req, res, n) => {
 			// res.sendStatus(200);
 			// }
 			res.on('close', () => {
+				console.log('stream closed');
 				converter.kill();
 			});
 		} catch (e) {
@@ -94,64 +97,61 @@ const streamVideo = (req, res, n) => {
 	});
 }
 
+const sendStream = (res, downloadPath, torrentParsed)=>{
+	res.writeHead(200);
+	res.write(`<html><body><video controls width="400px" autoplay onerror="console.log('error video');return 0;"><source src="http://localhost:5555/video/${bs58.encode(Buffer.from(downloadPath+'/'+(torrentParsed.files.sort((a, b)=>{return b.length - a.length}))[0].name))}" type="video/mp4" onerror="console.log('error source');return 0;"></video></body>
+	</html>`);
+	res.end();
+	return 0;
+}
+
 app.get('/url/:url', (req, res)=>{
 	const url = bs58.decode(req.params.url).toString('ascii');
-	console.log('url:',url);
+	// console.log('url:',url);
 
-	// request.get(url, (err, response, body)=>{
-	// console.log('error:',err);
-	// console.log('response:',response);
-	// console.log('body:',body);
-	// const filename = `${Date.now()}`;
 	getFile(url, (err, file) => {
-		// console.log(data);
-		// fs.writeFileSync('2', data);
-		// Handle the error if there was an error getting the image.
-		// console.log(parseTorrent(file));
-		// process.exit(0);
 		if (err) {
 			throw new Error(err);
 		}
 		const torrentRaw = file;
 		const torrentParsed = parseTorrent(torrentRaw);
-		const torrentFilename = torrentParsed.infoHash;
+		const torrentFilename = torrentParsed.infoHash+'.torrent';
 		const torrentPath = 'torrents/'+torrentFilename;
-		fs.writeFileSync('torrents/'+torrentFilename, file);
+		const downloadPath = process.env.HYPERTUBE_DOWNLOAD_PATH+'/'+torrentParsed.infoHash
+		fs.writeFileSync(torrentPath, file);
 		const torrent = file;
 		console.log('getfile done');
 		console.log('error:',err);
-		const engine = torrentStream(torrentRaw);
-		let path = ""
-		// if (torrentParsed.name != (torrentParsed.files.sort((a, b)=>{return b.length - a.length}))[0].name) {
-		// 	path = process.env.HYPERTUBE_DOWNLOAD_PATH+'/'+torrentFilename+'/'+torrentParsed.name+'/'+`${(torrentParsed.files.sort((a, b)=>{return b.length - a.length}))[0].name}`;
-		// } else {
-			path = process.env.HYPERTUBE_DOWNLOAD_PATH+'/'+torrentFilename+'/'+`${(torrentParsed.files.sort((a, b)=>{return b.length - a.length}))[0].name}`;
-		// }
-		let i = 0;
-		if (!fs.existsSync(process.env.HYPERTUBE_DOWNLOAD_PATH+'/'+torrentFilename)) {
-			fs.mkdirSync(process.env.HYPERTUBE_DOWNLOAD_PATH+'/'+torrentFilename);
+
+		if (!fs.existsSync(downloadPath)) {
+			fs.mkdirSync(downloadPath);
 		}
-		engine.on('ready', function() {
-			engine.files.forEach(function(file) {
-				console.log('filename:', file.name);
-				var stream = file.createReadStream();
-				stream.on('data', (d)=>{
-					i++;
-					console.log('data:', i, file.name);
-
-					fs.appendFileSync(process.env.HYPERTUBE_DOWNLOAD_PATH+'/'+torrentFilename+'/'+file.name, d);
+		/* Handle if file has been already downloaded ------------------------*/
+		if (fs.existsSync(downloadPath+'/'+torrentParsed.files.sort((a, b)=>{return b.length - a.length})[0].name)) {
+			console.log('tt');
+			sendStream(res, downloadPath, torrentParsed);
+		} else {
+			const engine = torrentStream(torrentRaw);
+			let path = ""
+			let i = 0;
+			engine.on('ready', function() {
+				engine.files.forEach(function(file) {
+					console.log('filename:', file.name);
+					var stream = file.createReadStream();
+					stream.on('data', (d)=>{
+						i++;
+						console.log('data:', i, file.name);
+						fs.appendFileSync(downloadPath+'/'+file.name, d);
+					})
+					.on('end', () => {
+						console.log('download done:', file.name);
+					});
 				});
-				// stream is readable stream to containing the file content
 			});
-		});
-
-		setTimeout(()=>{
-			res.writeHead(200);
-			res.write(`<html><body><video controls width="400px" autoplay><source src="http://localhost:5555/video/${bs58.encode(Buffer.from(path))}" type="video/mp4"></video></body>
-			</html>`);
-			res.end();
-
-		}, 10000);
+			setTimeout(()=>{
+				sendStream(res, downloadPath, torrentParsed);
+			}, 10000);
+		}
 	});
 
 })
