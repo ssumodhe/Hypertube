@@ -62,6 +62,9 @@
     		<span  v-bind:class="[checkPasswordIconClass]"></span>
     	</div>
 
+      <div v-if="errorMessage" class="text-center text-danger">{{errorMessage}}
+      </div>
+
     	<input v-bind:disabled="submitBtnDisabled" class="btn btn-default" type="submit" value="Sign Up!">
 
     </form>
@@ -76,6 +79,13 @@ import Uploadfile from '@/components/upload-file'
 
 export default{
   name: 'signup',
+  props:{
+    errorMessage: {
+      type: String,
+      required: false,
+      default: ''
+    }
+  },
   data(){
     return {
       note: "Form sign Up here",
@@ -180,6 +190,7 @@ export default{
   	checkAllValidation: function(){
   		if (this.$refs.txtEmail.checkValidity()
         & this.$refs.txtUser.checkValidity()
+        & this.picture != ''
         & this.$refs.txtFirstName.checkValidity()
         & this.$refs.txtLastName.checkValidity()
         & this.$refs.txtPassword.checkValidity()
@@ -189,7 +200,12 @@ export default{
         return false
   	},
     addPicture: function(form) {
-      this.picture = form.picture 
+      this.picture = form.picture
+      if (this.checkAllValidation())
+        this.submitBtnDisabled = false
+      else{
+        this.submitBtnDisabled = true
+      } 
     },
     submitSignIn: function() {
       let email = this.$refs.txtEmail.value.trim()

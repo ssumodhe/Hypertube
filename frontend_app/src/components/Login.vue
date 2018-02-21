@@ -13,6 +13,7 @@
         <div class="panel-body">
           <signup
             v-on:signupInfos="checkInfos"
+            :errorMessage="errorMsgSignUp"
           ></signup>
         </div>
       </div>
@@ -26,7 +27,7 @@
         <div class="panel-body">
           <signin 
           v-on:loginCredentials="checkCredentials" 
-          :errorMessage="errorMsg"
+          :errorMessage="errorMsgSignIn"
           ></signin>
         </div>
       </div>
@@ -48,7 +49,8 @@ export default{
   data(){
     return {
       note: "This is the Login page. For: SignUp and SignIn",
-      errorMsg: ""
+      errorMsgSignIn: "",
+      errorMsgSignUp: ""
     }
   },
   components: {
@@ -58,7 +60,6 @@ export default{
     checkCredentials: function(form){
       console.log('User is ' + form.user)
       console.log('Password is ' + form.password)
-      console.log('errorMsg is \"' + this.errorMsg + '\"')
       axios({
         method: 'post',
         url: 'https://hypertubeapi.tpayet.com/auth/sign_in',
@@ -72,18 +73,45 @@ export default{
           console.log(response.data);
           console.log("response's header:");
           console.log(response.headers);
-          this.errorMsg = ""
+          this.errorMsgSignIn = ""
         })
         .catch( (error) => {
           console.log("response's error:");
           console.log(error);
-          this.errorMsg = "Not valid email or password."
+          this.errorMsgSignIn = "Not valid email or password."
         });
       // this.$router.push('/')
 
     },
     checkInfos: function(form){
       console.log(form)
+      axios({
+        method: 'post',
+        url: 'https://hypertubeapi.tpayet.com/auth/',
+        data: {
+          email: form.email,
+          // user: form.user,
+          // picture: form.picture,
+          // firstName: form.firstName,
+          // lastName: form.lastName,
+          password: form.password,
+          // checkPassword: form.checkPassword
+          password_confirmation: form.checkPassword
+
+        }
+      })
+        .then( (response) => {
+          console.log("response's data:");
+          console.log(response.data);
+          console.log("response's header:");
+          console.log(response.headers);
+          this.errorMsgSignUp = ""
+        })
+        .catch( (error) => {
+          console.log("response's error:");
+          console.log(error);
+          this.errorMsgSignUp = "An error occurred. Please try again."
+        });
       // this.$router.push('/')
 
     }
