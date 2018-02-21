@@ -118,7 +118,6 @@ export default{
             'password': password
           }
         )
-      this.$router.push('/')
   	}
 
   }

@@ -26,7 +26,7 @@
         <div class="panel-body">
           <signin 
           v-on:loginCredentials="checkCredentials" 
-          :errorMessage="errorMessage"
+          :errorMessage="errorMsg"
           ></signin>
         </div>
       </div>
@@ -48,7 +48,7 @@ export default{
   data(){
     return {
       note: "This is the Login page. For: SignUp and SignIn",
-      errorMessage: ""
+      errorMsg: ""
     }
   },
   components: {
@@ -58,9 +58,34 @@ export default{
     checkCredentials: function(form){
       console.log('User is ' + form.user)
       console.log('Password is ' + form.password)
+      console.log('errorMsg is \"' + this.errorMsg + '\"')
+      axios({
+        method: 'post',
+        url: 'https://hypertubeapi.tpayet.com/auth/sign_in',
+        data: {
+          email: form.user,
+          password: form.password
+        }
+      })
+        .then( (response) => {
+          console.log("response's data:");
+          console.log(response.data);
+          console.log("response's header:");
+          console.log(response.headers);
+          this.errorMsg = ""
+        })
+        .catch( (error) => {
+          console.log("response's error:");
+          console.log(error);
+          this.errorMsg = "Not valid email or password."
+        });
+      // this.$router.push('/')
+
     },
     checkInfos: function(form){
       console.log(form)
+      // this.$router.push('/')
+
     }
   }
 }
