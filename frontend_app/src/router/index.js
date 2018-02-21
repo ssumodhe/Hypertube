@@ -15,7 +15,12 @@ export default new Router({
     {
       path: '/login',
       name: 'login',
-      component: Login
+      component: Login,
+      beforeEnter: (to, from, next) => {
+        console.log(to)
+        console.log(from)
+        console.log(next)
+      }
       // MiddleWare
       // beforeEnter: (to, from, next) => {
       //   // ...
