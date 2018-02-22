@@ -20,6 +20,7 @@ export default new Router({
         console.log(to)
         console.log(from)
         console.log(next)
+        next()
       }
       // MiddleWare
       // beforeEnter: (to, from, next) => {
