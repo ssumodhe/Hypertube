@@ -41,6 +41,7 @@ services:
       context: ./torrent_stream_api
     environment:
       HYPERTUBE_DOWNLOAD_PATH: /app/data
+      HYPERTUBE_STREAMING_URL: streamingapi.tpayet.com
     command: node stream.js
     ports:
       - "5555:5555"

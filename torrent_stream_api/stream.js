@@ -95,7 +95,7 @@ const sendHtml = (res, downloadPath, torrentParsed)=>{
 	const url = downloadPath+'/'+(torrentParsed.files.sort((a, b)=>{return b.length - a.length}))[0].name;
 
 	res.writeHead(200);
-	res.write(`<html><body><video controls width="400px" autoplay onerror="console.log('error video');return 0;"><source src="http://localhost:5555/video/${bs58.encode(Buffer.from(url))}" type="video/mp4" onerror="console.log('error source');return 0;"></video></body>
+	res.write(`<html><body><video controls width="400px" autoplay onerror="console.log('error video');return 0;"><source src="http://${process.env.HYPERTUBE_STREAMING_URL}/video/${bs58.encode(Buffer.from(url))}" type="video/mp4" onerror="console.log('error source');return 0;"></video></body>
 	</html>`);
 	res.end();
 	return 0;
