@@ -7,9 +7,13 @@
     <br>
     <br>
 
-    <video controls>
-<!--      <source src="http://e2r3p14.42.fr:5555/video" type="video/mp4"></source>  -->
+<!--     <video controls>
       <source src="" type="video/mp4"></source> 
+    </video> -->
+
+    <video autoplay loop muted="true" controls>
+      <source
+        src="https://mdbootstrap.com/img/video/Tropical.mp4" type="video/mp4">
     </video>
 
   </div>
@@ -51,5 +55,6 @@ export default{
 <style scoped>
   video{
     border: 1px solid black;
+    width: 100%;
   }
 </style>
