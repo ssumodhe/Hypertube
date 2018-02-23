@@ -15,7 +15,7 @@
             </div>
             <div id="collapseZero" class="collapse show" role="tabpanel" aria-labelledby="headingZero">
               <div class="card-block">
-                Modif input
+                <uploadfile class="uploadfile"></uploadfile>
               </div>
             </div>
           </div>
@@ -34,7 +34,15 @@
             </div>
             <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne">
               <div class="card-block">
-                Modif input
+                
+                <form>
+                  <input type="text" name="username" placeholder="the_user's_name">
+                </form>
+
+
+
+
+
               </div>
             </div>
           </div>
@@ -96,8 +104,13 @@
 </template>
 
 <script>
+import Uploadfile from '@/components/upload-file'
+
 export default{
   name: 'user',
+  components:{
+    Uploadfile
+  },
   data(){
     return {
       note: "This is the Profile page!!"
@@ -120,6 +133,13 @@ export default{
   a {
     text-decoration: none;
     color: #555;
+  }
+
+  form {
+    padding: 5px auto 5px auto;
+  }
+  .uploadfile{
+    padding-top: 5px;
   }
 
 </style>
