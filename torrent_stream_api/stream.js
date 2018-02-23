@@ -6,8 +6,13 @@ const torrentStream = require('torrent-stream');
 const https = require('http');
 const bs58 = require('bs58');
 
+const MIN_SIZE = 100 * 1024 * 1024; // 100 Mo
+
 if (!fs.existsSync('torrents')) {
 	fs.mkdirSync('torrents');
+}
+if (!fs.existsSync(process.env.HYPERTUBE_DOWNLOAD_PATH)) {
+	fs.mkdirSync(process.env.HYPERTUBE_DOWNLOAD_PATH);
 }
 
 const getFile = (url, callback) => {
@@ -52,22 +57,28 @@ const streamVideo = (req, res, n) => {
 			.on('start', (cmd) => {})
 			.on('progress', (progress) => {})
 			.on('error', (err, stdout, stderr) => {
-				console.log('ffmpeg error');
+				console.log('ffmpeg error:', err);
 				resolve(null);
 			});
 
-			// if (fileExtension === '.mkv') {
+			// if (/\.mkv$/.test(req.params.path) === '.mkv') {
 			// 	converter.addOption('-vcodec')
-			// 	.addOption('copy')
-			// 	.addOption('-acodec')
-			// 	.addOption('copy')
+			// 	.audioCodec('aac')
+			// 	.videoCodec('libx264')
+			// 	// .addOption('copy')
+			// 	// .addOption('-acodec')
+			// 	// .addOption('copy')
 			// 	.run();
+			// 	// converter
+			// 	// .addOption('-acodec')
+			// 	// .addOption('copy')
+			// 	// .videoCodec('libx264')
+			// 	// .run();
 			// } else {
-			converter//.inputFormat('avi'/*fileExtension.substr(1)*/)
-			.audioCodec('aac')
-			.videoCodec('libx264')
-			.run();
-			// res.sendStatus(200);
+				converter
+				.audioCodec('aac')
+				.videoCodec('libx264')
+				.run();
 			// }
 			res.on('close', () => {
 				console.log('stream closed');
@@ -75,9 +86,6 @@ const streamVideo = (req, res, n) => {
 			});
 		} catch (e) {
 			console.log('error, try again ...');
-			// setTimeout(()=>{
-			// 	streamVideo(req, res, n+1);
-			// }, 1000)
 			resolve(null);
 		}
 	});
@@ -98,6 +106,7 @@ const sendHtml = (res, downloadPath, torrentParsed)=>{
 need to change that into an unguessable token linked to the movie and the user who asked it
 */
 app.get('/url/:url', (req, res)=>{
+	/* Check if url is a valid base58 ----------------------------------------*/
 	if (!/^[a-km-zA-HJ-NP-Z1-9]{1,}$/.test(req.params.url)) {
 		res.sendStatus(404);
 		res.end();
@@ -106,49 +115,54 @@ app.get('/url/:url', (req, res)=>{
 	const url = bs58.decode(req.params.url).toString('ascii');
 
 	getFile(url, (err, file) => {
-		if (err) {
-			throw new Error(err);
-		}
+		if (err) { throw new Error(err); }
 		const torrentRaw = file;
 		const torrentParsed = parseTorrent(torrentRaw);
 		const torrentFilename = torrentParsed.infoHash+'.torrent';
 		const torrentPath = 'torrents/'+torrentFilename;
 		const downloadPath = process.env.HYPERTUBE_DOWNLOAD_PATH+'/'+torrentParsed.infoHash
-		fs.writeFileSync(torrentPath, file);
-		const torrent = file;
-		console.log('getfile done');
-		console.log('error:',err);
-
-		if (!fs.existsSync(downloadPath)) {
-			fs.mkdirSync(downloadPath);
-		}
-		/* Handle if file has been already downloaded ------------------------*/
-		if (fs.existsSync(downloadPath+'/'+torrentParsed.files.sort((a, b)=>{return b.length - a.length})[0].name)) {
-			sendHtml(res, downloadPath, torrentParsed);
-		} else {
-			const engine = torrentStream(torrentRaw);
-			let path = ""
-			let i = 0;
-			engine.on('ready', function() {
-				engine.files.forEach(function(file) {
-					console.log('filename:', file.name);
-					var stream = file.createReadStream();
-					stream.on('data', (d)=>{
-						i++;
-						console.log('data:', i, file.name);
-						fs.appendFileSync(downloadPath+'/'+file.name, d);
-					})
-					.on('end', () => {
-						console.log('download done:', file.name);
+		try {
+			fs.writeFileSync(torrentPath, file);
+			const torrent = file;
+			console.log('getfile done');
+			console.log('error:',err);
+			if (!fs.existsSync(downloadPath)) { fs.mkdirSync(downloadPath); }
+			/* Handle if file has been already downloaded ------------------------*/
+			if (fs.existsSync(downloadPath+'/'+torrentParsed.files.sort((a, b)=>{return b.length - a.length})[0].name)) {
+				sendHtml(res, downloadPath, torrentParsed);
+			} else {
+				const engine = torrentStream(torrentRaw);
+				let path = ""
+				let i = 0;
+				engine.on('ready', function() {
+					engine.files.forEach(function(file) {
+						console.log('filename:', file.name);
+						var stream = file.createReadStream();
+						stream.on('data', (d)=>{
+							i++;
+							console.log('data:', i, file.name);
+							fs.appendFileSync(downloadPath+'/'+file.name, d);
+						})
+						.on('end', () => {
+							console.log('download done:', file.name);
+						});
 					});
 				});
-			});
-			setTimeout(()=>{
-				sendHtml(res, downloadPath, torrentParsed);
-			}, 10000);
+				const interval = setInterval(()=>{
+					if (fs.existsSync(downloadPath+'/'+torrentParsed.files.sort((a, b)=>{return b.length - a.length})[0].name)) {
+						console.log('size:', fs.statSync(downloadPath+'/'+torrentParsed.files.sort((a, b)=>{return b.length - a.length})[0].name).size);
+						if (fs.statSync(downloadPath+'/'+torrentParsed.files.sort((a, b)=>{return b.length - a.length})[0].name).size > MIN_SIZE) {
+							clearInterval(interval);
+							sendHtml(res, downloadPath, torrentParsed);
+						}
+					}
+				}, 1000);
+			}
+		} catch (e) {
+			/* TODO Handle writeFile error -----------------------------------*/
+			console.log(e);
 		}
 	});
-
 })
 .get('/video/:path', (req, res) => {
 	streamVideo(req, res, 0).then(r=>{});
