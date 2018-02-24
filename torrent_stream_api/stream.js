@@ -6,14 +6,12 @@ const torrentStream = require('torrent-stream');
 const https = require('http');
 const bs58 = require('bs58');
 
-const MIN_SIZE = 100 * 1024 * 1024; // 100 Mo
+let MIN_SIZE = 100 * 1024 * 1024; // 100 Mo
 
-if (!fs.existsSync('torrents')) {
+try {
 	fs.mkdirSync('torrents');
-}
-if (!fs.existsSync(process.env.HYPERTUBE_DOWNLOAD_PATH)) {
 	fs.mkdirSync(process.env.HYPERTUBE_DOWNLOAD_PATH);
-}
+} catch (e) {}
 
 const getFile = (url, callback) => {
 	https.get(url, res => {
@@ -126,7 +124,9 @@ app.get('/url/:url', (req, res)=>{
 			const torrent = file;
 			console.log('getfile done');
 			console.log('error:',err);
-			if (!fs.existsSync(downloadPath)) { fs.mkdirSync(downloadPath); }
+			try {
+				fs.mkdirSync(downloadPath);
+			} catch (e) {}
 			/* Handle if file has been already downloaded ------------------------*/
 			if (fs.existsSync(downloadPath+'/'+torrentParsed.files.sort((a, b)=>{return b.length - a.length})[0].name)) {
 				sendHtml(res, downloadPath, torrentParsed);
@@ -148,10 +148,13 @@ app.get('/url/:url', (req, res)=>{
 						});
 					});
 				});
+				const t = torrentParsed.files.sort((a, b)=>{return b.length - a.length})[0];
+				MIN_SIZE = t.length * 0.1;
+				console.log("min size:", MIN_SIZE);
 				const interval = setInterval(()=>{
-					if (fs.existsSync(downloadPath+'/'+torrentParsed.files.sort((a, b)=>{return b.length - a.length})[0].name)) {
-						console.log('size:', fs.statSync(downloadPath+'/'+torrentParsed.files.sort((a, b)=>{return b.length - a.length})[0].name).size);
-						if (fs.statSync(downloadPath+'/'+torrentParsed.files.sort((a, b)=>{return b.length - a.length})[0].name).size > MIN_SIZE) {
+					if (fs.existsSync(downloadPath+'/'+t.name)) {
+						console.log('size:', fs.statSync(downloadPath+'/'+t.name).size);
+						if (fs.statSync(downloadPath+'/'+t.name).size > MIN_SIZE) {
 							clearInterval(interval);
 							sendHtml(res, downloadPath, torrentParsed);
 						}
