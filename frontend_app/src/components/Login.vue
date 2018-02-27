@@ -44,8 +44,8 @@
 <script>
 import Signup from '@/components/login-signup'
 import Signin from '@/components/login-signin'
-// import signInUrl from './src/config'
-// import signUpUrl from './src/config'
+import {signInUrl} from '../config.js'
+import {signUpUrl} from '../config.js'
 export default{
   name: 'login',
   data(){
@@ -62,9 +62,10 @@ export default{
     checkCredentials: function(form){
       console.log('User is ' + form.user)
       console.log('Password is ' + form.password)
+      console.log('URL : ' + signInUrl)
       axios({
         method: 'post',
-        url: 'https://hypertubeapi.tpayet.com/auth/sign_in',
+        url: signInUrl,
         data: {
           email: form.user,
           password: form.password
@@ -89,7 +90,7 @@ export default{
       console.log(form)
       axios({
         method: 'post',
-        url: 'https://hypertubeapi.tpayet.com/auth/',
+        url: signUpUrl,
         data: {
           email: form.email,
           // user: form.user,
