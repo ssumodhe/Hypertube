@@ -58,7 +58,9 @@
             </div>
             <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
               <div class="card-block">
-                Modif input
+                <form>
+                  <input type="text" name="username" placeholder="old email">
+                </form>
               </div>
             </div>
           </div>
@@ -74,7 +76,10 @@
             </div>
             <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree">
               <div class="card-block">
-                Modif input firstName + lastName
+                <form>
+                  <input type="text" name="username" placeholder="First Name">
+                  <input type="text" name="username" placeholder="Last Name">
+                </form>
               </div>
             </div>
           </div>
@@ -84,13 +89,16 @@
               <h5 class="mb-0">
                 <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
                   <span class="glyphicon glyphicon-lock"></span>
-                  <p>Password</p>
+                  <p>Password.</p>
                 </a>
               </h5>
             </div>
             <div id="collapseFour" class="collapse" role="tabpanel" aria-labelledby="headingFour">
               <div class="card-block">
-                Modif 
+                <form>
+                  <input type="text" name="username" placeholder="old Password">
+                  <input type="text" name="username" placeholder="new Password">
+                </form>
               </div>
             </div>
           </div>
@@ -113,7 +121,8 @@ export default{
   },
   data(){
     return {
-      note: "This is the Profile page!!"
+      note: "This is the Profile page!!",
+
     }
   }
 }
@@ -135,8 +144,8 @@ export default{
     color: #555;
   }
 
-  form {
-    padding: 5px auto 5px auto;
+  input {
+    margin: 5px auto 5px auto;
   }
   .uploadfile{
     padding-top: 5px;
