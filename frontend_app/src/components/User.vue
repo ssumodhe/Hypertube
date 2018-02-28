@@ -8,9 +8,9 @@
         <div class="card">
             <div class="card-header" role="tab" id="headingZero">
               <h5 class="mb-0">
-                <a data-toggle="collapse" data-parent="#accordion" href="#collapseZero" aria-expanded="true" aria-controls="collapseZero">
+                <!-- <a data-toggle="collapse" data-parent="#accordion" href="#collapseZero" aria-expanded="true" aria-controls="collapseZero"> -->
                   <img class="img-circle" src="/static/img/emoji_kitty.png" width="100px">
-                </a>
+                <!-- </a> -->
               </h5>
             </div>
             <div id="collapseZero" class="collapse show" role="tabpanel" aria-labelledby="headingZero">
@@ -148,7 +148,7 @@ export default{
     margin: 5px auto 5px auto;
   }
   .uploadfile{
-    padding-top: 5px;
+    margin: 5px 5px 5px 5px;
   }
 
 </style>
