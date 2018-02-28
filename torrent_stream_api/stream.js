@@ -47,37 +47,18 @@ const streamVideo = (req, res, n) => {
 			.input(fileStream)
 			.outputOptions('-movflags frag_keyframe+empty_moov')
 			.outputFormat('mp4')
+			.videoBitrate(512, true)
 			.output(res)
 
-			.on('codecData', (codecData) => {
-				console.log('fluent-ffmpeg Notice: CodecData:', codecData);
-			})
-			.on('start', (cmd) => {})
-			.on('progress', (progress) => {})
 			.on('error', (err, stdout, stderr) => {
 				console.log('ffmpeg error:', err);
 				resolve(null);
 			});
 
-			// if (/\.mkv$/.test(req.params.path) === '.mkv') {
-			// 	converter.addOption('-vcodec')
-			// 	.audioCodec('aac')
-			// 	.videoCodec('libx264')
-			// 	// .addOption('copy')
-			// 	// .addOption('-acodec')
-			// 	// .addOption('copy')
-			// 	.run();
-			// 	// converter
-			// 	// .addOption('-acodec')
-			// 	// .addOption('copy')
-			// 	// .videoCodec('libx264')
-			// 	// .run();
-			// } else {
-				converter
-				.audioCodec('aac')
-				.videoCodec('libx264')
-				.run();
-			// }
+			converter
+			.audioCodec('aac')
+			.videoCodec('libx264')
+			.run();
 			res.on('close', () => {
 				console.log('stream closed');
 				converter.kill();
