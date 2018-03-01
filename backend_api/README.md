@@ -7,7 +7,7 @@ Rails app default port is 3000
 
 User signup
 ```bash
-$> curl -XPOST localhost:3000/auth/ --data "email=tpayet@student.42.fr&password=QWErty123&password_confirmation=QWErty123"
+$> curl -XPOST localhost:3000/auth/sign_in --data "username=tpayet&password=QWErty123"
 ```
 
 User login
