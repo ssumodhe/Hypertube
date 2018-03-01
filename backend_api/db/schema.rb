@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180301182006) do
+ActiveRecord::Schema.define(version: 20180301191009) do
 
   create_table "users", force: :cascade do |t|
     t.string "provider", default: "email", null: false
@@ -30,7 +30,6 @@ ActiveRecord::Schema.define(version: 20180301182006) do
     t.string "unconfirmed_email"
     t.string "firstname"
     t.string "lastname"
-    t.string "nickname"
     t.string "image"
     t.string "email"
     t.text "tokens"
