@@ -13,3 +13,18 @@
 
 * Back-end API is responsible for whole application logic except downloading & streaming files 
 * We should define contracts for communication between Stream API & back-end and between front-end app & back-end
+
+## Docker-compose
+
+> **This is a work in progress**
+
+There is a working docker-compose
+
+```bash
+# To build images
+$> docker-compose build
+# And run all services
+$> docker-compose up
+```
+
+The production environment should use postrgresql as DB, it is actually using sqlite3
