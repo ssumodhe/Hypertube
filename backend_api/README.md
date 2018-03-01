@@ -7,13 +7,13 @@ Rails app default port is 3000
 
 User signup
 ```bash
-$> curl -XPOST localhost:3000/auth/sign_in --data "username=tpayet&password=QWErty123"
+$> curl -XPOST localhost:3000/auth/ --data "email=tpayet@student.42.fr&password=QWErty123&password_confirmation=QWErty123"
 ```
 
 User login
 ```bash
 # Add --verbose to see header with token and client
-curl -XPOST localhost:3000/auth/sign_in --data "email=tpayet@student.42.fr&password=rockmyroot"
+$> curl -XPOST localhost:3000/auth/sign_in --data "username=tpayet&password=QWErty123"
 ```
 
 For more details about authentification system please see the [gem docutmentation](https://github.com/lynndylanhurley/devise_token_auth#usage-tldr)
