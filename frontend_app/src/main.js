@@ -8,6 +8,16 @@ require('../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss')
 
 Vue.config.productionTip = false
 
+// MiddleWare
+router.beforeEach((to, from, next) => {
+  console.log(to);
+  if (!to.matched.length) {
+    next('/404');
+  } else {
+    next();
+  }
+});
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

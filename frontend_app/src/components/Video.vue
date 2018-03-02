@@ -7,10 +7,16 @@
     <br>
     <br>
 
-    <video controls>
-<!--      <source src="http://e2r3p14.42.fr:5555/video" type="video/mp4"></source>  -->
-      <source src="" type="video/mp4"></source> 
+    <video autoplay loop muted="true" controls>
+      <source src="https://mdbootstrap.com/img/video/Tropical.mp4" type="video/mp4"></source> 
     </video>
+
+<!--     <video autoplay loop muted="true" controls class="video-js">
+      <source
+        src="http://e1r5p16.42.fr:5555/video/YmsorVS9x4x1YA4abxEV3LQ7LAoDH2xXXTjgyMcZWeXdYPmf1xutJJcSEQWESRRMMDSDaQQwXWR8JsK6tSkjpakbPKQszXLx1Tfu4EXDarC1Gk6xxdY6j5t5eL3NJihJPsrQBmmf6BtT1R42uLvHWxvYfBxJwJH6R7hCxRAbvQjTphupyj92" type="video/mp4">
+      <track kind="subtitles" src="http://localhost:8080/static/sub.vtt" srclang="en" label="English" default="">
+      <track kind="subtitles" src="http://e1r5p16.42.fr:5555/sub.vtt" srclang="fr" label="French" default="">
+    </video> -->
 
   </div>
 </template>
@@ -51,5 +57,9 @@ export default{
 <style scoped>
   video{
     border: 1px solid black;
+    width: 100%;
+  }
+  .video-js{
+    height: 100%;
   }
 </style>

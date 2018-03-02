@@ -20,7 +20,7 @@
     		<span  v-bind:class="[passwordIconClass]"></span>
     	</div>
 
-      <div v-if="errorMessage" class="text-center text-danger">{{errorMessage}}
+      <div v-if="errorMessage" class="alert alert-danger" role="alert">{{errorMessage}}
       </div>
 
       <div class="checkbox">
@@ -118,7 +118,6 @@ export default{
             'password': password
           }
         )
-      this.$router.push('/')
   	}
 
   }
