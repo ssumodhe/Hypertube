@@ -16,8 +16,4 @@ RUN bundle install
 
 COPY . .
 
-
-
-
-
-
+RUN chmod +x /app/entrypoint.sh

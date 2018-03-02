@@ -23,6 +23,7 @@ test:
 production:
   adapter: postgresql
   encoding: unicode
+  host: postgres
   database: hypertubeapi
   pool: 5
   username: postgres
