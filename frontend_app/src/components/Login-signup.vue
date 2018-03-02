@@ -62,7 +62,7 @@
     		<span  v-bind:class="[checkPasswordIconClass]"></span>
     	</div>
 
-      <div v-if="errorMessage" class="text-center text-danger">{{errorMessage}}
+      <div v-if="errorMsg" class="alert alert-danger" role="alert">{{errorMsg}}
       </div>
 
     	<input v-bind:disabled="submitBtnDisabled" class="btn btn-default" type="submit" value="Sign Up!">
@@ -80,7 +80,7 @@ import Uploadfile from '@/components/upload-file'
 export default{
   name: 'signup',
   props:{
-    errorMessage: {
+    errorMsg: {
       type: String,
       required: false,
       default: ''

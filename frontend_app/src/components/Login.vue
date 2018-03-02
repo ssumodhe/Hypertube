@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <h1>Login Page</h1>
-    <div>{{note}}</div>
+    <div v-if="successMsg" class="alert alert-success" role="alert">{{successMsg}}</div>
     
     <div class="row">
 
@@ -13,7 +13,7 @@
         <div class="panel-body">
           <signup
             v-on:signupInfos="checkInfos"
-            :errorMessage="errorMsgSignUp"
+            :errorMsg="errorMsgSignUp"
           ></signup>
         </div>
       </div>
@@ -29,6 +29,7 @@
           v-on:loginCredentials="checkCredentials" 
           :errorMessage="errorMsgSignIn"
           ></signin>
+          
         </div>
       </div>
     </div>
@@ -52,7 +53,8 @@ export default{
     return {
       note: "This is the Login page. For: SignUp and SignIn",
       errorMsgSignIn: "",
-      errorMsgSignUp: ""
+      errorMsgSignUp: "",
+      successMsg: ""
     }
   },
   components: {
@@ -67,21 +69,29 @@ export default{
         method: 'post',
         url: signInUrl,
         data: {
-          email: form.user,
+          username: form.user,
           password: form.password
         }
       })
         .then( (response) => {
-          console.log("response's data:");
+          console.log("SUCCESS response");
+          console.log(response);
+          console.log("SUCCESS response's data:");
           console.log(response.data);
-          console.log("response's header:");
+          console.log("SUCCESS response's header:");
           console.log(response.headers);
           this.errorMsgSignIn = ""
         })
         .catch( (error) => {
-          console.log("response's error:");
+          console.log("ERROR response's error:");
           console.log(error);
-          this.errorMsgSignIn = "Not valid email or password."
+          console.log("ERROR");
+          console.log(error.response);
+          if (error.response.status == "401"){
+            this.errorMsgSignIn = error.response.data.errors[0];
+          } else {
+            this.errorMsgSignIn = "An error occurred. Please try again.";
+          }
         });
       // this.$router.push('/')
 
@@ -93,27 +103,34 @@ export default{
         url: signUpUrl,
         data: {
           email: form.email,
-          // user: form.user,
+          username: form.user,
           // picture: form.picture,
-          // firstName: form.firstName,
-          // lastName: form.lastName,
+          firstname: form.firstName,
+          lastname: form.lastName,
           password: form.password,
-          // checkPassword: form.checkPassword
           password_confirmation: form.checkPassword
 
         }
       })
         .then( (response) => {
-          console.log("response's data:");
+          console.log("SUCCESS response's data:");
           console.log(response.data);
-          console.log("response's header:");
+          console.log("SUCCESS response's header:");
           console.log(response.headers);
           this.errorMsgSignUp = ""
+          this.successMsg = "Well done! You successfully signed up. Please check your mails."
+
         })
         .catch( (error) => {
-          console.log("response's error:");
+          console.log("ERROR response's error:");
           console.log(error);
-          this.errorMsgSignUp = "An error occurred. Please try again."
+          console.log("ERROR");
+          console.log(error.response);
+          if (error.response.status == "422"){
+            this.errorMsgSignUp = error.response.data.errors.full_messages[0];
+          } else {
+            this.errorMsgSignUp = "An error occurred. Please try again.";
+          }
         });
       // this.$router.push('/')
 
