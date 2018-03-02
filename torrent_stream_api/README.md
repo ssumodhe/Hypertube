@@ -1,6 +1,8 @@
 ### HOW TO RUN ME:
 ```shell
 export HYPERTUBE_DOWNLOAD_PATH="torrent/download/path"
+export HYPERTUBE_STREAMING_URL=e2r6p18.42.fr:5555
+export HYPERTUBE_VIDEO_API="hypertubeapi/videos"
 npm install
 node stream.js
 ```
@@ -12,4 +14,3 @@ node stream.js
 
 ### TODO:
 * Handle non downloading torrents :3
-* stream from mkv
