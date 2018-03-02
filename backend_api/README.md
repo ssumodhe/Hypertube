@@ -7,16 +7,34 @@ Rails app default port is 3000
 
 User signup
 ```bash
-$> curl -XPOST localhost:3000/auth/ --data "email=totolapaille@gmail.com&username=totolapaille&password=QWErty123&password_confirmation=QWErty123&firstname=Thomas&lastname=Payet"
+$> curl -XPOST https://hypertubeapi.tpayet.com/auth/ --data "email=totolapaille@gmail.com&username=totolapaille&password=QWErty123&password_confirmation=QWErty123&firstname=Thomas&lastname=Payet"
 ```
 
 User login
 ```bash
 # Add --verbose to see header with token and client
-$> curl -XPOST localhost:3000/auth/sign_in --data "username=tpayet&password=QWErty123"
+$> curl -XPOST https://hypertubeapi.tpayet.com/auth/sign_in --data "username=tpayet&password=QWErty123"
 ```
 
 For more details about authentification system please see the [gem docutmentation](https://github.com/lynndylanhurley/devise_token_auth#usage-tldr)
+
+Videos Models
+```bash
+# POST /videos
+$> curl -XPOST https://hypertubeapi.tpayet.com/videos -H "Content-Type: application/json" -d '{"video": {"token":"123", "path":"/", "title":"wololo"}}'
+{"id":5,"title":"wololo","path":"/","token":"123","created_at":"2018-03-02T14:16:25.391Z","updated_at":"2018-03-02T14:16:25.391Z"}
+
+# GET /videos/:token
+$> curl https://hypertubeapi.tpayet.com/videos/123
+{"id":4,"title":"wololo","path":"/","token":"123","created_at":"2018-03-02T13:45:43.779Z","updated_at":"2018-03-02T13:45:43.779Z"}
+
+# DELETE /videos/:token
+$> curl -XDELETE https://hypertubeapi.tpayet.com/videos/123
+
+# GET /videos (index)
+$> curl https://hypertubeapi.tpayet.com/videos
+
+```
 
 ----
 Things you may want to cover:
