@@ -170,6 +170,9 @@ app.get('/url/:url', (req, res)=>{
 				res.sendStatus(500);
 				res.send();
 			}
+			// })();
+
+			/* Handle if file has been already downloaded ------------------------*/
 		} catch (e) {
 			console.log('write file error: chmod 0000 on download path or torrents path?');
 			res.sendStatus(500);
