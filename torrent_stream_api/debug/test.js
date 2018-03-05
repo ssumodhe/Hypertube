@@ -1,4 +1,5 @@
 const H = new (require('../Hypertube.class.js'))();
+const fs = require('fs');
 
 const fget = async (token) => {
 	try {

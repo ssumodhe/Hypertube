@@ -38,10 +38,7 @@ const getFile = (url, callback) => {
 }
 
 const streamVideo = async (req, res, ret) => {
-	// const ret = await Hypertube.get(req.params.token);
-	// console.log('streamVideo ret:', ret);
 	const body = JSON.parse(ret.body);
-	// console.log('ret:', ret);
 	return new Promise((resolve, reject)=>{
 		try {
 			console.log('start streaming');
@@ -82,7 +79,7 @@ const sendHtml = (res, downloadPath, torrentParsed)=>{
 	const url = downloadPath+'/'+title;
 	try {
 		res.writeHead(200);
-		res.write(`<html><body><video controls width="400px" autoplay onerror="console.log('error video');return 0;"><source src="http://${process.env.HYPERTUBE_STREAMING_URL}/video/${torrentParsed.infoHash}" type="video/mp4" onerror="console.log('error source');return 0;"></video></body>
+		res.write(`<html><head><meta charset="utf-8"></head><body><video controls width="400px" autoplay onerror="console.log('error video');return 0;"><source src="http://${process.env.HYPERTUBE_STREAMING_URL}/video/${torrentParsed.infoHash}" type="video/mp4" onerror="console.log('error source');return 0;"></video></body>
 		</html>`);
 		res.end();
 	} catch(e) {
@@ -115,7 +112,6 @@ app.get('/url/:url', (req, res)=>{
 			fs.writeFileSync(torrentPath, file);
 			const torrent = file;
 			console.log('getfile done');
-			console.log('error:',err);
 			try {
 				fs.mkdirSync(downloadPath);
 			} catch (e) {}
@@ -131,6 +127,8 @@ app.get('/url/:url', (req, res)=>{
 					const piecesNumber = torrentParsed.pieces.length;
 					let path = ""
 					let i = 0;
+
+					/* Start torrent-stream engine, create readStream for each files and start downloading */
 					engine.on('ready', function() {
 						engine.files.forEach(function(file) {
 							console.log('filename:', file.name);
@@ -145,51 +143,36 @@ app.get('/url/:url', (req, res)=>{
 							});
 						});
 					});
+
+					/* Add the new file in db, set MIN_SIZE downloaded file that trigger the stream */
 					const t = torrentParsed.files.sort((a, b)=>{return b.length - a.length})[0];
 					Hypertube.post(t.name, torrentParsed.infoHash, torrentParsed.infoHash)
 					.then(r => {
-						// console.log(r);
 						MIN_SIZE = t.length * 0.1;
 						console.log("min size:", MIN_SIZE);
 						const interval = setInterval(()=>{
 							if (fs.existsSync(downloadPath+'/'+t.name)) {
 								console.log('size:', fs.statSync(downloadPath+'/'+t.name).size);
 								if (fs.statSync(downloadPath+'/'+t.name).size > MIN_SIZE) {
-									// const post = (async () => {
-									// 	try {
-									// 		// const ret = await Hypertube.post(t.name, torrentParsed.infoHash, torrentParsed.infoHash);
-									// 		// console.log("ret get:", ret);
-									// 		return ret;
-									// 	} catch (e) {
-									// 		console.log("error setInterval:",e);
-									// 		return 0
-									// 	}
-									// })()
-									// if ((post != 200 && post != 201) && post ) {
-									// console.log('error video api');
-									// } else {
 									clearInterval(interval);
 									sendHtml(res, downloadPath, torrentParsed);
-									// }
 								}
 							}
 						}, 1000);
 					}).catch(e => {
+						console.log('error Hypertube.post:',e);
 						res.sendStatus(500);
-						console.log('error:',e);
 						res.send();
 					})
 				}
 			} catch (e) {
-				console.log(e);
-				// return 0
+				console.log('error: check env variables');
+				res.sendStatus(500);
+				res.send();
 			}
-			// })();
-
-			/* Handle if file has been already downloaded ------------------------*/
 		} catch (e) {
-			/* TODO Handle writeFile error -----------------------------------*/
-			console.log(e);
+			console.log('write file error: chmod 0000 on download path or torrents path?');
+			res.sendStatus(500);
 		}
 	});
 })
