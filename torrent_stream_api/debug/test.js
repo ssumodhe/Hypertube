@@ -1,4 +1,4 @@
-const H = new (require('./Hypertube.class.js'))();
+const H = new (require('../Hypertube.class.js'))();
 
 const fget = async (token) => {
 	try {

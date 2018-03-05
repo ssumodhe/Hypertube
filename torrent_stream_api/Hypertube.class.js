@@ -6,7 +6,6 @@ class Hypertube {
 	get(token) {
 		return new Promise((resolve, reject)=>{
 			this.request.get(process.env.HYPERTUBE_VIDEO_API+'/'+token, (err, ret, body) => {
-				// console.log(body);
 				if (ret.statusCode != 200 || err) reject(err || "error");
 				else resolve({body: body, statusCode: 200});
 			});
@@ -39,7 +38,7 @@ class Hypertube {
 	delete(token) {
 		return new Promise((resolve, reject)=>{
 			this.request.delete(process.env.HYPERTUBE_VIDEO_API+'/'+token, (err, ret, body) => {
-				if (ret.statusCode != 200 || err) reject(err || "error");
+				if ((ret.statusCode != 200 && ret.statusCode != 204) || err) reject(err || "error");
 				else resolve(200);
 			});
 		});
