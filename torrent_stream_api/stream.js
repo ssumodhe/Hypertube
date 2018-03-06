@@ -7,7 +7,7 @@ const https = require('http');
 const bs58 = require('bs58');
 const Hypertube = new (require('./Hypertube.class.js'))();
 
-let MIN_SIZE = 100 * 1024 * 1024; // 100 Mo
+// let MIN_SIZE = 100 * 1024 * 1024; // 100 Mo
 
 try {
 	fs.mkdirSync('torrents');
@@ -51,15 +51,17 @@ const streamVideo = async (req, res, ret) => {
 			.input(fileStream)
 			.outputOptions('-movflags frag_keyframe+empty_moov')
 			.outputFormat('mp4')
-			.videoBitrate(512, true)
+			// .videoBitrate(512, true)
 			.output(res)
 
 			.on('error', (err, stdout, stderr) => {
 				console.log('ffmpeg error:', err);
 				resolve(null);
-			});
-
+			})
 			converter
+			// .on('codecData', function(codec) {
+			// 	console.log(codec);
+			//   })
 			.audioCodec('aac')
 			.videoCodec('libx264')
 			.run();
@@ -91,7 +93,6 @@ const sendHtml = (res, downloadPath, torrentParsed)=>{
 :url is the file path base58 encoded,
 need to change that into an unguessable token linked to the movie and the user who asked it
 */
-
 app.get('/url/:url', (req, res)=>{
 	/* Check if url is a valid base58 ----------------------------------------*/
 	if (!/^[a-km-zA-HJ-NP-Z1-9]{1,}$/.test(req.params.url)) {
@@ -113,8 +114,11 @@ app.get('/url/:url', (req, res)=>{
 			const torrent = file;
 			console.log('getfile done');
 			try {
+				console.log('mkdir downloadPath');
 				fs.mkdirSync(downloadPath);
-			} catch (e) {}
+			} catch (e) {
+				console.log('error: mkdir downloadPath');
+			}
 
 			try {
 				const ret = await Hypertube.get(torrentParsed.infoHash);
@@ -128,6 +132,7 @@ app.get('/url/:url', (req, res)=>{
 					let path = ""
 					let i = 0;
 
+					console.log('torrent hash:',torrentParsed.infoHash);
 					/* Start torrent-stream engine, create readStream for each files and start downloading */
 					engine.on('ready', function() {
 						engine.files.forEach(function(file) {
@@ -135,11 +140,16 @@ app.get('/url/:url', (req, res)=>{
 							var stream = file.createReadStream();
 							stream.on('data', (d)=>{
 								i++;
-								if (!(i % 100)) console.log('data:', i, '/', piecesNumber, file.name);
+								// if (!(i % 100)) console.log('data:', i, '/', piecesNumber, file.name);
+								console.log('data:', i, '/', piecesNumber, file.name);
+								// console.log(downloadPath+'/'+file.name);
 								fs.appendFileSync(downloadPath+'/'+file.name, d);
 							})
-							.on('end', () => {
+							.on('end', ()=>{
 								console.log('download done:', file.name);
+							})
+							.on('error', (e)=>{
+								console.log('error downloading:', e);
 							});
 						});
 					});
@@ -148,15 +158,29 @@ app.get('/url/:url', (req, res)=>{
 					const t = torrentParsed.files.sort((a, b)=>{return b.length - a.length})[0];
 					Hypertube.post(t.name, torrentParsed.infoHash, torrentParsed.infoHash)
 					.then(r => {
-						MIN_SIZE = t.length * 0.1;
+						const size = t.length / 1048576
+						console.log('size:', size);
+						if (size < 400) {
+							MIN_SIZE = t.length * 0.1;
+						} else if (size < 800) {
+							MIN_SIZE = t.length * 0.05;
+						} else if (size < 1200) {
+							MIN_SIZE = t.length * 0.035;
+						} else {
+							MIN_SIZE = t.length * 0.01;
+						}
 						console.log("min size:", MIN_SIZE);
 						const interval = setInterval(()=>{
-							if (fs.existsSync(downloadPath+'/'+t.name)) {
-								console.log('size:', fs.statSync(downloadPath+'/'+t.name).size);
-								if (fs.statSync(downloadPath+'/'+t.name).size > MIN_SIZE) {
-									clearInterval(interval);
-									sendHtml(res, downloadPath, torrentParsed);
+							try {
+								if (fs.existsSync(downloadPath+'/'+t.name)) {
+									console.log('size:', fs.statSync(downloadPath+'/'+t.name).size);
+									if (fs.statSync(downloadPath+'/'+t.name).size > MIN_SIZE) {
+										clearInterval(interval);
+										sendHtml(res, downloadPath, torrentParsed);
+									}
 								}
+							} catch (e) {
+								console.log('here');
 							}
 						}, 1000);
 					}).catch(e => {
