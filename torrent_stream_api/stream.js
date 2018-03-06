@@ -140,9 +140,7 @@ app.get('/url/:url', (req, res)=>{
 							var stream = file.createReadStream();
 							stream.on('data', (d)=>{
 								i++;
-								// if (!(i % 100)) console.log('data:', i, '/', piecesNumber, file.name);
-								console.log('data:', i, '/', piecesNumber, file.name);
-								// console.log(downloadPath+'/'+file.name);
+								if (!(i % 100)) console.log('data:', i, '/', piecesNumber, file.name);
 								fs.appendFileSync(downloadPath+'/'+file.name, d);
 							})
 							.on('end', ()=>{
