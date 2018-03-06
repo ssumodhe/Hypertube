@@ -4,8 +4,8 @@
 
 
     <div class="row">    
-      <div class="col-xs-6 col-xs-offset-3">
-        <div class="input-group">
+      <div class="col-sm-12 col-md-6 col-md-offset-3">
+        <div class="input-group ">
           <div class="input-group-btn search-panel">
               <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                 <span id="search_concept">Filter by</span> <span class="caret"></span>
@@ -30,7 +30,7 @@
   </div>
 
   <div class="row">
-  <div id="carousel-example-generic" class="carousel slide col-xs-10 col-xs-offset-1 col-md-6 col-md-offset-3" data-ride="carousel">
+  <div id="carousel-example-generic" class="carousel slide col-sm-12 col-md-6 col-md-offset-3" data-ride="carousel">
         <ol class="carousel-indicators">
           <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
           <li data-target="#carousel-example-generic" data-slide-to="1" class=""></li>
