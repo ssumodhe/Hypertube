@@ -22,6 +22,9 @@
       </div>
 
       <div class="col-md-5">
+        <div class="badge badge-secondary" style="margin-bottom: 5px;">
+          <span>Click on any item to modify your data.</span>
+        </div>
         <div id="accordion" role="tablist" aria-multiselectable="true">
           <div class="card">
             <div class="card-header " role="tab" id="headingOne">
