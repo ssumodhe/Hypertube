@@ -1,13 +1,25 @@
 const fs = require('fs');
 const parseTorrent = require('parse-torrent');
-const app = require('express')();
+const express = require('express');
+const app = express();
 const ffmpeg = require('fluent-ffmpeg');
 const torrentStream = require('torrent-stream');
 const https = require('http');
 const bs58 = require('bs58');
 const Hypertube = new (require('./Hypertube.class.js'))();
 
-// let MIN_SIZE = 100 * 1024 * 1024; // 100 Mo
+/* Subtitles handling */
+const request = require('request');
+const OS = require('opensubtitles-api');
+const OpenSubtitles = new OS({
+	useragent:'TemporaryUserAgent',
+	username: 'ndudnicz',
+	password: 'totolol',
+	ssl: true
+});
+const srt2vtt = require('srt-to-vtt');
+
+app.use(express.static(__dirname+ '/subtitles'));
 
 try {
 	fs.mkdirSync('torrents');
@@ -42,7 +54,6 @@ const streamVideo = async (req, res, ret) => {
 	return new Promise((resolve, reject)=>{
 		try {
 			console.log('start streaming');
-			// req.params.path = bs58.decode(req.params.token).toString('ascii');
 			console.log('token:', req.params.token);
 			const path = process.env.HYPERTUBE_DOWNLOAD_PATH + '/' + body.path + '/' + body.title
 			console.log('path:', path);
@@ -59,9 +70,6 @@ const streamVideo = async (req, res, ret) => {
 				resolve(null);
 			})
 			converter
-			// .on('codecData', function(codec) {
-			// 	console.log(codec);
-			//   })
 			.audioCodec('aac')
 			.videoCodec('libx264')
 			.run();
@@ -76,17 +84,55 @@ const streamVideo = async (req, res, ret) => {
 	});
 }
 
-const sendHtml = (res, downloadPath, torrentParsed)=>{
+const sendHtml = (res, downloadPath, torrentParsed, subtitlesFilename)=>{
 	const title = (torrentParsed.files.sort((a, b)=>{return b.length - a.length}))[0].name;
 	const url = downloadPath+'/'+title;
 	try {
 		res.writeHead(200);
-		res.write(`<html><head><meta charset="utf-8"></head><body><video controls width="400px" autoplay onerror="console.log('error video');return 0;"><source src="http://${process.env.HYPERTUBE_STREAMING_URL}/video/${torrentParsed.infoHash}" type="video/mp4" onerror="console.log('error source');return 0;"></video></body>
+		res.write(`<html><head><meta charset="utf-8"><link href="http://vjs.zencdn.net/6.6.3/video-js.css" rel="stylesheet"></head><body><video controls width="400px" autoplay onerror="console.log('error video');return 0;"><source src="http://${process.env.HYPERTUBE_STREAMING_URL}/video/${torrentParsed.infoHash}" type="video/mp4" onerror="console.log('error source');return 0;"><track kind="subtitles" src="http://${process.env.HYPERTUBE_STREAMING_URL}/subtitles/${subtitlesFilename}" srclang="fr" label="French"></video></body>
 		</html>`);
 		res.end();
 	} catch(e) {
 		console.log('sendHtml catch:', e);
 	}
+}
+
+const getSubtitles = (name)=>{
+	return new Promise((resolve, reject)=>{
+		OpenSubtitles.search({
+			sublanguageid: ['eng', 'fre'].join(),       // Can be an array.join, 'all', or be omitted.
+			extensions: ['vtt', 'srt'], // Accepted extensions, defaults to 'srt'.
+			// limit: '3',                 // Can be 'best', 'all' or an
+			// arbitrary nb. Defaults to 'best'
+			query: name,   // Text-based query, this is not recommended.
+			// gzip: true                  // returns url to gzipped subtitles, defaults to false
+		}).then(subtitles => {
+			// console.log(subtitles);
+			let p = []
+			for (let k in subtitles) {
+				p.push(
+					new Promise((subresolve, subreject)=>{
+						request.get(subtitles[k].url, (err, ret, body)=>{
+							if (err) subreject(err);
+							fs.writeFileSync('subtitles/subtitles'+'/'+subtitles[k].filename, body);
+							let filename = `${subtitles[k].filename}`.replace(/\.srt$/, ".vtt")
+							fs.createReadStream('subtitles/subtitles'+'/'+subtitles[k].filename)
+							.pipe(srt2vtt())
+							.pipe(fs.createWriteStream('subtitles/subtitles'+'/'+filename))
+							console.log(filename);
+							subresolve(filename);
+						})
+					})
+				)
+			}
+			Promise.all(p)
+			.then(r=>{resolve(r);})
+			.catch(e=>{reject(e);})
+
+		}).catch(e=>{
+			console.log('error:', e);
+		})
+	});
 }
 
 /*
@@ -154,38 +200,43 @@ app.get('/url/:url', (req, res)=>{
 
 					/* Add the new file in db, set MIN_SIZE downloaded file that trigger the stream */
 					const t = torrentParsed.files.sort((a, b)=>{return b.length - a.length})[0];
-					Hypertube.post(t.name, torrentParsed.infoHash, torrentParsed.infoHash)
-					.then(r => {
-						const size = t.length / 1048576
-						console.log('size:', size);
-						if (size < 400) {
-							MIN_SIZE = t.length * 0.1;
-						} else if (size < 800) {
-							MIN_SIZE = t.length * 0.05;
-						} else if (size < 1200) {
-							MIN_SIZE = t.length * 0.035;
-						} else {
-							MIN_SIZE = t.length * 0.01;
-						}
-						console.log("min size:", MIN_SIZE);
-						const interval = setInterval(()=>{
-							try {
-								if (fs.existsSync(downloadPath+'/'+t.name)) {
-									console.log('size:', fs.statSync(downloadPath+'/'+t.name).size);
-									if (fs.statSync(downloadPath+'/'+t.name).size > MIN_SIZE) {
-										clearInterval(interval);
-										sendHtml(res, downloadPath, torrentParsed);
-									}
-								}
-							} catch (e) {
-								console.log('here');
+					try {
+						const subtitles = await getSubtitles(t.name);
+						Hypertube.post(t.name, torrentParsed.infoHash, torrentParsed.infoHash)
+						.then(r => {
+							const size = t.length / 1048576
+							console.log('size:', size);
+							if (size < 400) {
+								MIN_SIZE = t.length * 0.1;
+							} else if (size < 800) {
+								MIN_SIZE = t.length * 0.05;
+							} else if (size < 1200) {
+								MIN_SIZE = t.length * 0.035;
+							} else {
+								MIN_SIZE = t.length * 0.01;
 							}
-						}, 1000);
-					}).catch(e => {
-						console.log('error Hypertube.post:',e);
-						res.sendStatus(500);
-						res.send();
-					})
+							console.log("min size:", MIN_SIZE);
+							const interval = setInterval(()=>{
+								try {
+									if (fs.existsSync(downloadPath+'/'+t.name)) {
+										console.log('size:', fs.statSync(downloadPath+'/'+t.name).size);
+										if (fs.statSync(downloadPath+'/'+t.name).size > MIN_SIZE) {
+											clearInterval(interval);
+											sendHtml(res, downloadPath, torrentParsed, subtitles[0]);
+										}
+									}
+								} catch (e) {
+									console.log('here');
+								}
+							}, 1000);
+						}).catch(e => {
+							console.log('error Hypertube.post:',e);
+							res.sendStatus(500);
+							res.send();
+						})
+					} catch (e) {
+						console.log('error getSubtitles:', e);
+					}
 				}
 			} catch (e) {
 				console.log('error: check env variables');
