@@ -16,22 +16,17 @@ node stream.js
 
 * API
 ```bash
-# GET /url/:base58
-$> curl http://localhost:5555/url/54TLbc8y6GnsGjE1ETGrTeMEJqWJYqJcdZcsVnwJpMPLvFjxZDzyuLUP6Nbq6Sj3KjEXSwLHFEJQsqDuofMGnZrDWpYJZMCuWpLfRP3xrsihP4bRKaGCmrtmDtYijFkwPcQcFi1PH
-{"videoUrl":"http://localhost:5555/video/ebb4792227a508b99fe6c2431787b9d0593ed234","subtitles":{"en":"Flatliners.2017.720p.BluRay.x264-GECKOS.vtt"}}
+# POST /url
+$> curl -XPOST http://localhost:5555/url -H "Content-Type: application/json" -d '{"url":"http://www.torrent9.red/get_torrent/interstellar-french-dvdrip-2014.torrent", "title":"Interstellar FRENCH DVDRIP 2014"}'
+{"videoUrl":"http://e1r3p13.42.fr:5555/video/2bbfa58659e8d9541e803a4b803d2352b8bc4ecb","subtitles":{"en":"http://e1r3p13.42.fr:5555/subtitles/Interstellar.2014.720p.BluRay.x264-DAA.vtt","fr":"http://e1r3p13.42.fr:5555/subtitles/Interstellar.2014.720p.BluRay.x264.DTS-WiKi.fr.vtt"}}
 
 # GET /subtitles/:suburi
 $> curl http://localhost:5555/subtitles/Flatliners.2017.720p.BluRay.x264-GECKOS.vtt
 WEBVTT FILE
 
 1
-00:01:38.320 --> 00:01:39.591
-Courtney!
-
-2
-00:01:53.680 --> 00:01:58.471
-<i>I had this sensation of someone
-...
+00:01:14.910 --> 00:01:16.995
+<i>Well, my dad was a farmer.</i>...
 
 ```
 
