@@ -85,6 +85,11 @@
         <a href="#" class="btn btn-default glyphicon glyphicon-film"> Watch</a>
       </div>
     </div>
+    <infinite-loading @infinite="infiniteHandler">
+      <span slot="no-more">
+        That's all we've got ! 
+      </span>
+    </infinite-loading>
   </div>
 
 <!--     <div id="list_movies" v-for="lib in library">
@@ -103,19 +108,49 @@
 </template>
 
 <script>
+import InfiniteLoading from 'vue-infinite-loading';
+
 export default{
   name: 'home',
   data(){
     return {
       note: "This is the Home page Where all videos will be displayed",
-      library : []
+      library : [],
+      page: 0
     }
   },
+  components: {
+    InfiniteLoading
+  },
   created: function(){
-    this.$http.get('https://jsonplaceholder.typicode.com/albums')
-      .then(function(response){
-        this.library = response.data;
-      })
+    // this.$http.get('https://jsonplaceholder.typicode.com/albums')
+    //   .then(function(response){
+    //     this.library = response.data;
+    //   })
+  },
+  methods: {
+    infiniteHandler($state) {
+      axios.get('https://jsonplaceholder.typicode.com/albums').then(({ data }) => {
+        if (data.length) {
+          const temp = [];
+          for (let i = this.page; i < this.page + 20; i++) {
+            if (data[i]){
+              temp.push(data[i]);
+            }else {
+              $state.complete();
+            }
+          }
+          this.page = this.page + 20;
+          this.library = this.library.concat(temp);
+          $state.loaded();
+          if (data.length / 20 === 10) {
+            $state.complete();
+          }
+        } else {
+          $state.complete();
+        }
+      });
+    },
   }
 }
 </script>
