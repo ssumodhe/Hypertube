@@ -86,9 +86,13 @@
       </div>
     </div>
     <infinite-loading @infinite="infiniteHandler">
+      
       <span slot="no-more">
+        <div class=" col-md-9 alert alert-info" role="alert">
         That's all we've got ! 
+        </div>
       </span>
+      
     </infinite-loading>
   </div>
 
