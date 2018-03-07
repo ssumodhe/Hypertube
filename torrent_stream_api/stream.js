@@ -12,9 +12,9 @@ const Hypertube = new (require('./Hypertube.class.js'))();
 const request = require('request');
 const OS = require('opensubtitles-api');
 const OpenSubtitles = new OS({
-	useragent:'TemporaryUserAgent',
-	username: 'ndudnicz',
-	password: 'totolol',
+	useragent: process.env.HYPERTUBE_OPENSUBTITLES_API_USERAGENT,
+	username: process.env.HYPERTUBE_OPENSUBTITLES_API_USERNAME,
+	password: process.env.HYPERTUBE_OPENSUBTITLES_API_PASSWORD,
 	ssl: true
 });
 const srt2vtt = require('srt-to-vtt');
@@ -88,10 +88,20 @@ const sendHtml = (res, downloadPath, torrentParsed, subtitlesFilename)=>{
 	const title = (torrentParsed.files.sort((a, b)=>{return b.length - a.length}))[0].name;
 	const url = downloadPath+'/'+title;
 	try {
-		res.writeHead(200);
-		res.write(`<html><head><meta charset="utf-8"><link href="http://vjs.zencdn.net/6.6.3/video-js.css" rel="stylesheet"></head><body><video controls width="400px" autoplay onerror="console.log('error video');return 0;"><source src="http://${process.env.HYPERTUBE_STREAMING_URL}/video/${torrentParsed.infoHash}" type="video/mp4" onerror="console.log('error source');return 0;"><track kind="subtitles" src="http://${process.env.HYPERTUBE_STREAMING_URL}/subtitles/${subtitlesFilename}" srclang="fr" label="French"></video></body>
-		</html>`);
-		res.end();
+		// res.writeHead(200);
+		// res.write(`<html><head><meta charset="utf-8"><link href="http://vjs.zencdn.net/6.6.3/video-js.css" rel="stylesheet"></head><body><video controls width="400px" autoplay onerror="console.log('error video');return 0;"><source src="http://${process.env.HYPERTUBE_STREAMING_URL}/video/${torrentParsed.infoHash}" type="video/mp4" onerror="console.log('error source');return 0;"><track kind="subtitles" src="http://${process.env.HYPERTUBE_STREAMING_URL}/subtitles/${subtitlesFilename}" srclang="fr" label="French"></video></body>
+		// </html>`);
+		const retJSON = {
+			videoUrl: `http://${process.env.HYPERTUBE_STREAMING_URL}/video/${torrentParsed.infoHash}`,
+			subtitles: subtitlesFilename
+		}
+		console.log(retJSON);
+		res.json(retJSON);
+		// res.json({
+		// 	videoUrl: `http://${process.env.HYPERTUBE_STREAMING_URL}/video/${torrentParsed.infoHash}`,
+		// 	subtitles: subtitlesFilename
+		// })
+		// res.end();
 	} catch(e) {
 		console.log('sendHtml catch:', e);
 	}
@@ -101,8 +111,8 @@ const getSubtitles = (name)=>{
 	return new Promise((resolve, reject)=>{
 		OpenSubtitles.search({
 			sublanguageid: ['eng', 'fre'].join(),       // Can be an array.join, 'all', or be omitted.
-			extensions: ['vtt', 'srt'], // Accepted extensions, defaults to 'srt'.
-			// limit: '3',                 // Can be 'best', 'all' or an
+			extensions: ['srt'], // Accepted extensions, defaults to 'srt'.
+			limit: 'best',                 // Can be 'best', 'all' or an
 			// arbitrary nb. Defaults to 'best'
 			query: name,   // Text-based query, this is not recommended.
 			// gzip: true                  // returns url to gzipped subtitles, defaults to false
@@ -119,8 +129,7 @@ const getSubtitles = (name)=>{
 							fs.createReadStream('subtitles/subtitles'+'/'+subtitles[k].filename)
 							.pipe(srt2vtt())
 							.pipe(fs.createWriteStream('subtitles/subtitles'+'/'+filename))
-							console.log(filename);
-							subresolve(filename);
+							subresolve({"lang":k, "filename":filename});
 						})
 					})
 				)
@@ -202,6 +211,10 @@ app.get('/url/:url', (req, res)=>{
 					const t = torrentParsed.files.sort((a, b)=>{return b.length - a.length})[0];
 					try {
 						const subtitles = await getSubtitles(t.name);
+						let subtitlesHash = {}
+						for (let i in subtitles) {
+							subtitlesHash[subtitles[i].lang] = subtitles[i].filename;
+						}
 						Hypertube.post(t.name, torrentParsed.infoHash, torrentParsed.infoHash)
 						.then(r => {
 							const size = t.length / 1048576
@@ -222,7 +235,7 @@ app.get('/url/:url', (req, res)=>{
 										console.log('size:', fs.statSync(downloadPath+'/'+t.name).size);
 										if (fs.statSync(downloadPath+'/'+t.name).size > MIN_SIZE) {
 											clearInterval(interval);
-											sendHtml(res, downloadPath, torrentParsed, subtitles[0]);
+											sendHtml(res, downloadPath, torrentParsed, subtitlesHash);
 										}
 									}
 								} catch (e) {
