@@ -5,7 +5,6 @@ const app = express();
 const ffmpeg = require('fluent-ffmpeg');
 const torrentStream = require('torrent-stream');
 const https = require('http');
-const bs58 = require('bs58');
 const Hypertube = new (require('./Hypertube.class.js'))();
 const bodyParser = require('body-parser');
 
