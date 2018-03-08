@@ -159,7 +159,13 @@ const generalHandler = async (torrent, torrentParsed, downloadPath, title, res)=
 		for (let i in subtitles) {
 			subtitlesHash[subtitles[i].lang] = subtitles[i].filename;
 		}
-		Hypertube.post(t.name, torrentParsed.infoHash, torrentParsed.infoHash)
+		Hypertube.post(
+			title,
+			torrentParsed.infoHash,
+			t.name,
+			subtitlesHash.fr ? subtitlesHash.fr : "",
+			subtitlesHash.en ? subtitlesHash.en : ""
+		)
 		.then(r => {
 			const size = t.length / (1024 * 1024)
 			console.log('size:', size);
@@ -232,7 +238,7 @@ app.post('/url', (req, res)=>{
 				try {
 					const ret = await Hypertube.get(torrentParsed.infoHash);
 					console.log(ret);
-					if ((ret.statusCode == 200 || ret.statusCode == 201) && ret.body!= 'null'/* && fs.existsSync(downloadPath+'/'+torrentParsed.files.sort((a, b)=>{return b.length - a.length})[0].name)*/) {
+					if ((ret.statusCode == 200 || ret.statusCode == 201) && ret.body != 'null'/* && fs.existsSync(downloadPath+'/'+torrentParsed.files.sort((a, b)=>{return b.length - a.length})[0].name)*/) {
 						console.log('file already downloaded');
 						sendHtml(res, downloadPath, torrentParsed);
 					} else {
@@ -284,14 +290,11 @@ app.post('/url', (req, res)=>{
 					res.sendStatus(500);
 					res.send();
 				}
-				// })();
-
 				/* Handle if file has been already downloaded ------------------------*/
 			} catch (e) {
 				console.log('write file error: chmod 0000 on download path or torrents path?');
 				res.sendStatus(500);
 			}
-
 		} catch (e) {
 			res.sendStatus(404);
 			res.end();

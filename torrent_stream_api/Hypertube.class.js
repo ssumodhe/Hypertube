@@ -12,7 +12,7 @@ class Hypertube {
 		});
 	}
 
-	post(title, token, path) {
+	post(title, token, path, subtitles_fr, subtitles_en) {
 		const options = {
 			uri: process.env.HYPERTUBE_VIDEO_API,
 			method: 'POST',
@@ -23,7 +23,9 @@ class Hypertube {
 				"video": {
 					"title": title,
 					"token": token,
-					"path": path
+					"path": path,
+					"subtitles_fr": subtitles_fr,
+					"subtitles_en": subtitles_en
 				}
 			}
 		};
