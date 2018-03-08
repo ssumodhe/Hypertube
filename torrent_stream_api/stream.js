@@ -91,13 +91,7 @@ const streamVideo = async (req, res, ret) => {
 
 const sendHtml = (res, downloadPath, torrentParsed, subtitlesFilename)=>{
 	console.log(subtitlesFilename);
-	// const title = filename;
-	// const url = downloadPath+'/'+title;
 	try {
-		// res.writeHead(200);
-		// res.write(`<html><head><meta charset="utf-8"><link href="http://vjs.zencdn.net/6.6.3/video-js.css" rel="stylesheet"></head><body><video controls width="400px" autoplay onerror="console.log('error video');return 0;"><source src="http://${process.env.HYPERTUBE_STREAMING_URL}/video/${torrentParsed.infoHash}" type="video/mp4" onerror="console.log('error source');return 0;"><track kind="subtitles" src="http://${process.env.HYPERTUBE_STREAMING_URL}/subtitles/${subtitlesFilename}" srclang="fr" label="French"></video></body>
-		// </html>`);
-		// res.end();
 		const retJSON = {
 			videoUrl: `http://${process.env.HYPERTUBE_STREAMING_URL}/video/${torrentParsed.infoHash}`,
 			subtitles: subtitlesFilename
@@ -203,16 +197,17 @@ const generalHandler = async (torrent, torrentParsed, downloadPath, title, res)=
 	}
 }
 
-/*
-:url is the file path base58 encoded,
-need to change that into an unguessable token linked to the movie and the user who asked it
-*/
 app.use(bodyParser.json());
 app.use((req, res, next)=>{
 	res.header("Access-Control-Allow-Origin", "*");
 	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 	next();
 });
+
+/*
+:url is the file path base58 encoded,
+need to change that into an unguessable token linked to the movie and the user who asked it
+*/
 app.post('/url', (req, res)=>{
 	let TYPE = 0;
 	// req.body.url = req.body.url.replace(/\/[0-9]{1,}\//, "/")
@@ -282,10 +277,8 @@ app.post('/url', (req, res)=>{
 									generalHandler(file, torrentParsed, downloadPath, req.body.title, res);
 									TYPE = 0;
 								}
-								// break;
 							});
 						});
-
 						/* Add the new file in db, set MIN_SIZE downloaded file that trigger the stream */
 						if (TYPE == 0) {
 							generalHandler(
@@ -302,7 +295,6 @@ app.post('/url', (req, res)=>{
 					res.sendStatus(500);
 					res.send();
 				}
-				/* Handle if file has been already downloaded ------------------------*/
 			} catch (e) {
 				console.log('write file error: chmod 0000 on download path or torrents path?');
 				res.sendStatus(500);
