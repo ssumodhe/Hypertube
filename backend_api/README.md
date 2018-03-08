@@ -18,10 +18,18 @@ $> curl -XPOST https://hypertubeapi.tpayet.com/auth/sign_in --data "username=tpa
 
 For more details about authentification system please see the [gem docutmentation](https://github.com/lynndylanhurley/devise_token_auth#usage-tldr)
 
+Search Route
+```bash
+$> curl https://hypertubeapi.tpayet.com/search?query=james+bond
+
+# default engine is pirate_bay but you can specify rarbg
+$> curl https://hypertubeapi.tpayet.com/search?query=james+bond&engine=rarbg
+```
+
 Videos Models
 ```bash
 # POST /videos
-$> curl -XPOST https://hypertubeapi.tpayet.com/videos -H "Content-Type: application/json" -d '{"video": {"token":"123", "path":"/", "title":"wololo"}}'
+$> curl -XPOST https://hypertubeapi.tpayet.com/videos -H "Content-Type: application/json" -d '{"video": {"token":"123", "path":"/", "title":"wololo", "subtitles_fr":"path", "subtitles_en":"path"}}'
 {"id":5,"title":"wololo","path":"/","token":"123","created_at":"2018-03-02T14:16:25.391Z","updated_at":"2018-03-02T14:16:25.391Z"}
 
 # GET /videos/:token
@@ -37,6 +45,8 @@ $> curl https://hypertubeapi.tpayet.com/videos
 ```
 
 ----
+
+
 Things you may want to cover:
 
 * Ruby version
