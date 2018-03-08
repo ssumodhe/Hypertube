@@ -1,8 +1,15 @@
 <template>
   <div class="signin">
     
-    <span>{{note}}</span>
+    <p>With the following :</p>
+    <div class="social-buttons">
+      <a href="#42"><img width="10%" src="/static/img/social-icons/42-icon.png" title="Connect with 42" alt="42-icon"></a>
+      <a href="#facebook"><img width="10%" src="/static/img/social-icons/facebook-icon.png" title="Connect with facebook" alt="facebook-icon"></a>
+      <a href="#github"><img width="10%" src="/static/img/social-icons/github-icon.png" title="Connect with github" alt="github-icon"></a>
+      <a href="#gmail"><img width="10%" src="/static/img/social-icons/gmail-icon.png" title="Connect with gmail" alt="gmail-icon"></a>
+    </div>
 
+    <p>Or here :</p>
     <form @submit.prevent="submitSignIn">
     	<div class="form-group has-feedback" v-bind:class="[userSuccessClass]">
     		<label for="signInUser" class="control-label sr-only">
@@ -125,4 +132,9 @@ export default{
 </script>
 
 <style scoped>
+.social-buttons img{
+  margin: auto 5% 5% 5%;
+  border: 1px solid gainsboro;
+  border-radius: 30%;
+}
 </style>
