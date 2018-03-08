@@ -61,7 +61,7 @@ const streamVideo = async (req, res, ret) => {
 		try {
 			console.log('start streaming');
 			console.log('token:', req.params.token);
-			const path = process.env.HYPERTUBE_DOWNLOAD_PATH + '/' + body.path + '/' + body.title
+			const path = process.env.HYPERTUBE_DOWNLOAD_PATH + '/' + body.token + '/' + body.path
 			console.log('path:', path);
 			const fileStream = fs.createReadStream(path);
 			const converter = ffmpeg()
@@ -91,6 +91,7 @@ const streamVideo = async (req, res, ret) => {
 }
 
 const sendHtml = (res, downloadPath, torrentParsed, subtitlesFilename)=>{
+	console.log(subtitlesFilename);
 	// const title = filename;
 	// const url = downloadPath+'/'+title;
 	try {
@@ -136,7 +137,7 @@ const getSubtitles = (name)=>{
 							fs.createReadStream('subtitles/subtitles'+'/'+subtitles[k].filename)
 							.pipe(srt2vtt())
 							.pipe(fs.createWriteStream('subtitles/subtitles'+'/'+filename))
-							subresolve({"lang":k, "filename":`http://${process.env.HYPERTUBE_STREAMING_URL}/subtitles/${filename}`});
+							subresolve({"lang":k, "filename":`subtitles/${filename}`});
 						})
 					})
 				)
@@ -185,7 +186,12 @@ const generalHandler = async (torrent, torrentParsed, downloadPath, title, res)=
 						console.log('size:', fs.statSync(downloadPath+'/'+t.name).size);
 						if (fs.statSync(downloadPath+'/'+t.name).size > MIN_SIZE) {
 							clearInterval(interval);
-							sendHtml(res, downloadPath, torrentParsed, subtitlesHash);
+							sendHtml(res, downloadPath, torrentParsed,
+								{
+									'fr': subtitlesHash.fr ? `http://${process.env.HYPERTUBE_STREAMING_URL}/${subtitlesHash.fr}` : "",
+									'en': subtitlesHash.en ? `http://${process.env.HYPERTUBE_STREAMING_URL}/${subtitlesHash.en}` : ""
+								}
+							);
 						}
 					}
 				} catch (e) {
@@ -234,17 +240,24 @@ app.post('/url', (req, res)=>{
 				} catch (e) {
 					console.log('error: mkdir downloadPath');
 				}
-
 				try {
 					const ret = await Hypertube.get(torrentParsed.infoHash);
-					console.log(ret);
+					const retBody = JSON.parse(ret.body)
+					console.log(retBody);
 					if ((ret.statusCode == 200 || ret.statusCode == 201) && ret.body != 'null'/* && fs.existsSync(downloadPath+'/'+torrentParsed.files.sort((a, b)=>{return b.length - a.length})[0].name)*/) {
 						console.log('file already downloaded');
-						sendHtml(res, downloadPath, torrentParsed);
+						sendHtml(
+							res,
+							downloadPath,
+							torrentParsed,
+							{
+								'fr': retBody.subtitles_fr ? `http://${process.env.HYPERTUBE_STREAMING_URL}/${retBody.subtitles_fr}` : "",
+								'en': retBody.subtitles_en ? `http://${process.env.HYPERTUBE_STREAMING_URL}/${retBody.subtitles_en}` : ""
+							}
+						);
 					} else {
 						console.log('unknown file, start downloading');
 						const engine = torrentStream(torrentRaw);
-						// const piecesNumber = torrentParsed.pieces.length;
 						let path = ""
 						let i = 0;
 
