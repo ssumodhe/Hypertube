@@ -18,7 +18,7 @@
           <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
               <li><router-link to="/">Home</router-link></li>
-              <li><router-link to="/user">Profile</router-link></li>
+              <li><router-link :to="'/user/' + username">Profile</router-link></li>
               <li><router-link to="/video">Videos</router-link></li>
               <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">Page 1 <span class="caret"></span></a>
@@ -33,12 +33,9 @@
             <ul class="nav navbar-nav navbar-right">
               <li role="separator" class="divider"></li>
               <li>
-                <router-link v-if="loggedIn" to="/login" id="deco_button"><img v-on:click="logOut" src="static/img/deco_button.png" title="Deconnexion"></router-link>
+                <router-link v-if="loggedIn" to="/login" id="deco_button"><img v-on:click="logOut" src="/static/img/deco_button.png" title="Deconnexion" alt="Deconnexion"></router-link>
                 <router-link v-else to="/login">Connexion</router-link>
               </li>
-
-              <!-- <li v-if="loggedIn == null"><router-link to="/login">Connexion</router-link></li>
-              <li v-else><img width="8%" v-on:click="logOut" src="static/img/deco_button.png" title="Deconnexion"></li> -->
             </ul>
           </div>
         </div>
@@ -54,17 +51,25 @@ export default {
   name: 'app',
   data(){
     return{
-      loggedIn: localStorage.getItem('token')
+      loggedIn: localStorage.getItem('token'),
+      username: localStorage.getItem('username')
     }
   },
   updated: function () {
   this.$nextTick(function () {
     this.loggedIn = localStorage.getItem('token')
+    console.log(this.username)
   })
   },
   methods: {
     logOut: function(){
       localStorage.removeItem('token')
+      localStorage.removeItem('id')
+      localStorage.removeItem('email')
+      localStorage.removeItem('picture')
+      localStorage.removeItem('firstname')
+      localStorage.removeItem('lastname')
+      localStorage.removeItem('username')
       this.$router.push('/login')
     }
   }
@@ -86,6 +91,7 @@ router-view {
   margin-top: 20px;
 }
 #deco_button{
+
   text-align: right;
 }
 @media (max-width:900px) {

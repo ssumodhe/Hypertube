@@ -125,6 +125,7 @@ export default{
   data(){
     return {
       note: "This is the Profile page!!",
+      // user: this.$route.params.username
 
     }
   }
