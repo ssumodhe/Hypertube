@@ -217,26 +217,26 @@ export default{
       let checkPassword = this.$refs.txtCheckPassword.value.trim()
 
       // Reset values is not necessary --> redirect at end of process -> all value automaticaly reset
-      // this.$refs.txtEmail.value = ""
-      // this.$refs.txtUser.value = ""
-      // this.$refs.txtFirstName.value = ""
-      // this.$refs.txtLastName.value = ""
-      // this.$refs.txtPassword.value = ""
-      // this.$refs.txtCheckPassword.value = ""
-      // this.emailSuccessClass = '',
-      // this.emailIconClass = '',
-      // this.userSuccessClass = '',
-      // this.userIconClass = '',
-      // this.firstNameSuccessClass = '',
-      // this.firstNameIconClass = '',
-      // this.lastNameSuccessClass = '',
-      // this.lastNameIconClass = '',
-      // this.passwordSuccessClass = '',
-      // this.passwordIconClass = '',
-      // this.checkPasswordSuccessClass = '',
-      // this.checkPasswordIconClass = '',
-      // this.submitBtnDisabled = true,
-      // this.picture = ''
+      this.$refs.txtEmail.value = ""
+      this.$refs.txtUser.value = ""
+      this.$refs.txtFirstName.value = ""
+      this.$refs.txtLastName.value = ""
+      this.$refs.txtPassword.value = ""
+      this.$refs.txtCheckPassword.value = ""
+      this.emailSuccessClass = '',
+      this.emailIconClass = '',
+      this.userSuccessClass = '',
+      this.userIconClass = '',
+      this.firstNameSuccessClass = '',
+      this.firstNameIconClass = '',
+      this.lastNameSuccessClass = '',
+      this.lastNameIconClass = '',
+      this.passwordSuccessClass = '',
+      this.passwordIconClass = '',
+      this.checkPasswordSuccessClass = '',
+      this.checkPasswordIconClass = '',
+      this.submitBtnDisabled = true,
+      this.picture = ''
 
 
 

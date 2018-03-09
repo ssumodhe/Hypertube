@@ -17,6 +17,13 @@ router.beforeEach((to, from, next) => {
     next('/login');
   }
   else {
+    console.log("token : " + localStorage.getItem('token'))
+    console.log("id : " + localStorage.getItem('id'))
+    console.log("email : " + localStorage.getItem('email'))
+    console.log("picture : " + localStorage.getItem('picture'))
+    console.log("firstname : " + localStorage.getItem('firstname'))
+    console.log("lastname : " + localStorage.getItem('lastname'))
+    console.log("username : " + localStorage.getItem('username'))
     next();
   }
 });

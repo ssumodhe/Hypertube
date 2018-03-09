@@ -1,8 +1,5 @@
 <template>
   <div class="signin">
-    <button v-on:click="setLs">Set</button>
-    <button v-on:click="getLs">Get</button>
-    <button v-on:click="removeLs">Remove</button>
     
     <p>With the following :</p>
     <div class="social-buttons">
@@ -128,20 +125,7 @@ export default{
             'password': password
           }
         )
-  	},
-    setLs: function(){
-      localStorage.setItem('token', 'this is the super crypted token')
-      console.log('Setting LocalStorage')
-    },
-    getLs: function(){
-      console.log(localStorage.getItem('token'))
-      // console.log(localStorage.token)
-    },
-    removeLs: function(){
-      localStorage.removeItem('token')
-      console.log('Removing LocalStorage')
-    }
-
+  	}
   }
 }
 </script>
