@@ -10,7 +10,6 @@ Vue.config.productionTip = false
 
 // MiddleWare
 router.beforeEach((to, from, next) => {
-  console.log(to);
   if (!to.matched.length) {
     next('/404');
   } 
@@ -18,7 +17,6 @@ router.beforeEach((to, from, next) => {
     next('/login');
   }
   else {
-    console.log(localStorage.getItem('token'))
     next();
   }
 });
