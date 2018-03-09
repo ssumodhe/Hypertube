@@ -34,12 +34,27 @@
               <li role="separator" class="divider"></li>
               <li>
                 <router-link to="/login" id="deco_button"><img v-on:click="logOut" src="/static/img/deco_button.png" title="Deconnexion" alt="Deconnexion"></router-link>
-                <!-- <router-link v-else to="/login">Connexion</router-link> -->
               </li>
             </ul>
           </div>
         </div>
       </nav>
+    </div>
+    <div v-if="!loggedIn">
+      <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>                        
+            </button>
+            <div class="navbar-header">
+              <div class="navbar-brand">HyperTube</div>
+            </div>
+          </div>
+        </div>
+        </nav>
     </div>
 
     <router-view></router-view>
@@ -58,7 +73,8 @@ export default {
   updated: function () {
   this.$nextTick(function () {
     this.loggedIn = localStorage.getItem('token')
-    console.log(this.username)
+    this.username = localStorage.getItem('username')
+
   })
   },
   methods: {
