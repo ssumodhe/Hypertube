@@ -33,7 +33,7 @@
             <ul class="nav navbar-nav navbar-right">
               <li role="separator" class="divider"></li>
               <li>
-                <router-link v-if="loggedIn" to="/login"><img width="8%" v-on:click="logOut" src="static/img/deco_button.png" title="Deconnexion"></router-link>
+                <router-link v-if="loggedIn" to="/login" id="deco_button"><img v-on:click="logOut" src="static/img/deco_button.png" title="Deconnexion"></router-link>
                 <router-link v-else to="/login">Connexion</router-link>
               </li>
 
@@ -71,7 +71,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -85,8 +85,12 @@ export default {
 router-view {
   margin-top: 20px;
 }
-#connexion_button{
-  padding-right: 20px;
+#deco_button{
+  text-align: right;
+}
+img {
+  width: 5%;
+  margin-top: 0;
 }
 </style>
 
