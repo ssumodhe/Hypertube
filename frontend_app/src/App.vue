@@ -2,7 +2,7 @@
 
   <div id="app">
 
-    <div class="container">
+    <div class="container" v-if="loggedIn">
       <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container-fluid">
           <div class="navbar-header">
@@ -33,8 +33,8 @@
             <ul class="nav navbar-nav navbar-right">
               <li role="separator" class="divider"></li>
               <li>
-                <router-link v-if="loggedIn" to="/login" id="deco_button"><img v-on:click="logOut" src="/static/img/deco_button.png" title="Deconnexion" alt="Deconnexion"></router-link>
-                <router-link v-else to="/login">Connexion</router-link>
+                <router-link to="/login" id="deco_button"><img v-on:click="logOut" src="/static/img/deco_button.png" title="Deconnexion" alt="Deconnexion"></router-link>
+                <!-- <router-link v-else to="/login">Connexion</router-link> -->
               </li>
             </ul>
           </div>
