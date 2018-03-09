@@ -13,7 +13,12 @@ router.beforeEach((to, from, next) => {
   console.log(to);
   if (!to.matched.length) {
     next('/404');
-  } else {
+  } 
+  else if (to.name != "login" && to.name != "notFound" && !localStorage.getItem('token')){
+    next('/login');
+  }
+  else {
+    console.log(localStorage.getItem('token'))
     next();
   }
 });
