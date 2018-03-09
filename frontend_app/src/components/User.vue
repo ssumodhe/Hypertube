@@ -2,6 +2,7 @@
   <div class="user">
     <h1>User Page</h1>
     {{note}}
+    {{stalker}}
 
     <div class="row">
       <div class="col-md-2 col-md-offset-3">
@@ -13,7 +14,7 @@
                 <!-- </a> -->
               </h5>
             </div>
-            <div id="collapseZero" class="collapse show" role="tabpanel" aria-labelledby="headingZero">
+            <div v-if="!stalker" id="collapseZero" class="collapse show" role="tabpanel" aria-labelledby="headingZero">
               <div class="card-block">
                 <uploadfile class="uploadfile"></uploadfile>
               </div>
@@ -22,7 +23,7 @@
       </div>
 
       <div class="col-md-5">
-        <div class="badge badge-secondary" style="margin-bottom: 5px;">
+        <div v-if="!stalker" class="badge badge-secondary" style="margin-bottom: 5px;">
           <span>Click on any item to modify your data.</span>
         </div>
         <div id="accordion" role="tablist" aria-multiselectable="true">
@@ -35,7 +36,7 @@
                 </a>
               </h5>
             </div>
-            <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+            <div v-if="!stalker" id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
               <div class="card-block">
                 
                 <form>
@@ -50,7 +51,7 @@
             </div>
           </div>
 
-          <div class="card">
+          <div  v-if="!stalker" class="card">
             <div class="card-header" role="tab" id="headingTwo">
               <h5 class="mb-0">
                 <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
@@ -77,7 +78,7 @@
                 </a>
               </h5>
             </div>
-            <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree">
+            <div v-if="!stalker" id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree">
               <div class="card-block">
                 <form>
                   <input type="text" name="username" placeholder="First Name">
@@ -87,7 +88,7 @@
             </div>
           </div>
 
-          <div class="card">
+          <div  v-if="!stalker" class="card">
             <div class="card-header" role="tab" id="headingFour">
               <h5 class="mb-0">
                 <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
@@ -122,10 +123,18 @@ export default{
   components:{
     Uploadfile
   },
+  created(){
+    if (this.$route.params.username == localStorage.getItem('username')){
+      this.stalker = false
+    }
+    else{
+      this.stalker = true
+    }
+  },
   data(){
     return {
-      note: "This is the Profile page!!",
-      // user: this.$route.params.username
+      note: "This is " + this.$route.params.username + "'s profile page!!",
+      stalker: false
 
     }
   }
