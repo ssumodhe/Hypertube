@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import vueResource from 'vue-resource'
+import VueLocalStorage from 'vue-localstorage'
 
 import Login from '@/components/login'
 import Home from '@/components/home'
@@ -10,6 +11,7 @@ import NotFound from '@/components/404NotFound'
 
 Vue.use(Router)
 Vue.use(vueResource)
+Vue.use(VueLocalStorage)
 
 export default new Router({
   routes: [

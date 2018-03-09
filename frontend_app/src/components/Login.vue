@@ -80,6 +80,8 @@ export default{
           console.log(response.data);
           console.log("SUCCESS response's header:");
           console.log(response.headers);
+          localStorage.setItem('token', response.headers['access-token'])
+          console.log(localStorage.getItem('token'))
           this.errorMsgSignIn = ""
         })
         .catch( (error) => {
@@ -116,7 +118,9 @@ export default{
           console.log("SUCCESS response's data:");
           console.log(response.data);
           console.log("SUCCESS response's header:");
-          console.log(response.headers);
+          console.log(response.headers['access-token']);
+          // localStorage.setItem('token', response.headers['access-token'])
+          // console.log(localStorage.getItem('token'))
           this.errorMsgSignUp = ""
           this.successMsg = "Well done! You successfully signed up. Please check your mails."
 
