@@ -88,6 +88,11 @@ router-view {
 #deco_button{
   text-align: right;
 }
+@media (max-width:900px) {
+
+  #deco_button { text-align: center; }
+
+}
 img {
   width: 5%;
   margin-top: 0;
