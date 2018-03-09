@@ -32,7 +32,13 @@
 
             <ul class="nav navbar-nav navbar-right">
               <li role="separator" class="divider"></li>
-              <li><router-link to="/login">Connexion</router-link></li>
+              <li>
+                <router-link v-if="loggedIn" to="/login"><img width="8%" v-on:click="logOut" src="static/img/deco_button.png" title="Deconnexion"></router-link>
+                <router-link v-else to="/login">Connexion</router-link>
+              </li>
+
+              <!-- <li v-if="loggedIn == null"><router-link to="/login">Connexion</router-link></li>
+              <li v-else><img width="8%" v-on:click="logOut" src="static/img/deco_button.png" title="Deconnexion"></li> -->
             </ul>
           </div>
         </div>
@@ -45,7 +51,23 @@
 
 <script>
 export default {
-  name: 'app'
+  name: 'app',
+  data(){
+    return{
+      loggedIn: localStorage.getItem('token')
+    }
+  },
+  updated: function () {
+  this.$nextTick(function () {
+    this.loggedIn = localStorage.getItem('token')
+  })
+  },
+  methods: {
+    logOut: function(){
+      localStorage.removeItem('token')
+      this.$router.push('/login')
+    }
+  }
 }
 </script>
 
