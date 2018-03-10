@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+
+  get 'users/:username', to: 'users#show'
+
   get 'search', to: 'search#query'
 
   resources :videos
