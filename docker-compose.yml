@@ -9,7 +9,7 @@ networks:
 services:
 
   postgres:
-    image: postgres
+    image: postgres:10.3
     networks:
       - hypertube_network
     volumes:
