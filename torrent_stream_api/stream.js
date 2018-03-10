@@ -19,13 +19,12 @@ const OpenSubtitles = new OS({
 });
 const srt2vtt = require('srt-to-vtt');
 
-app.use(express.static(__dirname+ '/subtitles'));
 try {
-	fs.mkdirSync('torrents');
 	fs.mkdirSync(process.env.HYPERTUBE_DOWNLOAD_PATH);
 } catch (e) {
-	// console.log('Start error, folders creation failed:', e);
 }
+
+app.use(express.static(__dirname+ '/subtitles'));
 
 const getFile = (url, callback) => {
 	if (url.indexOf("magnet") == 0) {
