@@ -33,7 +33,7 @@
             <ul class="nav navbar-nav navbar-right">
               <li role="separator" class="divider"></li>
               <li>
-                <router-link to="/login" id="deco_button"><img v-on:click="logOut" src="/static/img/deco_button.png" title="Deconnexion" alt="Deconnexion"></router-link>
+                <router-link to="/login" id="deco_button"><span v-on:click="logOut" class="glyphicon glyphicon-log-out" style="color:white" alt="Deconnexion" title="Deconnexion"></span></router-link>
               </li>
             </ul>
           </div>
