@@ -7,14 +7,14 @@ networks:
     external: false
 
 services:
-  
+
   postgres:
     image: postgres
     networks:
       - hypertube_network
     volumes:
       - ./postgres-data:/var/lib/postgresql/data
-  
+
   hypertubeapi:
     build:
       context: ./backend_api
@@ -45,6 +45,8 @@ services:
     environment:
       HYPERTUBE_DOWNLOAD_PATH: /app/data
       HYPERTUBE_STREAMING_URL: streamingapi.tpayet.com
+      HYPERTUBE_VIDEO_API: hypertubeapi/videos
+
     command: node stream.js
     ports:
       - "5555:5555"

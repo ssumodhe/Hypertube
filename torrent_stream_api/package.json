@@ -9,11 +9,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bs58": "^4.0.1",
+    "body-parser": "^1.18.2",
     "express": "^4.16.2",
     "ffmpeg-wrap": "^1.1.0",
     "fluent-ffmpeg": "^2.1.2",
+    "opensubtitles-api": "^4.0.0",
     "parse-torrent": "^5.8.3",
+    "request": "^2.83.0",
+    "srt-to-vtt": "^1.1.1",
     "torrent-stream": "^1.0.3"
   }
 }
