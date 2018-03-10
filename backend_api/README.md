@@ -1,24 +1,27 @@
 
+
 # README
 
 Rails app default port is 3000
 
 ## Routes
 
-User signup
+#### User signup
 ```bash
 $> curl -XPOST https://hypertubeapi.tpayet.com/auth/ --data "email=totolapaille@gmail.com&username=totolapaille&password=QWErty123&password_confirmation=QWErty123&firstname=Thomas&lastname=Payet"
 ```
 
-User login
+#### Authentication
 ```bash
 # Add --verbose to see header with token and client
 $> curl -XPOST https://hypertubeapi.tpayet.com/auth/sign_in --data "username=tpayet&password=QWErty123"
+
+# This route gives you access-token, client, expiry, token-type and uid you must set in you header for later request
 ```
 
-For more details about authentification system please see the [gem docutmentation](https://github.com/lynndylanhurley/devise_token_auth#usage-tldr)
+For more details about authentification system please see the [gem documentation](https://github.com/lynndylanhurley/devise_token_auth#usage-tldr)
 
-Search Route
+#### Search Route
 ```bash
 $> curl https://hypertubeapi.tpayet.com/search?query=james+bond
 
@@ -26,14 +29,13 @@ $> curl https://hypertubeapi.tpayet.com/search?query=james+bond
 $> curl https://hypertubeapi.tpayet.com/search?query=james+bond&engine=rarbg
 ```
 
-Get users data
+#### Get users data
+This route need [authentication](https://github.com/tpayet/Hypertube/tree/master/backend_api#authentication)
 ```bash
 $> curl https://hypertubeapi.tpayet.com/users/:username
-
-# You must have in your headers: access-token, client, expiry, token-type and uid
 ```
 
-Videos Models
+#### Videos Models
 ```bash
 # POST /videos
 $> curl -XPOST https://hypertubeapi.tpayet.com/videos -H "Content-Type: application/json" -d '{"video": {"token":"123", "path":"/", "title":"wololo", "subtitles_fr":"path", "subtitles_en":"path"}}'
@@ -45,10 +47,25 @@ $> curl https://hypertubeapi.tpayet.com/videos/123
 
 # DELETE /videos/:token
 $> curl -XDELETE https://hypertubeapi.tpayet.com/videos/123
-
+```
+These route needs [authentication](https://github.com/tpayet/Hypertube/tree/master/backend_api#authentication)
+```bash
 # GET /videos (index)
 $> curl https://hypertubeapi.tpayet.com/videos
 
+# GET /videos/:token/comments
+curl https://hypertubeapi.tpayet.com/videos/:token/comments
+[{"id":1,"body":"hello","user_id":7,"video_id":6,"created_at":"2018-03-10T18:27:33.853Z","updated_at":"2018-03-10T18:27:33.853Z"}]
+```
+#### Comments routes
+
+These route needs [authentication](https://github.com/tpayet/Hypertube/tree/master/backend_api#authentication)
+```bash
+# POST /comments (create comment)
+curl https://hypertubeapi.tpayet.com/comments -XPOST -H "Content-Type: application/json" -d '{"comment": {"body": "prout", "user_id": 7, "video_id": 6}}'
+
+# PUT /comments (update comment)
+curl https://hypertubeapi.tpayet.com/comments/:id -XPUT -H "Content-Type: application/json" -d '{"comment": {"body": "wsh", "user_id": 7, "video_id": 6}}'
 ```
 
 ----
