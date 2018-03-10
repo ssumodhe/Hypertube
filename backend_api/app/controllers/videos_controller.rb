@@ -1,5 +1,6 @@
 class VideosController < ApplicationController
-  before_action :set_video, only: [:show, :update, :destroy]
+  before_action :set_video, only: [:show, :update, :destroy, :comments]
+  before_action :logged_in?, only: [:index]
 
   # GET /videos
   def index
@@ -36,6 +37,10 @@ class VideosController < ApplicationController
   # DELETE /videos/1
   def destroy
     @video.destroy
+  end
+
+  def comments
+    render json: @video.comments
   end
 
   private
