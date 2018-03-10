@@ -2,23 +2,59 @@
 
   <div id="app">
 
-    <div class="container">
+    <div class="container" v-if="loggedIn">
       <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="navbar-header">
-          <router-link to="/" class="navbar-brand">HyperTube</router-link>
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>                        
+            </button>
+            <div class="navbar-header">
+              <router-link to="/" class="navbar-brand">HyperTube</router-link>
+            </div>
+          </div>
+          <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav">
+              <li><router-link to="/">Home</router-link></li>
+              <li><router-link :to="'/user/' + username">Profile</router-link></li>
+              <li><router-link to="/video">Videos</router-link></li>
+              <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Page 1 <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><a href="#">Page 1-1</a></li>
+                  <li><a href="#">Page 1-2</a></li>
+                  <li><a href="#">Page 1-3</a></li>
+                </ul>
+              </li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+              <li role="separator" class="divider"></li>
+              <li>
+                <router-link to="/login" id="deco_button"><span v-on:click="logOut" class="glyphicon glyphicon-log-out" style="color:white" alt="Deconnexion" title="Deconnexion"></span></router-link>
+              </li>
+            </ul>
+          </div>
         </div>
-
-        <ul class="nav navbar-nav">
-          <li><router-link to="/">Home</router-link></li>
-          <li><router-link to="/user">Profile</router-link></li>
-          <li><router-link to="/video">Videos</router-link></li>
-        </ul>
-
-        <ul class="nav navbar-nav navbar-right nav-login">
-          <li role="separator" class="divider"></li>
-          <li><router-link to="/login">Connexion</router-link></li>
-        </ul>
       </nav>
+    </div>
+    <div v-if="!loggedIn">
+      <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>                        
+            </button>
+            <div class="navbar-header">
+              <div class="navbar-brand">HyperTube</div>
+            </div>
+          </div>
+        </div>
+        </nav>
     </div>
 
     <router-view></router-view>
@@ -27,11 +63,36 @@
 
 <script>
 export default {
-  name: 'app'
+  name: 'app',
+  data(){
+    return{
+      loggedIn: localStorage.getItem('token'),
+      username: localStorage.getItem('username')
+    }
+  },
+  updated: function () {
+  this.$nextTick(function () {
+    this.loggedIn = localStorage.getItem('token')
+    this.username = localStorage.getItem('username')
+
+  })
+  },
+  methods: {
+    logOut: function(){
+      localStorage.removeItem('token')
+      localStorage.removeItem('id')
+      localStorage.removeItem('email')
+      localStorage.removeItem('picture')
+      localStorage.removeItem('firstname')
+      localStorage.removeItem('lastname')
+      localStorage.removeItem('username')
+      this.$router.push('/login')
+    }
+  }
 }
 </script>
 
-<style>
+<style scoped>
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -39,9 +100,24 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 10%;
+  margin-bottom: 10%;
+  width: 100%;
 }
 router-view {
   margin-top: 20px;
+}
+#deco_button{
+
+  text-align: right;
+}
+@media (max-width:900px) {
+
+  #deco_button { text-align: center; }
+
+}
+img {
+  width: 5%;
+  margin-top: 0;
 }
 </style>
 

@@ -1,4 +1,4 @@
-# trying
+# HyperTube's Front
 
 > A Vue.js project
 
@@ -19,3 +19,40 @@ npm run build --report
 ```
 
 For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+
+
+## Resource
+> 
+``` bash
+# install 
+npm install vue-resource --save
+
+```
+Import in main app file and ask Vue to use it.
+
+## Picture Input
+``` bash
+# install 
+npm install vue-picture-input --save
+
+```
+Import directly in file and use it as a component.
+
+## Infinite Loading
+``` bash
+# install 
+npm install vue-infinite-loading --save
+
+```
+Import directly in file and use it as a component with its own method (infiniteHandler).
+
+
+## Documentation
+
+> Infinite Loading
+ https://peachscript.github.io/vue-infinite-loading/#!/
+
+> Picture Input
+ https://github.com/alessiomaffeis/vue-picture-input
+
+

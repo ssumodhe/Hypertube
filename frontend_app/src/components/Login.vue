@@ -62,9 +62,6 @@ export default{
   },
   methods:{
     checkCredentials: function(form){
-      console.log('User is ' + form.user)
-      console.log('Password is ' + form.password)
-      console.log('URL : ' + signInUrl)
       axios({
         method: 'post',
         url: signInUrl,
@@ -74,30 +71,26 @@ export default{
         }
       })
         .then( (response) => {
-          console.log("SUCCESS response");
-          console.log(response);
-          console.log("SUCCESS response's data:");
-          console.log(response.data);
-          console.log("SUCCESS response's header:");
-          console.log(response.headers);
+          localStorage.setItem('token', response.headers['access-token'])
+          localStorage.setItem('id', response.data.data['id'])
+          localStorage.setItem('email', response.data.data['email'])
+          localStorage.setItem('picture', response.data.data['picture'])
+          localStorage.setItem('firstname', response.data.data['firstname'])
+          localStorage.setItem('lastname', response.data.data['lastname'])
+          localStorage.setItem('username', response.data.data['username'])
           this.errorMsgSignIn = ""
+          this.$router.push('/')
         })
         .catch( (error) => {
-          console.log("ERROR response's error:");
-          console.log(error);
-          console.log("ERROR");
-          console.log(error.response);
           if (error.response.status == "401"){
             this.errorMsgSignIn = error.response.data.errors[0];
           } else {
             this.errorMsgSignIn = "An error occurred. Please try again.";
           }
         });
-      // this.$router.push('/')
 
     },
     checkInfos: function(form){
-      console.log(form)
       axios({
         method: 'post',
         url: signUpUrl,
@@ -109,31 +102,19 @@ export default{
           lastname: form.lastName,
           password: form.password,
           password_confirmation: form.checkPassword
-
         }
       })
         .then( (response) => {
-          console.log("SUCCESS response's data:");
-          console.log(response.data);
-          console.log("SUCCESS response's header:");
-          console.log(response.headers);
           this.errorMsgSignUp = ""
           this.successMsg = "Well done! You successfully signed up. Please check your mails."
-
         })
         .catch( (error) => {
-          console.log("ERROR response's error:");
-          console.log(error);
-          console.log("ERROR");
-          console.log(error.response);
           if (error.response.status == "422"){
             this.errorMsgSignUp = error.response.data.errors.full_messages[0];
           } else {
             this.errorMsgSignUp = "An error occurred. Please try again.";
           }
         });
-      // this.$router.push('/')
-
     }
   }
 }

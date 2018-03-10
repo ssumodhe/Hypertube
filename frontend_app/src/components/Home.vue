@@ -2,35 +2,12 @@
   <div class="home">
     <h1>Home Page</h1>
 
-
-    <div class="row">    
-      <div class="col-xs-6 col-xs-offset-3">
-        <div class="input-group">
-          <div class="input-group-btn search-panel">
-              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                <span id="search_concept">Filter by</span> <span class="caret"></span>
-              </button>
-              <ul class="dropdown-menu" role="menu">
-                <li><a href="#">Title</a></li>
-                <li><a href="#">Genre</a></li>
-                <li><a href="#">Oldest</a></li>
-                <li><a href="#">Newest</a></li>
-                <li><a href="#">Votes</a></li>
-                <li class="divider"></li>
-                <li><a href="#all">Anything</a></li>
-              </ul>
-          </div>
-          <input type="hidden" name="search_param" value="all" id="search_param">         
-          <input type="text" class="form-control" name="x" placeholder="Search term...">
-          <span class="input-group-btn">
-              <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
-          </span>
-        </div>
-      </div>
+  <div class="row col-sm-12 col-md-6 col-md-offset-3">
+  <searchbar></searchbar>
   </div>
 
   <div class="row">
-  <div id="carousel-example-generic" class="carousel slide col-xs-10 col-xs-offset-1 col-md-6 col-md-offset-3" data-ride="carousel">
+  <div id="carousel-example-generic" class="carousel slide col-sm-12 col-md-6 col-md-offset-3" data-ride="carousel">
         <ol class="carousel-indicators">
           <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
           <li data-target="#carousel-example-generic" data-slide-to="1" class=""></li>
@@ -85,6 +62,15 @@
         <a href="#" class="btn btn-default glyphicon glyphicon-film"> Watch</a>
       </div>
     </div>
+    <infinite-loading @infinite="infiniteHandler">
+      
+      <span slot="no-more">
+        <div class=" col-md-9 alert alert-info" role="alert">
+        That's all we've got ! 
+        </div>
+      </span>
+      
+    </infinite-loading>
   </div>
 
 <!--     <div id="list_movies" v-for="lib in library">
@@ -103,19 +89,50 @@
 </template>
 
 <script>
+import InfiniteLoading from 'vue-infinite-loading';
+import Searchbar from '@/components/searchbar'
+
 export default{
   name: 'home',
   data(){
     return {
       note: "This is the Home page Where all videos will be displayed",
-      library : []
+      library : [],
+      page: 0
     }
   },
+  components: {
+    InfiniteLoading, Searchbar
+  },
   created: function(){
-    this.$http.get('https://jsonplaceholder.typicode.com/albums')
-      .then(function(response){
-        this.library = response.data;
-      })
+    // this.$http.get('https://jsonplaceholder.typicode.com/albums')
+    //   .then(function(response){
+    //     this.library = response.data;
+    //   })
+  },
+  methods: {
+    infiniteHandler($state) {
+      axios.get('https://jsonplaceholder.typicode.com/albums').then(({ data }) => {
+        if (data.length) {
+          const temp = [];
+          for (let i = this.page; i < this.page + 20; i++) {
+            if (data[i]){
+              temp.push(data[i]);
+            }else {
+              $state.complete();
+            }
+          }
+          this.page = this.page + 20;
+          this.library = this.library.concat(temp);
+          $state.loaded();
+          if (data.length / 20 === 10) {
+            $state.complete();
+          }
+        } else {
+          $state.complete();
+        }
+      });
+    },
   }
 }
 </script>

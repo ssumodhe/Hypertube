@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import vueResource from 'vue-resource'
+import VueLocalStorage from 'vue-localstorage'
 
 import Login from '@/components/login'
 import Home from '@/components/home'
@@ -10,23 +11,14 @@ import NotFound from '@/components/404NotFound'
 
 Vue.use(Router)
 Vue.use(vueResource)
+Vue.use(VueLocalStorage)
 
 export default new Router({
   routes: [
     {
       path: '/login',
       name: 'login',
-      component: Login,
-      // beforeEnter: (to, from, next) => {
-      //   console.log(to)
-      //   console.log(from)
-      //   console.log(next)
-      //   next()
-      // }
-      // MiddleWare
-      // beforeEnter: (to, from, next) => {
-      //   // ...
-      // }
+      component: Login
     },
     {
       path: '/',
@@ -34,7 +26,7 @@ export default new Router({
       component: Home
     },
     {
-      path: '/user',
+      path: '/user/:username',
       name: 'user',
       component: User
     },
