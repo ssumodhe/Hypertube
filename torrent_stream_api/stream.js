@@ -317,3 +317,4 @@ app.post('/url', (req, res)=>{
 	})();
 });
 app.listen(5555);
+console.log('listening on:', process.env.HYPERTUBE_STREAMING_URL);
