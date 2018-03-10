@@ -26,6 +26,13 @@ $> curl https://hypertubeapi.tpayet.com/search?query=james+bond
 $> curl https://hypertubeapi.tpayet.com/search?query=james+bond&engine=rarbg
 ```
 
+Get users data
+```bash
+$> curl https://hypertubeapi.tpayet.com/users/:username
+
+# You must have in your headers: access-token, client, expiry, token-type and uid
+```
+
 Videos Models
 ```bash
 # POST /videos
