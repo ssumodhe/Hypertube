@@ -75,7 +75,7 @@ export default{
       url: 'https://jsonplaceholder.typicode.com/posts'
       })
       .then( (response) => {
-        this.comments = response.data
+        this.comments = response.data.slice(0, 50)
       })
       .catch( (error) => {
         console.log(error)
