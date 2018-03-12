@@ -93,7 +93,7 @@ const sendHtml = (res, downloadPath, torrentParsed, subtitlesFilename)=>{
 	console.log(subtitlesFilename);
 	try {
 		const retJSON = {
-			videoUrl: `http://${process.env.HYPERTUBE_STREAMING_URL}/video/${torrentParsed.infoHash}`,
+			videoUrl: `${process.env.HYPERTUBE_STREAMING_URL}/video/${torrentParsed.infoHash}`,
 			subtitles: subtitlesFilename
 		}
 		console.log(retJSON);
@@ -177,8 +177,8 @@ const generalHandler = async (torrent, torrentParsed, downloadPath, title, res)=
 							clearInterval(interval);
 							sendHtml(res, downloadPath, torrentParsed,
 								{
-									'fr': subtitlesHash.fr ? `http://${process.env.HYPERTUBE_STREAMING_URL}/${subtitlesHash.fr}` : "",
-									'en': subtitlesHash.en ? `http://${process.env.HYPERTUBE_STREAMING_URL}/${subtitlesHash.en}` : ""
+									'fr': subtitlesHash.fr ? `${process.env.HYPERTUBE_STREAMING_URL}/${subtitlesHash.fr}` : "",
+									'en': subtitlesHash.en ? `${process.env.HYPERTUBE_STREAMING_URL}/${subtitlesHash.en}` : ""
 								}
 							);
 						}
@@ -204,13 +204,8 @@ app.use((req, res, next)=>{
 	next();
 });
 
-/*
-:url is the file path base58 encoded,
-need to change that into an unguessable token linked to the movie and the user who asked it
-*/
 app.post('/url', (req, res)=>{
 	let TYPE = 0;
-	// req.body.url = req.body.url.replace(/\/[0-9]{1,}\//, "/")
 	console.log(req.body.url);
 	getFile(req.body.url, async (err, file) => {
 		if (err) { throw new Error(err); }
@@ -245,8 +240,8 @@ app.post('/url', (req, res)=>{
 							downloadPath,
 							torrentParsed,
 							{
-								'fr': retBody.subtitles_fr ? `http://${process.env.HYPERTUBE_STREAMING_URL}/${retBody.subtitles_fr}` : "",
-								'en': retBody.subtitles_en ? `http://${process.env.HYPERTUBE_STREAMING_URL}/${retBody.subtitles_en}` : ""
+								'fr': retBody.subtitles_fr ? `${process.env.HYPERTUBE_STREAMING_URL}/${retBody.subtitles_fr}` : "",
+								'en': retBody.subtitles_en ? `${process.env.HYPERTUBE_STREAMING_URL}/${retBody.subtitles_en}` : ""
 							}
 						);
 					} else {
@@ -302,7 +297,6 @@ app.post('/url', (req, res)=>{
 		} catch (e) {
 			res.sendStatus(404);
 			res.end();
-			// console.log(e);
 		}
 	});
 })
