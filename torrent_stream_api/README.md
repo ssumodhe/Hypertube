@@ -34,6 +34,10 @@ WEBVTT FILE
 00:01:14.910 --> 00:01:16.995
 <i>Well, my dad was a farmer.</i>...
 
+# DELETE /video/:token
+$> curl -XDELETE "http://e1r3p13.42.fr:5555/video/44f91a15dfc1c68b3a2d49d452a40dae4b7ae3d7"
+OK
+
 ```
 
 ### TODO:
