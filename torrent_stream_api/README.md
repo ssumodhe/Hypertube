@@ -1,7 +1,7 @@
 ### HOW TO RUN ME:
 ```shell
 export HYPERTUBE_DOWNLOAD_PATH="torrent/download/path"
-export HYPERTUBE_STREAMING_URL=e2r6p18.42.fr:5555
+export HYPERTUBE_STREAMING_URL="http://e2r6p18.42.fr:5555"
 export HYPERTUBE_VIDEO_API="hypertubeapi/videos"
 export HYPERTUBE_OPENSUBTITLES_API_USERAGENT="useragent"
 export HYPERTUBE_OPENSUBTITLES_API_USERNAME="username"
