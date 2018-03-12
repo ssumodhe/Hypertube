@@ -1,4 +1,5 @@
 const fs = require('fs');
+const { exec } = require('child_process');
 const parseTorrent = require('parse-torrent');
 const express = require('express');
 const app = express();
@@ -258,7 +259,7 @@ app.post('/url', (req, res)=>{
 						/* Start torrent-stream engine, create readStream for each files and start downloading */
 						engine.on('ready', ()=>{
 							engine.files.forEach( async (file) => {
-								console.log('filename:', file.length);
+								console.log('filename:', file.name);
 								var stream = file.createReadStream();
 								stream.on('data', (d)=>{
 									i++;
@@ -315,6 +316,18 @@ app.post('/url', (req, res)=>{
 			res.end();
 		}
 	})();
-});
+})
+.delete('/video/:token', (req, res)=>{
+	if (/^[0-9a-z]{40}$/.test(req.params.token)) {
+		const path = process.env.HYPERTUBE_DOWNLOAD_PATH + "/" + req.params.token;
+		exec('/bin/rm -rf '+ path, (error, stdout, stderr)=>{
+			res.sendStatus(200);
+			res.end();
+		});
+	} else {
+		res.sendStatus(200);
+		res.end();
+	}
+})
 app.listen(5555);
 console.log('listening on:', process.env.HYPERTUBE_STREAMING_URL);
