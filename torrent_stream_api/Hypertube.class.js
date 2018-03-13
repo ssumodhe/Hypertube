@@ -40,6 +40,7 @@ class Hypertube {
 	delete(token) {
 		return new Promise((resolve, reject)=>{
 			this.request.delete(process.env.HYPERTUBE_VIDEO_API+'/'+token, (err, ret, body) => {
+				console.log(ret.statusCode);
 				if ((ret.statusCode != 200 && ret.statusCode != 204) || err) reject(err || "error");
 				else resolve(200);
 			});

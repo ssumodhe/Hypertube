@@ -32,46 +32,33 @@ const getFile = (url, callback) => {
 		callback(null, url);
 	} else {
 		https.get(url, res => {
-			// Initialise an array
 			const bufs = [];
-
-			// Add the data to the buffer collection
 			res.on('data', (chunk) => {
 				bufs.push(chunk)
 			});
-
-			// This signifies the end of a request
 			res.on('end', () => {
-				// We can join all of the 'chunks' of the image together
 				const data = Buffer.concat(bufs);
-
-				// Then we can call our callback.
 				callback(null, data);
 			});
 		})
-		// Inform the callback of the error.
 		.on('error', callback);
 	}
 }
 
-const streamVideo = async (req, res, ret) => {
+const streamVideo = (req, res, ret) => {
 	const body = JSON.parse(ret.body);
 	return new Promise((resolve, reject)=>{
 		try {
-			console.log('start streaming');
-			console.log('token:', req.params.token);
+			console.log('start streaming:', req.params.token);
 			const path = process.env.HYPERTUBE_DOWNLOAD_PATH + '/' + body.token + '/' + body.path
-			console.log('path:', path);
 			const fileStream = fs.createReadStream(path);
 			const converter = ffmpeg()
 			.input(fileStream)
 			.outputOptions('-movflags frag_keyframe+empty_moov')
 			.outputFormat('mp4')
-			// .videoBitrate(512, true)
 			.output(res)
-
 			.on('error', (err, stdout, stderr) => {
-				console.log('ffmpeg error:', err);
+				console.error('ffmpeg error:', err);
 				resolve(null);
 			})
 			converter
@@ -83,7 +70,7 @@ const streamVideo = async (req, res, ret) => {
 				converter.kill();
 			});
 		} catch (e) {
-			console.log('error streamVideo:', e);
+			console.error('error streamVideo:', e);
 			resolve(null);
 		}
 	});
@@ -99,7 +86,7 @@ const sendHtml = (res, downloadPath, torrentParsed, subtitlesFilename)=>{
 		console.log(retJSON);
 		res.json(retJSON);
 	} catch(e) {
-		console.log('sendHtml catch:', e);
+		console.error('sendHtml catch:', e);
 	}
 }
 
@@ -134,9 +121,8 @@ const getSubtitles = (name)=>{
 			Promise.all(p)
 			.then(r=>{resolve(r);})
 			.catch(e=>{reject(e);})
-
 		}).catch(e=>{
-			console.log('error:', e);
+			console.error('error:', e);
 		})
 	});
 }
@@ -184,16 +170,16 @@ const generalHandler = async (torrent, torrentParsed, downloadPath, title, res)=
 						}
 					}
 				} catch (e) {
-					console.log('here:', e);
+					console.error('here:', e);
 				}
 			}, 1000);
 		}).catch(e => {
-			console.log('error Hypertube.post:',e);
+			console.error('error Hypertube.post:',e);
 			res.sendStatus(500);
 			res.send();
 		})
 	} catch (e) {
-		console.log('error getSubtitles:', e);
+		console.error('error getSubtitles:', e);
 	}
 }
 
@@ -211,7 +197,6 @@ app.post('/url', (req, res)=>{
 		if (err) { throw new Error(err); }
 		if (file.indexOf("magnet") == 0) {
 			TYPE = 1;
-			console.log('magnet');
 		}
 		const torrentRaw = file;
 		try {
@@ -227,7 +212,7 @@ app.post('/url', (req, res)=>{
 					console.log('mkdir downloadPath');
 					fs.mkdirSync(downloadPath);
 				} catch (e) {
-					console.log('error: mkdir downloadPath');
+					console.error('error: mkdir downloadPath');
 				}
 				try {
 					const ret = await Hypertube.get(torrentParsed.infoHash);
@@ -255,7 +240,7 @@ app.post('/url', (req, res)=>{
 						engine.on('ready', ()=>{
 							engine.files.forEach( async (file) => {
 								console.log('filename:', file.name);
-								var stream = file.createReadStream();
+								const stream = file.createReadStream();
 								stream.on('data', (d)=>{
 									i++;
 									if (!(i % 100)) console.log('data:', i, file.name);
@@ -265,7 +250,7 @@ app.post('/url', (req, res)=>{
 									console.log('download done:', file.name);
 								})
 								.on('error', (e)=>{
-									console.log('error downloading:', e);
+									console.error('error downloading:', e);
 								});
 								/* Trigger only if file size > 200Mo */
 								if (TYPE == 1 && file.length > 200 * (1024 * 1024)) {
@@ -286,12 +271,12 @@ app.post('/url', (req, res)=>{
 						}
 					}
 				} catch (e) {
-					console.log('error: check env variables:', e);
+					console.error('error: check env variables:', e);
 					res.sendStatus(500);
 					res.send();
 				}
 			} catch (e) {
-				console.log('write file error: chmod 0000 on download path or torrents path?');
+				console.error('write file error: chmod 0000 on download path or torrents path?');
 				res.sendStatus(500);
 			}
 		} catch (e) {
