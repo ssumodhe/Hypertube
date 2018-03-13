@@ -116,14 +116,19 @@ router-view {
 }
 @media (max-width:900px) {
 
-  #deco_button { text-align: center;
-                margin: auto auto auto auto;    
-                 }
+  #deco_button { 
+    text-align: center;
+    margin: auto auto auto auto;    
+    }
 
 }
 img {
   width: 5%;
   margin-top: 0;
+}
+.navbar{
+  background-color: #222222;
+  z-index: 2000;
 }
 </style>
 
