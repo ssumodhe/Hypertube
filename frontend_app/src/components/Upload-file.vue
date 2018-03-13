@@ -73,5 +73,7 @@ export default{
 <style scoped>
   .uploadfile {
     margin-bottom: 20px;
+    z-index: 0; 
+    position: relative;
   }
 </style>

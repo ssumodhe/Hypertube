@@ -46,6 +46,14 @@ npm install vue-infinite-loading --save
 ```
 Import directly in file and use it as a component with its own method (infiniteHandler).
 
+## Type A Head
+``` bash
+# install 
+npm install vue2-typeahead --save
+
+```
+Import directly in file and use it as a component with its own method (getResponse).
+
 
 ## Documentation
 
@@ -54,5 +62,8 @@ Import directly in file and use it as a component with its own method (infiniteH
 
 > Picture Input
  https://github.com/alessiomaffeis/vue-picture-input
+
+> Type A Head
+ https://github.com/trionfo1993/vue2-typeahead
 
 

@@ -33,7 +33,8 @@
             <ul class="nav navbar-nav navbar-right">
               <li role="separator" class="divider"></li>
               <li>
-                <router-link to="/login" id="deco_button"><span v-on:click="logOut" class="glyphicon glyphicon-log-out" style="color:white" alt="Deconnexion" title="Deconnexion"></span></router-link>
+                <button id="deco_button" v-on:click="logOut"><span  class="glyphicon glyphicon-log-out" style="color:white" alt="Deconnexion" title="Deconnexion"></span></button>    
+        <!--          <router-link to="/login" id="deco_button"><span v-on:click="logOut" class="glyphicon glyphicon-log-out" style="color:white" alt="Deconnexion" title="Deconnexion"></span></router-link> -->
               </li>
             </ul>
           </div>
@@ -109,15 +110,25 @@ router-view {
 #deco_button{
 
   text-align: right;
+  border: none;
+  background-color: #222222;
+  margin: 40% 10px auto auto;
 }
 @media (max-width:900px) {
 
-  #deco_button { text-align: center; }
+  #deco_button { 
+    text-align: center;
+    margin: auto auto auto auto;    
+    }
 
 }
 img {
   width: 5%;
   margin-top: 0;
+}
+.navbar{
+  background-color: #222222;
+  z-index: 2000;
 }
 </style>
 
