@@ -14,7 +14,9 @@ const OpenSubtitles = new OS({
 const srt2vtt = require('srt-to-vtt');
 
 class Tools {
-	constructor() {}
+	constructor(Hypertube) {
+		this.Hypertube = Hypertube;
+	}
 
 	getFile(url, callback) {
 		if (url.indexOf("magnet") == 0) {
@@ -131,7 +133,7 @@ class Tools {
 			for (let i in subtitles) {
 				subtitlesHash[subtitles[i].lang] = subtitles[i].filename;
 			}
-			Hypertube.post(
+			this.Hypertube.post(
 				title,
 				torrentParsed.infoHash,
 				t.name,
@@ -140,6 +142,7 @@ class Tools {
 			)
 			.then(r => {
 				const size = t.length / (1024 * 1024)
+				let MIN_SIZE = 0;
 				console.log('size:', size);
 				if (size < 400) {
 					MIN_SIZE = t.length * 0.1;
