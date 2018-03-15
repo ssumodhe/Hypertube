@@ -8,7 +8,7 @@
     <br>
 
     <video autoplay loop muted="true" controls>
-      <source src="https://mdbootstrap.com/img/video/Tropical.mp4" type="video/mp4"></source> 
+      <source :src="movieSource" type="video/mp4"></source> 
     </video>
 
 
@@ -65,10 +65,32 @@ export default{
     return {
       note: "This is the Streaming page !",
       comments: [],
+      infos: [],
+      movieSource: ""
+
 
     }
   },
+  watch: {
+    movieSource: function (val) {
+      this.movieSource = val
+    },
+  },
   created: function(){
+    axios({
+      method: 'get',
+      url: 'https://hypertubeapi.tpayet.com/sleep?time=10'
+      })
+      .then( (response) => {
+        this.infos = response
+        console.log("this.infos = ")
+        console.log(this.infos)
+        this.movieSource = "https://mdbootstrap.com/img/video/Tropical.mp4"
+        console.log(this.movieSource)
+      })
+      .catch( (error) => {
+        console.log(error)
+      });
 
     axios({
       method: 'get',
