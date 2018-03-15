@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  get 'sleep', to: 'sleep#time'
+
   resources :comments, only: [:create, :update]
   get 'users/:username', to: 'users#show'
 

@@ -6,6 +6,12 @@ Rails app default port is 3000
 
 ## Routes
 
+#### Sleep routes
+```bash
+$> curl https://hypertubeapi.tpayet.com/sleep?time=10
+# this route will take 10 sec to answer
+```
+
 #### User signup
 ```bash
 $> curl -XPOST https://hypertubeapi.tpayet.com/auth/ --data "email=totolapaille@gmail.com&username=totolapaille&password=QWErty123&password_confirmation=QWErty123&firstname=Thomas&lastname=Payet"
