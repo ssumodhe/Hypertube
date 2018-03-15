@@ -28,6 +28,7 @@ gem 'rack-cors'
 
 gem 'omniauth'
 gem 'omniauth-github'
+gem 'omniauth-marvin'
 # Token based authentication for Rails JSON APIs.
 gem 'devise_token_auth'
 
