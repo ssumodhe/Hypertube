@@ -1,6 +1,6 @@
 class VideosController < ApplicationController
-  before_action :set_video, only: [:show, :update, :destroy, :comments]
-  before_action :logged_in?, only: [:index]
+  before_action :set_video, only: [:show, :update, :destroy]
+  # before_action :logged_in?, only: [:index]
 
   # GET /videos
   def index
@@ -40,13 +40,14 @@ class VideosController < ApplicationController
   end
 
   def comments
+    @video = Video.find_by_token(params[:video_token])
     render json: @video.comments
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_video
-      @video = Video.find_by_token(params[:id])
+      @video = Video.find_by_token(params[:token])
     end
 
     # Only allow a trusted parameter "white list" through.
