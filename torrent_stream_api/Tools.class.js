@@ -133,6 +133,9 @@ class Tools {
 			for (let i in subtitles) {
 				subtitlesHash[subtitles[i].lang] = subtitles[i].filename;
 			}
+			const imdbId = await Imdb.getIMDBid(req.body.title);
+			const infos = await Imdb.getInfos(imdbId);
+
 			this.Hypertube.post(
 				title,
 				torrentParsed.infoHash,
