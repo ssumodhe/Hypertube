@@ -145,15 +145,15 @@ app.post('/url', (req, res)=>{
 		res.end();
 	}
 })
-.post('/infos', async (req, res)=>{
-	try {
-		const imdbId = await Imdb.getIMDBid(req.body.title);
-		const infos = await Imdb.getInfos(imdbId);
-		res.json(infos);
-	} catch (e) {
-		res.sendStatus(404);
-		res.end();
-	}
-})
+// .post('/infos', async (req, res)=>{
+// 	try {
+// 		const imdbId = await Imdb.getIMDBid(req.body.title);
+// 		const infos = await Imdb.getInfos(imdbId);
+// 		res.json(infos);
+// 	} catch (e) {
+// 		res.sendStatus(404);
+// 		res.end();
+// 	}
+// })
 app.listen(5555);
 console.log('listening on:', process.env.HYPERTUBE_STREAMING_URL);
