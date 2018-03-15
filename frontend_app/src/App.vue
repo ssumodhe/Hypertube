@@ -17,9 +17,9 @@
           </div>
           <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
-              <li><router-link to="/">Home</router-link></li>
-              <li><router-link :to="'/user/' + username">Profile</router-link></li>
-              <li><router-link to="/video">Videos</router-link></li>
+              <li data-toggle="collapse" data-target="#myNavbar"><router-link to="/">Home</router-link></li>
+              <li data-toggle="collapse" data-target="#myNavbar"><router-link :to="'/user/' + username">Profile</router-link></li>
+              <li data-toggle="collapse" data-target="#myNavbar"><router-link :to="'/video/' + loggedIn">Videos</router-link></li>
               <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">Page 1 <span class="caret"></span></a>
                 <ul class="dropdown-menu">

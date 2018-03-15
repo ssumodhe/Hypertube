@@ -31,7 +31,7 @@ export default new Router({
       component: User
     },
     {
-      path: '/video',
+      path: '/video/:which',
       name: 'movie',
       component: Movie
     },

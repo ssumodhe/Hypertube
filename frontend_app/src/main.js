@@ -27,8 +27,9 @@ router.beforeEach((to, from, next) => {
     // console.log("firstname : " + localStorage.getItem('firstname'))
     // console.log("lastname : " + localStorage.getItem('lastname'))
     // console.log("username : " + localStorage.getItem('username'))
-    console.log(router)
-    console.log(router.options.routes)
+    
+    // console.log(router)
+    // console.log(router.options.routes)
     next();
   }
 });

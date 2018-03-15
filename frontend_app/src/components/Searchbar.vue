@@ -50,11 +50,11 @@ export default{
 	},
 	methods: {
       getResponse: function (response) {
-		let n = response.data.results.length
-		if (n > 10){
-			n = 10
-		}
-		for (var i = 0; i < n; i++) {
+    		let n = response.data.results.length
+    		if (n > 10){
+    			n = 10
+    		}
+    		for (var i = 0; i < n; i++) {
           this.searchResponse[i] = response.data.results[i]['name'];
         }
         return this.searchResponse
