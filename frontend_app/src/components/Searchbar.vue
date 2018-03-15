@@ -5,6 +5,8 @@
 	  id="type-a-head"
       src="https://hypertubeapi.tpayet.com/search?query=:keyword"
       :getResponse="getResponse"
+      :onHit="onHit"
+      :placeholder="placeholder"
     ></TypeAhead>
 <!-- 	<div class="row">    
       <div class="col-sm-12 col-md-6 col-md-offset-3">
@@ -46,6 +48,7 @@ export default{
 	data(){
 		return{
 			searchResponse: [],
+      placeholder: 'Are you looking for something in particular ?'
 		}
 	},
 	methods: {
@@ -58,6 +61,9 @@ export default{
           this.searchResponse[i] = response.data.results[i]['name'];
         }
         return this.searchResponse
+      },
+      onHit: function (item, vue, index) {
+        this.$router.push('/video/' + item)
       }
     }
 }
