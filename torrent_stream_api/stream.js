@@ -7,6 +7,7 @@ const ffmpeg = require('fluent-ffmpeg');
 const torrentStream = require('torrent-stream');
 const https = require('http');
 const Hypertube = new (require('./Hypertube.class.js'))();
+const Imdb = new (require('./Imdb.class.js'))();
 const bodyParser = require('body-parser');
 
 /* Subtitles handling */
@@ -305,6 +306,16 @@ app.post('/url', (req, res)=>{
 		});
 	} else {
 		res.sendStatus(200);
+		res.end();
+	}
+})
+.post('/infos', async (req, res)=>{
+	try {
+		const imdbId = await Imdb.getIMDBid(req.body.title);
+		const infos = await Imdb.getInfos(imdbId);
+		res.json(infos);
+	} catch (e) {
+		res.sendStatus(404);
 		res.end();
 	}
 })
