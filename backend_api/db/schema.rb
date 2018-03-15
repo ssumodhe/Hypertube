@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180310181111) do
+ActiveRecord::Schema.define(version: 20180315142942) do
 
   create_table "comments", force: :cascade do |t|
     t.string "body"
@@ -61,6 +61,14 @@ ActiveRecord::Schema.define(version: 20180310181111) do
     t.datetime "updated_at", null: false
     t.string "subtitles_fr"
     t.string "subtitles_en"
+    t.string "content_rating"
+    t.string "runtime"
+    t.string "description"
+    t.string "rating"
+    t.string "poster"
+    t.string "director"
+    t.string "metascore"
+    t.string "writer"
     t.index ["token"], name: "index_videos_on_token", unique: true
   end
 

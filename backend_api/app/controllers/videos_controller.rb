@@ -51,6 +51,8 @@ class VideosController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def video_params
-      params.require(:video).permit(:title, :path, :token, :subtitles_fr, :subtitles_en)
+      params.require(:video).permit(:title, :path, :token, :subtitles_fr,
+        :subtitles_en, :content_rating, :runtime, :description, :rating,
+        :poster, :director, :metascore, :writer)
     end
 end
