@@ -27,6 +27,7 @@ gem 'puma', '~> 3.7'
 gem 'rack-cors'
 
 gem 'omniauth'
+gem 'omniauth-github'
 # Token based authentication for Rails JSON APIs.
 gem 'devise_token_auth'
 
