@@ -8,7 +8,6 @@ const bodyParser = require('body-parser');
 
 const Hypertube = new (require('./Hypertube.class.js'))();
 const Tools = new (require('./Tools.class.js'))(Hypertube);
-const Imdb = new (require('./Imdb.class.js'))();
 
 
 try {

@@ -26,27 +26,6 @@ $> curl -XPOST http://e1r3p13.42.fr:5555/url -H "Content-Type: application/json"
 	}
 }
 
-# POST /info
-$> curl -XPOST localhost:5555/infos -H "Content-Type: application/json" -d '{"title":"title"}'
-# example:
-$> curl -XPOST localhost:5555/infos -H "Content-Type: application/json" -d '{"title":"star wars 8 - les derniers jedi"}'
-{
-	"title":"Star Wars: Episode VIII - Les derniers Jedi","year":"2017",
-	"contentRating":"PG-13",
-	"runtime":"2h 32min",
-	"description":"Rey develops her newly discovered abilities with the guidance of Luke Skywalker, who is unsettled by the strength of her powers. Meanwhile, the Resistance prepares for battle with the First Order.",
-	"rating":"7.4",
-	"poster":"https://images-na.ssl-images-amazon.com/images/M/MV5BMjQ1MzcxNjg4N15BMl5BanBnXkFtZTgwNzgwMjY4MzI@._V1_UX182_CR0,0,182,268_AL_.jpg",
-	"genre":[
-		"Action",
-		" Adventure",
-		" Fantasy"
-	],
-	"director":"Rian Johnson",
-	"metascore":"85",
-	"writer":"Rian Johnson"
-}
-
 # GET /subtitles/:suburi
 $> curl http://e1r3p13.42.fr:5555/subtitles/Interstellar.2014.720p.BluRay.x264-DAA.vtt
 WEBVTT FILE
