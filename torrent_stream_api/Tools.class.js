@@ -2,6 +2,7 @@ const fs = require('fs');
 const ffmpeg = require('fluent-ffmpeg');
 const http = require('http');
 const request = require('request');
+const Imdb = new (require('./Imdb.class.js'))();
 
 /* Subtitles handling */
 const OS = require('opensubtitles-api');
@@ -133,13 +134,26 @@ class Tools {
 			for (let i in subtitles) {
 				subtitlesHash[subtitles[i].lang] = subtitles[i].filename;
 			}
-			this.Hypertube.post(
-				title,
-				torrentParsed.infoHash,
-				t.name,
-				subtitlesHash.fr ? subtitlesHash.fr : "",
-				subtitlesHash.en ? subtitlesHash.en : ""
-			)
+			const imdbId = await Imdb.getIMDBid(title);
+			const infos = await Imdb.getInfos(imdbId);
+
+			console.log(infos);
+			// process.exit(0);
+			this.Hypertube.post({
+				"title":title,
+				"token":torrentParsed.infoHash,
+				"path":t.name,
+				"subtitles_fr":subtitlesHash.fr ? subtitlesHash.fr : "",
+				"subtitles_en":subtitlesHash.en ? subtitlesHash.en : "",
+				"content_rating":infos.contentRating,
+				"runtime":infos.runtime,
+				"description":infos.description,
+				"rating":infos.rating,
+				"poster":infos.poster,
+				"director":infos.director,
+				"metascore":infos.metascore,
+				"writer":infos.writer
+			})
 			.then(r => {
 				const size = t.length / (1024 * 1024)
 				let MIN_SIZE = 0;
