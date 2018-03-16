@@ -1,0 +1,5 @@
+development:
+  command_path: "$(dirname $(which brew))"
+
+production:
+  command_path: 

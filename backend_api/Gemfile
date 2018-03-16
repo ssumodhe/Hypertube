@@ -29,6 +29,7 @@ gem 'rack-cors'
 gem 'omniauth'
 # Token based authentication for Rails JSON APIs.
 gem 'devise_token_auth'
+gem 'paperclip'
 
 # gem for postgresql
 gem 'pg', '0.21.0'
