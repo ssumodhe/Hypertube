@@ -35,6 +35,12 @@ $> curl https://hypertubeapi.tpayet.com/search?query=james+bond
 $> curl https://hypertubeapi.tpayet.com/search?query=james+bond&engine=rarbg
 ```
 
+#### Download Route
+```bash
+$> curl -XPOST localhost:3000/streaming/download -d '{"streaming": {"url": "http://www.torrent9.red/get_torrent/interstellar-french-dvdrip-2014.torrent"}}' -H "Content-Type: application/json"
+{"videoUrl":"https://streamingapi.tpayet.com//video/2bbfa58659e8d9541e803a4b803d2352b8bc4ecb","subtitles":{"fr":"https://streamingapi.tpayet.com//subtitles/Interstellar.2014.720p.BluRay.x264.DTS-WiKi.fr.vtt","en":"https://streamingapi.tpayet.com//subtitles/Interstellar.2014.720p.BluRay.x264-DAA.vtt"}}
+```
+
 #### Get users data
 This route need [authentication](https://github.com/tpayet/Hypertube/tree/master/backend_api#authentication)
 ```bash

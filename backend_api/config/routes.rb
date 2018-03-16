@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  post 'streaming/download'
+
   get 'sleep', to: 'sleep#time'
 
   resources :comments, only: [:create, :update]
