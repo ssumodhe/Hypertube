@@ -117,6 +117,8 @@
 
 <script>
 import Uploadfile from '@/components/upload-file'
+import {userUrl} from '../config.js'
+
 
 export default{
   name: 'user',
@@ -130,11 +132,30 @@ export default{
     else{
       this.stalker = true
     }
+    console.log(this.headers)
+    axios({
+      method: 'get',
+      url: userUrl + this.$route.params.username,
+      headers: this.headers
+      })
+      .then( (response) => {
+        console.log(response)
+      })
+      .catch( (error) => {
+        console.log(error)
+      });
   },
   data(){
     return {
       note: "This is " + this.$route.params.username + "'s profile page!!",
-      stalker: false
+      stalker: false,
+      headers: {
+          'access-token': localStorage.getItem('token'),
+          'client': localStorage.getItem('client'),
+          'expiry': localStorage.getItem('expiry'),
+          'token-type': localStorage.getItem('token-type'),
+          'uid': localStorage.getItem('uid')
+        }
 
     }
   }
