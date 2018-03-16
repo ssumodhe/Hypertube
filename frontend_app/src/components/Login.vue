@@ -71,7 +71,14 @@ export default{
         }
       })
         .then( (response) => {
+          console.log(response.headers)
           localStorage.setItem('token', response.headers['access-token'])
+          localStorage.setItem('client', response.headers['client'])
+          localStorage.setItem('expiry', response.headers['expiry'])
+          localStorage.setItem('token-type', response.headers['token-type'])
+          localStorage.setItem('uid', response.headers['uid'])
+
+
           localStorage.setItem('id', response.data.data['id'])
           localStorage.setItem('email', response.data.data['email'])
           localStorage.setItem('picture', response.data.data['picture'])
