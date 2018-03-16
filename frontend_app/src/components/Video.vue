@@ -7,10 +7,14 @@
     <br>
     <br>
 
-    <video autoplay loop muted="true" controls>
-      <source :src="movieSource" type="video/mp4"></source> 
-    </video>
-
+    <div>
+      <span v-if="advert" id="advertisement"><strong>Ad : Your video will play after this ad. </strong></span>
+      <video autoplay="autoplay" loop controls :src="movieSource"></video>
+      <!-- <video autoplay muted="true" controls="controls" poster="/static/img/emoji_kitty.png">
+        <source v-if="advert" :src="movieSource" type="video/mp4"></source> 
+        <source v-if="!advert" :src="movieSource" type="video/mp4"></source>
+      </video> -->
+    </div>
 
 <!--     <video autoplay loop muted="true" controls class="video-js">
       <source
@@ -65,16 +69,11 @@ export default{
     return {
       note: "This is the Streaming page !",
       comments: [],
-      infos: [],
-      movieSource: ""
+      advert: true, 
+      movieSource: "https://www.w3schools.com/html/mov_bbb.mp4"
 
 
     }
-  },
-  watch: {
-    movieSource: function (val) {
-      this.movieSource = val
-    },
   },
   created: function(){
     axios({
@@ -82,11 +81,10 @@ export default{
       url: 'https://hypertubeapi.tpayet.com/sleep?time=10'
       })
       .then( (response) => {
-        this.infos = response
-        console.log("this.infos = ")
-        console.log(this.infos)
+        this.note = response.data
+        // this.movieSource = response.data
         this.movieSource = "https://mdbootstrap.com/img/video/Tropical.mp4"
-        console.log(this.movieSource)
+        this.advert = false
       })
       .catch( (error) => {
         console.log(error)
@@ -102,24 +100,8 @@ export default{
       .catch( (error) => {
         console.log(error)
       });
-
-    // axios({
-    //   method: 'post',
-    //   url: 'http://192.168.99.100:3000/auth/sign_in',
-    //   data: {
-    //     email: 'tpayet@student.42.fr',
-    //     password: 'QWErty123'
-    //   }
-    // })
-    //   .then(function (response) {
-    //     console.log("response's data:");
-    //     console.log(response.data);
-    //     console.log("response's header:");
-    //     console.log(response.headers);
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   });
+  },
+  methods:{
   }
 }
 
@@ -135,5 +117,15 @@ export default{
   }
   .video-js{
     height: 100%;
+  }
+  #advertisement{
+    border: 1px solid black;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.3);
+    position: absolute;
+    font-size: 1.6em;
+    margin-right: 0px;
+    padding-right: 0px;
+
   }
 </style>
