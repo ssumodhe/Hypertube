@@ -81,6 +81,10 @@ export default {
   methods: {
     logOut: function(){
       localStorage.removeItem('token')
+      localStorage.removeItem('client', response.headers['client'])
+      localStorage.removeItem('expiry', response.headers['expiry'])
+      localStorage.removeItem('token-type', response.headers['token-type'])
+      localStorage.removeItem('uid', response.headers['uid'])
       localStorage.removeItem('id')
       localStorage.removeItem('email')
       localStorage.removeItem('picture')
