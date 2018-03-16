@@ -32,7 +32,7 @@
               <h5 class="mb-0 ">
                 <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                   <span class="glyphicon glyphicon-user"></span>
-                  <p>Username</p>
+                  <p>{{userName}}</p>
                 </a>
               </h5>
             </div>
@@ -40,7 +40,7 @@
               <div class="card-block">
                 
                 <form>
-                  <input type="text" name="username" placeholder="the_user's_name">
+                  <input type="text" name="username" :placeholder="userName">
                 </form>
 
 
@@ -56,14 +56,14 @@
               <h5 class="mb-0">
                 <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                   <span class="h4"><strong>@</strong></span>
-                  <p>Email</p>
+                  <p>{{email}}</p>
                 </a>
               </h5>
             </div>
             <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
               <div class="card-block">
                 <form>
-                  <input type="text" name="username" placeholder="old email">
+                  <input type="text" name="username" :placeholder="email">
                 </form>
               </div>
             </div>
@@ -74,15 +74,15 @@
               <h5 class="mb-0">
                 <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                   <span class="glyphicon glyphicon-tags"></span>
-                  <p>FirstName + LastName</p>
+                  <p>{{firstName}} {{lastName}}</p>
                 </a>
               </h5>
             </div>
             <div v-if="!stalker" id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree">
               <div class="card-block">
                 <form>
-                  <input type="text" name="username" placeholder="First Name">
-                  <input type="text" name="username" placeholder="Last Name">
+                  <input type="text" name="username" :placeholder="firstName">
+                  <input type="text" name="username" :placeholder="lastName">
                 </form>
               </div>
             </div>
@@ -100,8 +100,8 @@
             <div id="collapseFour" class="collapse" role="tabpanel" aria-labelledby="headingFour">
               <div class="card-block">
                 <form>
-                  <input type="text" name="username" placeholder="old Password">
-                  <input type="text" name="username" placeholder="new Password">
+                  <input type="text" name="username" placeholder="Old password">
+                  <input type="text" name="username" placeholder="New password">
                 </form>
               </div>
             </div>
@@ -132,7 +132,6 @@ export default{
     else{
       this.stalker = true
     }
-    console.log(this.headers)
     axios({
       method: 'get',
       url: userUrl + this.$route.params.username,
@@ -140,6 +139,10 @@ export default{
       })
       .then( (response) => {
         console.log(response)
+        this.userName = response.data.username
+        this.email = response.data.email
+        this.firstName = response.data.firstname
+        this.lastName = response.data.lastname
       })
       .catch( (error) => {
         console.log(error)
@@ -155,7 +158,11 @@ export default{
           'expiry': localStorage.getItem('expiry'),
           'token-type': localStorage.getItem('token-type'),
           'uid': localStorage.getItem('uid')
-        }
+        },
+      userName: "",
+      email: "",
+      firstName: "",
+      lastName: ""
 
     }
   }
