@@ -24,17 +24,15 @@
     </video> -->
 
     <div class="comments">
-      <div class="comment-wrap">
-          <div class="photo">
+<!--           <div class="photo">
               <div class="avatar" style="background-image: url('https://s3.amazonaws.com/uifaces/faces/twitter/dancounsell/128.jpg')"></div>
-          </div>
-          <div class="comment-block">
-              <form action="">
-                  <textarea name="" id="" cols="30" rows="3" placeholder="Add comment..."></textarea>
-              </form>
-          </div>
+          </div> -->
+      <div id="comment-area">
+        <textarea ref="commentTxtArea" @keydown="isEnter" class="comment" cols="60" rows="6" placeholder="Add a comment... Share With Us :) "></textarea>
+        <button @click="sendComment" class="comment">Share</button>
       </div>
 
+      <span id="title-previous-comments">Previous comments</span>
       <div class="container" v-for="comment in comments">
         <div class="row">
 
@@ -71,8 +69,6 @@ export default{
       comments: [],
       advert: true, 
       movieSource: "https://www.w3schools.com/html/mov_bbb.mp4"
-
-
     }
   },
   created: function(){
@@ -102,6 +98,15 @@ export default{
       });
   },
   methods:{
+    isEnter: function(e){
+      if (e.key == 'Enter')
+        this.sendComment()
+    },
+    sendComment: function(e){
+      console.log("OK need to get Value now")
+      console.log(this.$refs.commentTxtArea.value)
+      this.$refs.commentTxtArea.value = ""
+    }
   }
 }
 
@@ -123,9 +128,21 @@ export default{
     width: 100%;
     background-color: rgba(255, 255, 255, 0.3);
     position: absolute;
-    font-size: 1.6em;
+    font-size: 1.6vw;
     margin-right: 0px;
     padding-right: 0px;
-
+  }
+  #comment-area{
+    margin: 6% auto 8% auto;
+  }
+  .comment{
+    border: 1px solid gainsboro;
+    border-radius: 4px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+    padding: 5px 5px 5px 5px;
+  }
+  #title-previous-comments{
+    font-size: 8vw;
+    margin-bottom: 20px;
   }
 </style>
