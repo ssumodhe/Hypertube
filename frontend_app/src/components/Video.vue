@@ -73,18 +73,28 @@ export default{
   },
   created: function(){
     axios({
-      method: 'get',
-      url: 'https://hypertubeapi.tpayet.com/sleep?time=10'
-      })
-      .then( (response) => {
-        this.note = response.data
-        // this.movieSource = response.data
-        this.movieSource = "https://mdbootstrap.com/img/video/Tropical.mp4"
-        this.advert = false
-      })
-      .catch( (error) => {
-        console.log(error)
-      });
+      method: 'post',
+      url: 'https://hypertubeapi.tpayet.com/streaming/download',
+      data: {
+        "streaming": 
+          {
+            "url": "http://www.torrent9.red/get_torrent/interstellar-french-dvdrip-2014.torrent",
+            "title": "interstellar"
+          }
+      },
+      headers:{
+          'Content-Type': 'application/json'
+      }
+    })
+    .then( (response) => {
+      this.note = response.data
+      // this.movieSource = response.data
+      this.movieSource = "https://mdbootstrap.com/img/video/Tropical.mp4"
+      this.advert = false
+    })
+    .catch( (error) => {
+      console.log(error)
+    });
 
     axios({
       method: 'get',
