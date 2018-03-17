@@ -46,20 +46,18 @@
         </a>
       </div>
       </div>
-
-    <div class="row">
-      <span class="col-xs-6 col-xs-offset-3">{{note}}</span>
-    </div>
     
 
     <div class="row col-md-offset-2">
     <div class="card col-md-3" style="height: 350px; border: 1px solid gainsboro; border-radius: 15px; padding-top: 20px; margin: auto 5px 5px auto;" v-for="lib in library">
-      <img class="card-img-top" src="/static/img/emoji_kitty.png" alt="Card image cap">
+      <img v-if="lib.poster" class="card-img-top" :src="lib.poster" width="40%" max-width="40%">
+      <img v-else class="card-img-top" src="/static/img/emoji_kitty.png" alt="Card image cap">
       <hr>
       <div class="card-body">
-        <h5 class="card-title">{{lib.id}}. {{lib.title}}</h5>
+        <h5 class="card-title">{{lib.title}}</h5>
         <p class="card-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-        <a href="#" class="btn btn-default glyphicon glyphicon-film"> Watch</a>
+        <!-- <a href="#" class="btn btn-default glyphicon glyphicon-film"> Watch</a> -->
+        <router-link :to="'/video/' + lib.token" class="btn btn-default glyphicon glyphicon-film"> Watch</router-link>
       </div>
     </div>
     <infinite-loading @infinite="infiniteHandler">
@@ -96,7 +94,6 @@ export default{
   name: 'home',
   data(){
     return {
-      note: "This is the Home page Where all videos will be displayed",
       library : [],
       page: 0
     }
@@ -105,14 +102,23 @@ export default{
     InfiniteLoading, Searchbar
   },
   created: function(){
-    // this.$http.get('https://jsonplaceholder.typicode.com/albums')
-    //   .then(function(response){
-    //     this.library = response.data;
-    //   })
+    // axios({
+    //   method: 'get',
+    //   url: 'https://hypertubeapi.tpayet.com/videos',
+    // })
+    // .then( (response) => {
+    //   console.log(response.data)
+    //   console.log(response.data.length)
+    // })
+    // .catch( (error) => {
+    //   console.log(error)
+    // });
   },
   methods: {
     infiniteHandler($state) {
-      axios.get('https://jsonplaceholder.typicode.com/albums').then(({ data }) => {
+      axios.get('https://hypertubeapi.tpayet.com/videos')
+      .then(({ data }) => {
+        this.length = data.length
         if (data.length) {
           const temp = [];
           for (let i = this.page; i < this.page + 20; i++) {
