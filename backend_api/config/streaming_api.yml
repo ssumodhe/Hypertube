@@ -1,2 +1,5 @@
 development:
   url: https://streamingapi.tpayet.com
+
+production:
+  url: https://streamingapi.tpayet.com
