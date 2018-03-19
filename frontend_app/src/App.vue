@@ -80,17 +80,7 @@ export default {
   },
   methods: {
     logOut: function(){
-      localStorage.removeItem('token')
-      localStorage.removeItem('client')
-      localStorage.removeItem('expiry')
-      localStorage.removeItem('token-type')
-      localStorage.removeItem('uid')
-      localStorage.removeItem('id')
-      localStorage.removeItem('email')
-      localStorage.removeItem('picture')
-      localStorage.removeItem('firstname')
-      localStorage.removeItem('lastname')
-      localStorage.removeItem('username')
+      localStorage.clear();
       this.$router.push('/login')
     }
   }
