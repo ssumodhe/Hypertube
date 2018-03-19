@@ -28,7 +28,7 @@
               <div class="avatar" style="background-image: url('https://s3.amazonaws.com/uifaces/faces/twitter/dancounsell/128.jpg')"></div>
           </div> -->
       <div id="comment-area">
-        <textarea ref="commentTxtArea" @keydown="isEnter" class="comment" cols="60" rows="6" placeholder="Add a comment... Share With Us :) "></textarea>
+        <textarea ref="commentTxtArea" @keydown="isEnter" @keydown.enter.prevent class="comment" cols="60" rows="6" placeholder="Add a comment... Share With Us :) "></textarea>
         <button @click="sendComment" class="comment">Share</button>
       </div>
 
@@ -66,6 +66,14 @@ export default{
   data(){
     return {
       note: "This is the Streaming page !",
+      headers: {
+          'Content-Type': 'application/json',
+          'access-token': localStorage.getItem('token'),
+          'client': localStorage.getItem('client'),
+          'expiry': localStorage.getItem('expiry'),
+          'token-type': localStorage.getItem('token-type'),
+          'uid': localStorage.getItem('uid')
+        },
       comments: [],
       advert: true, 
       movieSource: "https://www.w3schools.com/html/mov_bbb.mp4"
@@ -89,6 +97,8 @@ export default{
     .then( (response) => {
       this.note = response.data
       // this.movieSource = response.data
+      // need to set if localStorage.getItem('video_id') == null for comments
+      // + middware : any routes FROM video localStorage.removeItem('video_id')
       this.movieSource = "https://mdbootstrap.com/img/video/Tropical.mp4"
       this.advert = false
     })
@@ -113,9 +123,32 @@ export default{
         this.sendComment()
     },
     sendComment: function(e){
-      console.log("OK need to get Value now")
       console.log(this.$refs.commentTxtArea.value)
+      console.log(localStorage.getItem('id'))
+      console.log(localStorage.getItem('video_id'))
+      console.log(localStorage.getItem('qqchose'))
+
+      axios({
+        method: 'post',
+        url: 'https://hypertubeapi.tpayet.com/comments',
+        data: {
+          "comment": 
+            {
+              "body": this.$refs.commentTxtArea.value,
+              "user_id": localStorage.getItem('id'),
+              "video_id": localStorage.getItem('video_id')
+            }
+        },
+        headers: this.headers
+      })
+      .then( (response) => {
+        console.log(response)
+      })
+      .catch( (error) => {
+        console.log(error)
+      });
       this.$refs.commentTxtArea.value = ""
+
     }
   }
 }
