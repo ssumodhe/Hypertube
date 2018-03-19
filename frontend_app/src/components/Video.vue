@@ -45,7 +45,7 @@
           <div class="col-sm-5">
             <div class="panel panel-default">
               <div class="panel-heading">
-                <strong>{{comment.user_id}}</strong> <span class="text-muted">commented 5 days ago</span>
+                <router-link to="/user/totolapaille"> <strong>{{comment.user_id}}</strong></router-link> <span class="text-muted">commented 5 days ago</span>
               </div>
               <div class="panel-body">
               {{comment.body}}
@@ -110,8 +110,6 @@ export default{
     .catch( (error) => {
       console.log(error)
     });
-
-    console.log(this.$route.params.which)
 
     axios({
       method: 'get',
