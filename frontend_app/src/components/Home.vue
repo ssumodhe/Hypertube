@@ -148,4 +148,7 @@ export default{
     margin-top: 10px;
     margin-bottom: 10px;
   }
+  .card-title{
+    word-wrap: break-word
+  }
 </style>
