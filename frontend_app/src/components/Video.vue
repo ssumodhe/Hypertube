@@ -24,15 +24,15 @@
     </video> -->
 
     <div class="comments">
-<!--           <div class="photo">
-              <div class="avatar" style="background-image: url('https://s3.amazonaws.com/uifaces/faces/twitter/dancounsell/128.jpg')"></div>
-          </div> -->
       <div id="comment-area">
         <textarea ref="commentTxtArea" @keydown="isEnter" @keydown.enter.prevent class="comment" cols="60" rows="6" placeholder="Add a comment... Share With Us :) "></textarea>
         <button @click="sendComment" class="comment">Share</button>
       </div>
 
-      <span id="title-previous-comments">Previous comments</span>
+      <div>
+        <span id="title-previous-comments">Previous comments</span>
+      </div>
+      <div v-if="comments.length != 0">
       <div class="container" v-for="comment in comments">
         <div class="row">
 
@@ -45,7 +45,7 @@
           <div class="col-sm-5">
             <div class="panel panel-default">
               <div class="panel-heading">
-                <strong>{{comment.title}}</strong> <span class="text-muted">commented 5 days ago</span>
+                <strong>{{comment.user_id}}</strong> <span class="text-muted">commented 5 days ago</span>
               </div>
               <div class="panel-body">
               {{comment.body}}
@@ -54,6 +54,11 @@
           </div>
 
         </div>
+      </div>
+      </div>
+      <div v-if="comments.length == 0" class="badge badge-secondary">
+        <span>No comments yet! Be the first to share ! ;) </span>
+
       </div>
   </div>
 
@@ -106,16 +111,29 @@ export default{
       console.log(error)
     });
 
+    console.log(this.$route.params.which)
+
     axios({
       method: 'get',
-      url: 'https://jsonplaceholder.typicode.com/posts'
+      url: 'https://hypertubeapi.tpayet.com/videos/'+ this.$route.params.which +'/comments'
       })
       .then( (response) => {
-        this.comments = response.data.slice(0, 50)
+        this.comments = response.data
       })
       .catch( (error) => {
         console.log(error)
-      });
+    });
+
+    // axios({
+    //   method: 'get',
+    //   url: 'https://jsonplaceholder.typicode.com/posts'
+    //   })
+    //   .then( (response) => {
+    //     this.comments = response.data.slice(0, 50)
+    //   })
+    //   .catch( (error) => {
+    //     console.log(error)
+    //   });
   },
   methods:{
     isEnter: function(e){
@@ -123,11 +141,6 @@ export default{
         this.sendComment()
     },
     sendComment: function(e){
-      console.log(this.$refs.commentTxtArea.value)
-      console.log(localStorage.getItem('id'))
-      console.log(localStorage.getItem('video_id'))
-      console.log(localStorage.getItem('qqchose'))
-
       axios({
         method: 'post',
         url: 'https://hypertubeapi.tpayet.com/comments',
