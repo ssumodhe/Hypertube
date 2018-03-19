@@ -45,7 +45,7 @@
           <div class="col-sm-5">
             <div class="panel panel-default">
               <div class="panel-heading">
-                <router-link to="/user/totolapaille"> <strong>{{comment.user_id}}</strong></router-link> <span class="text-muted">commented 5 days ago</span>
+                <router-link to="/user/totolapaille"> <strong>{{comment.user_id}}</strong></router-link> <span class="text-muted">commented {{setCommentsCreatedAt(comment.created_at)}}</span>
               </div>
               <div class="panel-body">
               {{comment.body}}
@@ -116,7 +116,8 @@ export default{
       url: 'https://hypertubeapi.tpayet.com/videos/'+ this.$route.params.which +'/comments'
       })
       .then( (response) => {
-        this.comments = response.data
+        //latest comment displayed last with .slice().reverse()
+        this.comments = response.data.slice().reverse()
       })
       .catch( (error) => {
         console.log(error)
@@ -153,13 +154,23 @@ export default{
         headers: this.headers
       })
       .then( (response) => {
-        console.log(response)
       })
       .catch( (error) => {
         console.log(error)
       });
       this.$refs.commentTxtArea.value = ""
-
+    },
+    setCommentsCreatedAt: function(created){
+      var moment = require('moment');
+      let now = moment();
+      let time = moment(created.slice(0, 10), "YYYY-MM-DD")
+      let diff = time.diff(now, 'days')
+      if (diff == 0)
+        return "today"
+      if (diff == 1)
+        return "yesterday"
+      else
+        return diff + "days ago"
     }
   }
 }
