@@ -56,8 +56,7 @@
       <div class="card-body">
         <h5 class="card-title">{{lib.title}}</h5>
         <p class="card-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-        <!-- <a href="#" class="btn btn-default glyphicon glyphicon-film"> Watch</a> -->
-        <router-link :to="'/video/' + lib.token" class="btn btn-default glyphicon glyphicon-film"> Watch</router-link>
+        <button @click="setAndSend(lib.id, lib.token)" class="btn btn-default glyphicon glyphicon-film"> Watch</button>
       </div>
     </div>
     <infinite-loading @infinite="infiniteHandler">
@@ -70,19 +69,6 @@
       
     </infinite-loading>
   </div>
-
-<!--     <div id="list_movies" v-for="lib in library">
-      <div class="list-group col-md-6 col-md-offset-3" >
-        <router-link to="/video" class="list-group-item list-group-item-action flex-column align-items-start" >
-          <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">{{lib.id}}</h5>
-            <small>3 days ago</small>
-          </div>
-          <p class="mb-1">{{lib.title}}</p>
-          <small>Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</small>
-        </router-link>
-      </div>
-    </div> -->
   </div>
 </template>
 
@@ -101,23 +87,11 @@ export default{
   components: {
     InfiniteLoading, Searchbar
   },
-  created: function(){
-    // axios({
-    //   method: 'get',
-    //   url: 'https://hypertubeapi.tpayet.com/videos',
-    // })
-    // .then( (response) => {
-    //   console.log(response.data)
-    //   console.log(response.data.length)
-    // })
-    // .catch( (error) => {
-    //   console.log(error)
-    // });
-  },
   methods: {
     infiniteHandler($state) {
       axios.get('https://hypertubeapi.tpayet.com/videos')
       .then(({ data }) => {
+        console.log(data)
         this.length = data.length
         if (data.length) {
           const temp = [];
@@ -139,6 +113,11 @@ export default{
         }
       });
     },
+    setAndSend: function(id, token){
+      let link = "/video/" + token
+      localStorage.setItem('video_id', id)
+      this.$router.push(link)
+    }
   }
 }
 </script>
