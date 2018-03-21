@@ -71,7 +71,6 @@ export default{
         }
       })
         .then( (response) => {
-          console.log(response.headers)
           localStorage.setItem('token', response.headers['access-token'])
           localStorage.setItem('client', response.headers['client'])
           localStorage.setItem('expiry', response.headers['expiry'])

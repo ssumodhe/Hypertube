@@ -20,8 +20,6 @@ router.beforeEach((to, from, next) => {
     next(from.path)
   }
   else {
-    console.log(localStorage)
-    
     // console.log(router)
     // console.log(router.options.routes)
     next();

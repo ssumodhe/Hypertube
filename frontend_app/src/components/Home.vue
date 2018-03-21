@@ -91,7 +91,6 @@ export default{
     infiniteHandler($state) {
       axios.get('https://hypertubeapi.tpayet.com/videos')
       .then(({ data }) => {
-        console.log(data)
         this.length = data.length
         if (data.length) {
           const temp = [];

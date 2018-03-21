@@ -154,6 +154,7 @@ export default{
         headers: this.headers
       })
       .then( (response) => {
+        //do new axios get comments ?? + set infiniteLoader for comments
       })
       .catch( (error) => {
         console.log(error)
