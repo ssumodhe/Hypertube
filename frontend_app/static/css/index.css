@@ -13,7 +13,7 @@ body {
 }
 body {
    padding:10px;
-   /*padding-bottom:135px;    Height of the footer */
+   padding-bottom:135px;    /*Height of the footer*/ 
 }
 footer {
 	text-align: center;

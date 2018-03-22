@@ -18,14 +18,12 @@ router.beforeEach((to, from, next) => {
   else if (to.name != "login" && to.name != "notFound" && !localStorage.getItem('token')){
     next('/login');
   }
+  else if (localStorage.getItem('token') && to.name == "login"){
+    next(from.path)
+  }
   else {
-    console.log("token : " + localStorage.getItem('token'))
-    console.log("id : " + localStorage.getItem('id'))
-    console.log("email : " + localStorage.getItem('email'))
-    console.log("picture : " + localStorage.getItem('picture'))
-    console.log("firstname : " + localStorage.getItem('firstname'))
-    console.log("lastname : " + localStorage.getItem('lastname'))
-    console.log("username : " + localStorage.getItem('username'))
+    // console.log(router)
+    // console.log(router.options.routes)
     next();
   }
 });

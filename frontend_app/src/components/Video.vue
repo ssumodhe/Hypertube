@@ -7,10 +7,14 @@
     <br>
     <br>
 
-    <video autoplay loop muted="true" controls>
-      <source src="https://mdbootstrap.com/img/video/Tropical.mp4" type="video/mp4"></source> 
-    </video>
-
+    <div>
+      <span v-if="advert" id="advertisement"><strong>Ad : Your video will play after this ad. </strong></span>
+      <video autoplay="autoplay" loop controls :src="movieSource"></video>
+      <!-- <video autoplay muted="true" controls="controls" poster="/static/img/emoji_kitty.png">
+        <source v-if="advert" :src="movieSource" type="video/mp4"></source> 
+        <source v-if="!advert" :src="movieSource" type="video/mp4"></source>
+      </video> -->
+    </div>
 
 <!--     <video autoplay loop muted="true" controls class="video-js">
       <source
@@ -20,17 +24,15 @@
     </video> -->
 
     <div class="comments">
-      <div class="comment-wrap">
-          <div class="photo">
-              <div class="avatar" style="background-image: url('https://s3.amazonaws.com/uifaces/faces/twitter/dancounsell/128.jpg')"></div>
-          </div>
-          <div class="comment-block">
-              <form action="">
-                  <textarea name="" id="" cols="30" rows="3" placeholder="Add comment..."></textarea>
-              </form>
-          </div>
+      <div id="comment-area">
+        <textarea ref="commentTxtArea" @keydown="isEnter" @keydown.enter.prevent class="comment" cols="60" rows="6" placeholder="Add a comment... Share With Us :) "></textarea>
+        <button @click="sendComment" class="comment">Share</button>
       </div>
 
+      <div>
+        <span id="title-previous-comments">Previous comments</span>
+      </div>
+      <div v-if="comments.length != 0">
       <div class="container" v-for="comment in comments">
         <div class="row">
 
@@ -43,7 +45,7 @@
           <div class="col-sm-5">
             <div class="panel panel-default">
               <div class="panel-heading">
-                <strong>{{comment.title}}</strong> <span class="text-muted">commented 5 days ago</span>
+                <router-link to="/user/totolapaille"> <strong>{{comment.user_id}}</strong></router-link> <span class="text-muted">commented {{setCommentsCreatedAt(comment.created_at)}}</span>
               </div>
               <div class="panel-body">
               {{comment.body}}
@@ -52,6 +54,11 @@
           </div>
 
         </div>
+      </div>
+      </div>
+      <div v-if="comments.length == 0" class="badge badge-secondary">
+        <span>No comments yet! Be the first to share ! ;) </span>
+
       </div>
   </div>
 
@@ -64,40 +71,108 @@ export default{
   data(){
     return {
       note: "This is the Streaming page !",
+      headers: {
+          'Content-Type': 'application/json',
+          'access-token': localStorage.getItem('token'),
+          'client': localStorage.getItem('client'),
+          'expiry': localStorage.getItem('expiry'),
+          'token-type': localStorage.getItem('token-type'),
+          'uid': localStorage.getItem('uid')
+        },
       comments: [],
-
+      advert: true, 
+      movieSource: "https://www.w3schools.com/html/mov_bbb.mp4"
     }
   },
   created: function(){
+    axios({
+      method: 'post',
+      url: 'https://hypertubeapi.tpayet.com/streaming/download',
+      data: {
+        "streaming": 
+          {
+            "url": "http://www.torrent9.red/get_torrent/interstellar-french-dvdrip-2014.torrent",
+            "title": "interstellar"
+          }
+      },
+      headers:{
+          'Content-Type': 'application/json'
+      }
+    })
+    .then( (response) => {
+      this.note = response.data
+      // this.movieSource = response.data
+      // need to set if localStorage.getItem('video_id') == null for comments
+      // + middware : any routes FROM video localStorage.removeItem('video_id')
+      this.movieSource = "https://mdbootstrap.com/img/video/Tropical.mp4"
+      this.advert = false
+    })
+    .catch( (error) => {
+      console.log(error)
+    });
 
     axios({
       method: 'get',
-      url: 'https://jsonplaceholder.typicode.com/posts'
+      url: 'https://hypertubeapi.tpayet.com/videos/'+ this.$route.params.which +'/comments'
       })
       .then( (response) => {
-        this.comments = response.data.slice(0, 50)
+        //latest comment displayed last with .slice().reverse()
+        this.comments = response.data.slice().reverse()
+      })
+      .catch( (error) => {
+        console.log(error)
+    });
+
+    // axios({
+    //   method: 'get',
+    //   url: 'https://jsonplaceholder.typicode.com/posts'
+    //   })
+    //   .then( (response) => {
+    //     this.comments = response.data.slice(0, 50)
+    //   })
+    //   .catch( (error) => {
+    //     console.log(error)
+    //   });
+  },
+  methods:{
+    isEnter: function(e){
+      if (e.key == 'Enter')
+        this.sendComment()
+    },
+    sendComment: function(e){
+      axios({
+        method: 'post',
+        url: 'https://hypertubeapi.tpayet.com/comments',
+        data: {
+          "comment": 
+            {
+              "body": this.$refs.commentTxtArea.value,
+              "user_id": localStorage.getItem('id'),
+              "video_id": localStorage.getItem('video_id')
+            }
+        },
+        headers: this.headers
+      })
+      .then( (response) => {
+        //do new axios get comments ?? + set infiniteLoader for comments
       })
       .catch( (error) => {
         console.log(error)
       });
-
-    // axios({
-    //   method: 'post',
-    //   url: 'http://192.168.99.100:3000/auth/sign_in',
-    //   data: {
-    //     email: 'tpayet@student.42.fr',
-    //     password: 'QWErty123'
-    //   }
-    // })
-    //   .then(function (response) {
-    //     console.log("response's data:");
-    //     console.log(response.data);
-    //     console.log("response's header:");
-    //     console.log(response.headers);
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   });
+      this.$refs.commentTxtArea.value = ""
+    },
+    setCommentsCreatedAt: function(created){
+      var moment = require('moment');
+      let now = moment();
+      let time = moment(created.slice(0, 10), "YYYY-MM-DD")
+      let diff = time.diff(now, 'days')
+      if (diff == 0)
+        return "today"
+      if (diff == 1)
+        return "yesterday"
+      else
+        return diff + "days ago"
+    }
   }
 }
 
@@ -113,5 +188,27 @@ export default{
   }
   .video-js{
     height: 100%;
+  }
+  #advertisement{
+    border: 1px solid black;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.3);
+    position: absolute;
+    font-size: 1.6vw;
+    margin-right: 0px;
+    padding-right: 0px;
+  }
+  #comment-area{
+    margin: 6% auto 8% auto;
+  }
+  .comment{
+    border: 1px solid gainsboro;
+    border-radius: 4px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+    padding: 5px 5px 5px 5px;
+  }
+  #title-previous-comments{
+    font-size: 8vw;
+    margin-bottom: 20px;
   }
 </style>

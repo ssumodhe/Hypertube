@@ -3,8 +3,10 @@
 
 	<TypeAhead
 	  id="type-a-head"
-      src="https://hypertubeapi.tpayet.com/search?query=:keyword"
+      :src="search_url"
       :getResponse="getResponse"
+      :onHit="onHit"
+      :placeholder="placeholder"
     ></TypeAhead>
 <!-- 	<div class="row">    
       <div class="col-sm-12 col-md-6 col-md-offset-3">
@@ -37,6 +39,7 @@
 
 <script>
 import TypeAhead from 'vue2-typeahead'
+import {searchUrl} from '../config.js'
 
 export default{
 	name: 'Searchbar',
@@ -46,18 +49,23 @@ export default{
 	data(){
 		return{
 			searchResponse: [],
+      search_url: searchUrl,
+      placeholder: 'Are you looking for something in particular ?'
 		}
 	},
 	methods: {
       getResponse: function (response) {
-		let n = response.data.results.length
-		if (n > 10){
-			n = 10
-		}
-		for (var i = 0; i < n; i++) {
+    		let n = response.data.results.length
+    		if (n > 10){
+    			n = 10
+    		}
+    		for (var i = 0; i < n; i++) {
           this.searchResponse[i] = response.data.results[i]['name'];
         }
         return this.searchResponse
+      },
+      onHit: function (item, vue, index) {
+        this.$router.push('/video/' + item)
       }
     }
 }

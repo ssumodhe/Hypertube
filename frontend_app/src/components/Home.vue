@@ -46,20 +46,17 @@
         </a>
       </div>
       </div>
-
-    <div class="row">
-      <span class="col-xs-6 col-xs-offset-3">{{note}}</span>
-    </div>
     
 
     <div class="row col-md-offset-2">
     <div class="card col-md-3" style="height: 350px; border: 1px solid gainsboro; border-radius: 15px; padding-top: 20px; margin: auto 5px 5px auto;" v-for="lib in library">
-      <img class="card-img-top" src="/static/img/emoji_kitty.png" alt="Card image cap">
+      <img v-if="lib.poster" class="card-img-top" :src="lib.poster" width="40%" max-width="40%">
+      <img v-else class="card-img-top" src="/static/img/emoji_kitty.png" alt="Card image cap">
       <hr>
       <div class="card-body">
-        <h5 class="card-title">{{lib.id}}. {{lib.title}}</h5>
+        <h5 class="card-title">{{lib.title}}</h5>
         <p class="card-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-        <a href="#" class="btn btn-default glyphicon glyphicon-film"> Watch</a>
+        <button @click="setAndSend(lib.id, lib.token)" class="btn btn-default glyphicon glyphicon-film"> Watch</button>
       </div>
     </div>
     <infinite-loading @infinite="infiniteHandler">
@@ -72,19 +69,6 @@
       
     </infinite-loading>
   </div>
-
-<!--     <div id="list_movies" v-for="lib in library">
-      <div class="list-group col-md-6 col-md-offset-3" >
-        <router-link to="/video" class="list-group-item list-group-item-action flex-column align-items-start" >
-          <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">{{lib.id}}</h5>
-            <small>3 days ago</small>
-          </div>
-          <p class="mb-1">{{lib.title}}</p>
-          <small>Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</small>
-        </router-link>
-      </div>
-    </div> -->
   </div>
 </template>
 
@@ -96,7 +80,6 @@ export default{
   name: 'home',
   data(){
     return {
-      note: "This is the Home page Where all videos will be displayed",
       library : [],
       page: 0
     }
@@ -104,15 +87,11 @@ export default{
   components: {
     InfiniteLoading, Searchbar
   },
-  created: function(){
-    // this.$http.get('https://jsonplaceholder.typicode.com/albums')
-    //   .then(function(response){
-    //     this.library = response.data;
-    //   })
-  },
   methods: {
     infiniteHandler($state) {
-      axios.get('https://jsonplaceholder.typicode.com/albums').then(({ data }) => {
+      axios.get('https://hypertubeapi.tpayet.com/videos')
+      .then(({ data }) => {
+        this.length = data.length
         if (data.length) {
           const temp = [];
           for (let i = this.page; i < this.page + 20; i++) {
@@ -133,6 +112,11 @@ export default{
         }
       });
     },
+    setAndSend: function(id, token){
+      let link = "/video/" + token
+      localStorage.setItem('video_id', id)
+      this.$router.push(link)
+    }
   }
 }
 </script>
@@ -141,5 +125,8 @@ export default{
   .row{
     margin-top: 10px;
     margin-bottom: 10px;
+  }
+  .card-title{
+    word-wrap: break-word
   }
 </style>
