@@ -23,11 +23,6 @@ $> curl -XPOST https://hypertubeapi.tpayet.com/auth/ --data "email=totolapaille@
 $> curl -XPOST https://hypertubeapi.tpayet.com/auth/sign_in --data "username=tpayet&password=QWErty123"
 
 # This route gives you access-token, client, expiry, token-type and uid you must set in you header for later request
-
-# PUT /auth
-# Update user datas
-$> curl -XPUT -H "auth headers ..." -H "Content-Type: application/json" -d '{ "email":... }' "http://192.168.99.100:3000/auth"
-# Possible params are username, email, password, password_confirmation, current_password, firstname, lastname
 ```
 
 For more details about authentification system please see the [gem documentation](https://github.com/lynndylanhurley/devise_token_auth#usage-tldr)
@@ -50,6 +45,14 @@ $> curl -XPOST localhost:3000/streaming/download -d '{"streaming": {"url": "http
 This route need [authentication](https://github.com/tpayet/Hypertube/tree/master/backend_api#authentication)
 ```bash
 $> curl https://hypertubeapi.tpayet.com/users/:username
+```
+
+#### Update users data
+This route need [authentication](https://github.com/tpayet/Hypertube/tree/master/backend_api#authentication)
+```bash
+# PUT /auth
+$> curl -XPUT -H "auth headers ..." -H "Content-Type: application/json" -d '{ "email":... }' "http://192.168.99.100:3000/auth"
+# Possible params are username, email, password, password_confirmation, current_password, firstname, lastname
 ```
 
 #### Videos Models
