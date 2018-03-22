@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
   validate :password_complexity
   def password_complexity
     if password.present?
-       if !password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(.*){6,128}$/)
+       if !password.match(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(.{6,128})$/)
          errors.add :password, " complexity requirement not met"
        end
     end
