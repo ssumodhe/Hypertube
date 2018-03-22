@@ -23,6 +23,11 @@ $> curl -XPOST https://hypertubeapi.tpayet.com/auth/ --data "email=totolapaille@
 $> curl -XPOST https://hypertubeapi.tpayet.com/auth/sign_in --data "username=tpayet&password=QWErty123"
 
 # This route gives you access-token, client, expiry, token-type and uid you must set in you header for later request
+
+# PUT /auth
+# Update user datas
+curl -XPUT -H "auth headers ..." -H "Content-Type: application/json" -d '{ "email":... }' "http://192.168.99.100:3000/auth"
+# Possible params are username, email, password, password_confirmation, current_password, firstname, lastname
 ```
 
 For more details about authentification system please see the [gem documentation](https://github.com/lynndylanhurley/devise_token_auth#usage-tldr)
@@ -132,4 +137,3 @@ $> gem install rails
 # Rails version should be at least 5.1.0
 $> rails --version
 ```
-
