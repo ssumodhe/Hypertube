@@ -6,4 +6,13 @@ class User < ActiveRecord::Base
   include DeviseTokenAuth::Concerns::User
 
   has_many :comments
+
+  validate :password_complexity
+  def password_complexity
+    if password.present?
+       if !password.match(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(.{6,128})$/)
+         errors.add :password, " complexity requirement not met"
+       end
+    end
+  end
 end
