@@ -47,6 +47,14 @@ This route need [authentication](https://github.com/tpayet/Hypertube/tree/master
 $> curl https://hypertubeapi.tpayet.com/users/:username
 ```
 
+#### Update users data
+This route need [authentication](https://github.com/tpayet/Hypertube/tree/master/backend_api#authentication)
+```bash
+# PUT /auth
+$> curl -XPUT -H "auth headers ..." -H "Content-Type: application/json" -d '{ "email":... }' "http://192.168.99.100:3000/auth"
+# Possible params are username, email, password, password_confirmation, current_password, firstname, lastname
+```
+
 #### Videos Models
 ```bash
 # POST /videos
@@ -132,4 +140,3 @@ $> gem install rails
 # Rails version should be at least 5.1.0
 $> rails --version
 ```
-
