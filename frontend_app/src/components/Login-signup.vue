@@ -3,7 +3,7 @@
     
     <span>{{note}}</span>
 
-    <form@submit.prevent="submitSignIn">
+    <form @submit.prevent="submitSignUp" enctype="multipart/form-data">
     	<div class="form-group has-feedback" v-bind:class="[emailSuccessClass]">
     		<label for="email" class="control-label sr-only">
     			email address
@@ -207,7 +207,7 @@ export default{
         this.submitBtnDisabled = true
       } 
     },
-    submitSignIn: function() {
+    submitSignUp: function() {
       let email = this.$refs.txtEmail.value.trim()
       let user = this.$refs.txtUser.value.trim()
       let picture = this.picture

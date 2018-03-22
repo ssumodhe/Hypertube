@@ -103,7 +103,7 @@ export default{
         data: {
           email: form.email,
           username: form.user,
-          // picture: form.picture,
+          image_base: form.picture,
           firstname: form.firstName,
           lastname: form.lastName,
           password: form.password,

@@ -36,13 +36,10 @@ export default{
   },
   methods:{
     onChanged() {
-      console.log("New picture loaded");
       if (this.$refs.pictureInput.file) {
-        this.image = this.$refs.pictureInput.file;
-        console.log(this.image)
         this.$emit('uploadedPicture',
           {
-            'picture': this.image,
+            'picture': this.$refs.pictureInput.image,
           }
         )
       } else {
