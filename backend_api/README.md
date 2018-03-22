@@ -26,7 +26,7 @@ $> curl -XPOST https://hypertubeapi.tpayet.com/auth/sign_in --data "username=tpa
 
 # PUT /auth
 # Update user datas
-curl -XPUT -H "auth headers ..." -H "Content-Type: application/json" -d '{ "email":... }' "http://192.168.99.100:3000/auth"
+$> curl -XPUT -H "auth headers ..." -H "Content-Type: application/json" -d '{ "email":... }' "http://192.168.99.100:3000/auth"
 # Possible params are username, email, password, password_confirmation, current_password, firstname, lastname
 ```
 
