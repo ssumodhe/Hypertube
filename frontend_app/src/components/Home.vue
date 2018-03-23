@@ -1,11 +1,5 @@
 <template>
   <div class="home">
-    <h1>Home Page</h1>
-
-  <div class="row col-sm-12 col-md-6 col-md-offset-3">
-  <searchbar></searchbar>
-  </div>
-
   <div class="row">
   <div id="carousel-example-generic" class="carousel slide col-sm-12 col-md-6 col-md-offset-3" data-ride="carousel">
         <ol class="carousel-indicators">
@@ -44,9 +38,12 @@
           <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
           <span class="sr-only">Next</span>
         </a>
-      </div>
-      </div>
-    
+  </div>
+  </div>
+
+    <div class="row">
+      <searchbar class="col-sm-12 col-md-6 col-md-offset-3"></searchbar>
+    </div>
 
     <div class="row col-md-offset-2">
     <div class="card col-md-3" style="height: 350px; border: 1px solid gainsboro; border-radius: 15px; padding-top: 20px; margin: auto 5px 5px auto;" v-for="lib in library">
@@ -75,6 +72,8 @@
 <script>
 import InfiniteLoading from 'vue-infinite-loading';
 import Searchbar from '@/components/searchbar'
+import {videoUrl} from '../config.js'
+
 
 export default{
   name: 'home',
@@ -89,7 +88,7 @@ export default{
   },
   methods: {
     infiniteHandler($state) {
-      axios.get('https://hypertubeapi.tpayet.com/videos')
+      axios.get(videoUrl)
       .then(({ data }) => {
         this.length = data.length
         if (data.length) {
@@ -116,6 +115,13 @@ export default{
       let link = "/video/" + token
       localStorage.setItem('video_id', id)
       this.$router.push(link)
+    },
+    switchLang: function(){
+      if(this.language == 'en'){
+        this.language = 'fr'
+      }else{
+        this.language = 'en'
+      }
     }
   }
 }
