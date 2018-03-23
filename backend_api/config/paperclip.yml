@@ -1,0 +1,6 @@
+development:
+    command_path: "/Users/tpayet/.homebrew/bin/identify"
+
+production:
+    command_path: 
+

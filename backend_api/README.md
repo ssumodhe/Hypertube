@@ -42,9 +42,11 @@ $> curl -XPOST localhost:3000/streaming/download -d '{"streaming": {"url": "http
 ```
 
 #### Get users data
-This route need [authentication](https://github.com/tpayet/Hypertube/tree/master/backend_api#authentication)
+These routes need [authentication](https://github.com/tpayet/Hypertube/tree/master/backend_api#authentication)
 ```bash
 $> curl https://hypertubeapi.tpayet.com/users/:username
+
+$> curl https://hypertubeapi.tpayet.com/users/:username/avatar
 ```
 
 #### Update users data

@@ -31,3 +31,5 @@ module BackendApi
     config.api_only = true
   end
 end
+
+Paperclip.options[:command_path] = Rails.application.config_for(:paperclip)['command_path']
