@@ -1,17 +1,5 @@
-const TorrentsSearchApi = new (require('torrent-search-api'))();
-
 class Search {
-	constructor() {
-		// this.request = require('request');
-		this.TorrentsSearchApi = TorrentsSearchApi;
-		// this.TorrentsSearchApi.enableProvider('torrent9');
-		this.TorrentsSearchApi.enableProvider('1337x');
-		// this.TorrentsSearchApi.enableProvider('Torrentz2');
-		// this.TorrentsSearchApi.enableProvider('ThePirateBay');
-		// this.TorrentsSearchApi.enableProvider('Rarbg');
-		// this.TorrentsSearchApi.enableProvider('TorrentProject');
-		// this.TorrentsSearchApi.enableProvider('ExtraTorrent');
-	}
+	constructor() {}
 
 	run(title, cat = 'Movie', number = 20) {
 		return new Promise((resolve, reject) => {
@@ -27,17 +15,17 @@ class Search {
 
 module.exports = Search;
 
-const PirateBay = require('thepiratebay')
-const query = require('yify-search');
-const yifiSearch = (title) => {
-	return new Promise((resolve, reject)=>{
-		query.search(title, (error, result) => {
-			if (error) reject(error);
-			else resolve(result)
-		});
-	});
-}
-
+// const PirateBay = require('thepiratebay')
+// const query = require('yify-search');
+// const yifiSearch = (title) => {
+// 	return new Promise((resolve, reject)=>{
+// 		query.search(title, (error, result) => {
+// 			if (error) reject(error);
+// 			else resolve(result)
+// 		});
+// 	});
+// }
+//
 // const search = async (title) => {
 // 	try {
 // 		const tpb = await PirateBay.search(title, {
