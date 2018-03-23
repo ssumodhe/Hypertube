@@ -3,6 +3,7 @@ class User < ActiveRecord::Base
   include DeviseTokenAuth::Concerns::User
   attr_accessor :image_base
   before_validation :parse_image
+  before_save -> { skip_confirmation! }
   validate :password_complexity
 
   devise :database_authenticatable, :registerable,
