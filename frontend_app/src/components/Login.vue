@@ -1,6 +1,6 @@
 <template>
   <div class="login">
-    <h1>Login Page</h1>
+
     <div v-if="successMsg" class="alert alert-success" role="alert">{{successMsg}}</div>
     
     <div class="row">
@@ -8,7 +8,7 @@
     <div class="col-md-4 col-md-offset-2">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title"><span class="glyphicon glyphicon-plus-sign"></span>  Sign Up </h3>
+          <h3 class="panel-title"><span class="glyphicon glyphicon-plus-sign"></span> <span v-lang.signup></span></h3>
         </div>
         <div class="panel-body">
           <signup
@@ -22,7 +22,7 @@
     <div class="col-md-4">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title"><span class="glyphicon glyphicon-user"></span> Sign In </h3>
+          <h3 class="panel-title"><span class="glyphicon glyphicon-user"></span> <span v-lang.signin></span></h3>
         </div>
         <div class="panel-body">
           <signin 
@@ -113,6 +113,7 @@ export default{
         .then( (response) => {
           this.errorMsgSignUp = ""
           this.successMsg = "Well done! You successfully signed up. Please check your mails."
+          console.log(response)
         })
         .catch( (error) => {
           if (error.response.status == "422"){

@@ -1,14 +1,13 @@
 <template>
   <div class="signup">
     
-    <span>{{note}}</span>
 
     <form @submit.prevent="submitSignUp" enctype="multipart/form-data">
     	<div class="form-group has-feedback" v-bind:class="[emailSuccessClass]">
     		<label for="email" class="control-label sr-only">
     			email address
     		</label>
-    		<input ref="txtEmail" type="email" id="email" class="form-control" name="email" placeholder="Email." @input="checkEmailValidation" required>
+    		<input ref="txtEmail" type="email" id="email" class="form-control" name="email" :placeholder="email" @input="checkEmailValidation" required>
     		<span  v-bind:class="[emailIconClass]"></span>
     	</div>
 
@@ -16,7 +15,7 @@
     		<label for="signUpUser" class="control-label sr-only">
     			user name
     		</label>
-    		<input ref="txtUser" type="text" id="signUpUser" class="form-control" name="user" placeholder="Username." @input="checkUserValidation" pattern="^([a-zA-Z]*)$" required>
+    		<input ref="txtUser" type="text" id="signUpUser" class="form-control" name="user" :placeholder="username" @input="checkUserValidation" pattern="^([a-zA-Z]*)$" required>
     		<span  v-bind:class="[userIconClass]"></span>
     	</div>
 
@@ -30,7 +29,7 @@
     		<label for="firstName" class="control-label sr-only">
     			first name
     		</label>
-    		<input ref="txtFirstName" type="text" id="firstName" class="form-control" name="firstName" placeholder="First Name." @input="checkFirstNameValidation" pattern="^([a-zA-Z]*)$" required>
+    		<input ref="txtFirstName" type="text" id="firstName" class="form-control" name="firstName" :placeholder="first_name" @input="checkFirstNameValidation" pattern="^([a-zA-Z]*)$" required>
     		<span  v-bind:class="[firstNameIconClass]"></span>
     	</div>
 
@@ -38,7 +37,7 @@
     		<label for="lastName" class="control-label sr-only">
     			last name
     		</label>
-    		<input ref="txtLastName" type="text" id="lastName" class="form-control" name="lastName" placeholder="Last Name." @input="checkLastNameValidation" pattern="^([a-zA-Z]*)$" required>
+    		<input ref="txtLastName" type="text" id="lastName" class="form-control" name="lastName" :placeholder="last_name" @input="checkLastNameValidation" pattern="^([a-zA-Z]*)$" required>
     		<span  v-bind:class="[lastNameIconClass]"></span>
     	</div>
 
@@ -46,11 +45,10 @@
     		<label for="signUpPassword" class="control-label sr-only">
     			secret password
     		</label>
-    		<input ref="txtPassword" type="password" id="signUpPassword" class="form-control" name="password" placeholder="Password." @input="checkPasswordValidation" pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]+).{6,}$" required>
+    		<input ref="txtPassword" type="password" id="signUpPassword" class="form-control" name="password" :placeholder="password" @input="checkPasswordValidation" pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]+).{6,}$" required>
     		<span  v-bind:class="[passwordIconClass]"></span>
         <small><mark>
-        Your password needs to be at least 6 chars long.
-        <br> With lower and upper cases and digits only.
+        <span v-lang.msg_pswd></span>
         </mark></small>
     	</div>
 
@@ -58,14 +56,14 @@
     		<label for="checkPassword" class="control-label sr-only">
     			check secret password
     		</label>
-    		<input ref="txtCheckPassword" type="password" id="checkPassword" class="form-control" name="checkPassword" placeholder="Check Password." @input="checkCheckPasswordValidation" required>
+    		<input ref="txtCheckPassword" type="password" id="checkPassword" class="form-control" name="checkPassword" :placeholder="confirm_password" @input="checkCheckPasswordValidation" required>
     		<span  v-bind:class="[checkPasswordIconClass]"></span>
     	</div>
 
       <div v-if="errorMsg" class="alert alert-danger" role="alert">{{errorMsg}}
       </div>
 
-    	<input v-bind:disabled="submitBtnDisabled" class="btn btn-default" type="submit" value="Sign Up!">
+    	<input v-bind:disabled="submitBtnDisabled" class="btn btn-default" type="submit" :value="btn_signup">
 
     </form>
 
@@ -86,9 +84,34 @@ export default{
       default: ''
     }
   },
+  computed: {
+    email()  {
+     return this.translate('email')
+    },
+    username()  {
+     return this.translate('username')
+    },
+    first_name()  {
+     return this.translate('first_name')
+    },
+    last_name()  {
+     return this.translate('last_name')
+    },
+    password()  {
+     return this.translate('password')
+    },
+    msg_pswd()  {
+     return this.translate('msg_pswd')
+    },
+    confirm_password()  {
+     return this.translate('confirm_password')
+    },
+    btn_signup()  {
+     return this.translate('btn_signup')
+    },
+  },
   data(){
     return {
-      note: "Form sign Up here",
       emailSuccessClass: '',
       emailIconClass: '',
       userSuccessClass: '',
