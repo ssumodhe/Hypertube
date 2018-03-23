@@ -1,6 +1,5 @@
 <template>
   <div class="movie">
-    <h1>Video Page</h1>
     {{note}}
 
     <br>
@@ -8,7 +7,7 @@
     <br>
 
     <div>
-      <span v-if="advert" id="advertisement"><strong>Ad : Your video will play after this ad. </strong></span>
+      <span v-if="advert" id="advertisement"><strong><span v-lang.msg_ad></span></strong></span>
       <video autoplay="autoplay" loop controls :src="movieSource"></video>
       <!-- <video autoplay muted="true" controls="controls" poster="/static/img/emoji_kitty.png">
         <source v-if="advert" :src="movieSource" type="video/mp4"></source> 
@@ -25,12 +24,12 @@
 
     <div class="comments">
       <div id="comment-area">
-        <textarea ref="commentTxtArea" @keydown="isEnter" @keydown.enter.prevent class="comment" cols="60" rows="6" placeholder="Add a comment... Share With Us :) "></textarea>
-        <button @click="sendComment" class="comment">Share</button>
+        <textarea ref="commentTxtArea" @keydown="isEnter" @keydown.enter.prevent class="comment" cols="60" rows="6" :placeholder="msg_cmt"></textarea>
+        <button @click="sendComment" class="comment"><span v-lang.btn_share></span></button>
       </div>
 
       <div>
-        <span id="title-previous-comments">Previous comments</span>
+        <span id="title-previous-comments" v-lang.prev_cmt></span>
       </div>
       <div v-if="comments.length != 0">
       <div class="container" v-for="comment in comments">
@@ -45,7 +44,7 @@
           <div class="col-sm-5">
             <div class="panel panel-default">
               <div class="panel-heading">
-                <router-link to="/user/totolapaille"> <strong>{{comment.user_id}}</strong></router-link> <span class="text-muted">commented {{setCommentsCreatedAt(comment.created_at)}}</span>
+                <router-link to="/user/totolapaille"> <strong>{{comment.user_id}}</strong></router-link> <span class="text-muted"><span v-lang.commented></span>{{setCommentsCreatedAt(comment.created_at)}}</span>
               </div>
               <div class="panel-body">
               {{comment.body}}
@@ -57,7 +56,7 @@
       </div>
       </div>
       <div v-if="comments.length == 0" class="badge badge-secondary">
-        <span>No comments yet! Be the first to share ! ;) </span>
+        <span v-lang.no_cmt></span>
 
       </div>
   </div>
@@ -68,6 +67,17 @@
 <script>
 export default{
   name: 'movie',
+  computed: {
+    msg_cmt()  {
+     return this.translate('msg_cmt')
+    },
+    password()  {
+     return this.translate('password')
+    },
+    btn_signin()  {
+     return this.translate('btn_signin')
+    }
+  },
   data(){
     return {
       note: "This is the Streaming page !",
@@ -122,17 +132,6 @@ export default{
       .catch( (error) => {
         console.log(error)
     });
-
-    // axios({
-    //   method: 'get',
-    //   url: 'https://jsonplaceholder.typicode.com/posts'
-    //   })
-    //   .then( (response) => {
-    //     this.comments = response.data.slice(0, 50)
-    //   })
-    //   .catch( (error) => {
-    //     console.log(error)
-    //   });
   },
   methods:{
     isEnter: function(e){
@@ -165,13 +164,19 @@ export default{
       var moment = require('moment');
       let now = moment();
       let time = moment(created.slice(0, 10), "YYYY-MM-DD")
-      let diff = time.diff(now, 'days')
-      if (diff == 0)
+      let diff = now.diff(time, 'days')
+      if (diff == 0 && this.language == 'en')
         return "today"
-      if (diff == 1)
+      else if (diff == 0 && this.language == 'fr')
+        return "aujourd'hui"
+      else if (diff == 1 && this.language == 'en')
         return "yesterday"
+      else if (diff == 1 && this.language == 'fr')
+        return "hier"
+      else if (this.language == 'fr')
+        return "il y a " + diff + " jours."
       else
-        return diff + "days ago"
+        return diff + " days ago."
     }
   }
 }

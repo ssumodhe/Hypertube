@@ -16,8 +16,7 @@ Vue.use(VueLocalStorage)
 Vue.use(MultiLanguage, {
   default: 'en',
   en: {
-    hi: 'Hello',
-    welcome: 'Welcome, {name}',
+    welcome: 'Welcome, {name}.',
 
     signup: 'Sign Up',
     email: 'Email',
@@ -33,12 +32,21 @@ Vue.use(MultiLanguage, {
     with: 'With the following :',
     or: 'Or here :',
     remember_me: 'Remember Me!',
-    btn_signin: 'Sign Me In!'
+    btn_signin: 'Sign Me In!',
+
+    msg_ad: 'Ad : Your video will play after this ad.',
+    msg_cmt: 'Add a comment... Share With Us :) ',
+    btn_share: 'Share',
+    prev_cmt: 'Previous comments',
+    commented : ' commented ',
+    no_cmt: 'No comments yet! Be the first to share ! ;)',
+    
+
+
 
   },
   fr: {
-    hi: 'Bonjour',
-    welcome: 'Bienvenue, {name}',
+    welcome: 'Bienvenue, {name}.',
 
     signup: 'S\'inscrire',
     email: 'Email',
@@ -54,7 +62,14 @@ Vue.use(MultiLanguage, {
     with: 'Avec :',
     or: 'Ou alors :',
     remember_me: 'Se souvenir de moi!',
-    btn_signin: 'Se connecter!'
+    btn_signin: 'Se connecter!',
+
+    msg_ad: 'Pub: Votre vidéo commencera après cette publicité.',
+    msg_cmt: 'Partagez votre impression, ajoutez un commentaire :) ',
+    btn_share: 'Partager',
+    prev_cmt: 'Commentaires précédents',
+    commented : ' a commenté ',
+    no_cmt: 'Pas encore de commentaires! Soyez le premier à partager ! ;)',
   },
 })
 
