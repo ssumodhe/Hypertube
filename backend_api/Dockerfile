@@ -1,6 +1,6 @@
 FROM ruby:2.4.0
 
-RUN apt-get update && apt-get install build-essential nodejs libpq-dev -y
+RUN apt-get update && apt-get install build-essential nodejs libpq-dev imagemagick -y
 
 RUN apt-get install libsqlite3-dev -y
 
