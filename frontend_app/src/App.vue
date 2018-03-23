@@ -33,9 +33,14 @@
             <ul class="nav navbar-nav navbar-right">
               <li role="separator" class="divider"></li>
               <li>
+                <button class="lang-flag" v-if="this.language == 'fr'" @click="switchLang"><i class="em em-fr"></i></button>    
+                <button class="lang-flag" v-if="this.language == 'en'" @click="switchLang"><i class="em em-gb"></i></button>
+              </li>
+              <li>
                 <button id="deco_button" v-on:click="logOut"><span  class="glyphicon glyphicon-log-out" style="color:white" alt="Deconnexion" title="Deconnexion"></span></button>    
         <!--          <router-link to="/login" id="deco_button"><span v-on:click="logOut" class="glyphicon glyphicon-log-out" style="color:white" alt="Deconnexion" title="Deconnexion"></span></router-link> -->
               </li>
+
             </ul>
           </div>
         </div>
@@ -54,6 +59,16 @@
               <div class="navbar-brand">HyperTube</div>
             </div>
           </div>
+          <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav navbar-right">
+                <li role="separator" class="divider"></li>
+                <li>
+                  <button class="lang-flag" v-if="this.language == 'fr'" @click="switchLang"><i class="em em-fr"></i></button>    
+                  <button class="lang-flag" v-if="this.language == 'en'" @click="switchLang"><i class="em em-gb"></i></button>
+                </li>
+            </ul>
+         </div>
+
         </div>
         </nav>
     </div>
@@ -68,7 +83,7 @@ export default {
   data(){
     return{
       loggedIn: localStorage.getItem('token'),
-      username: localStorage.getItem('username')
+      username: localStorage.getItem('username'),
     }
   },
   updated: function () {
@@ -80,8 +95,17 @@ export default {
   },
   methods: {
     logOut: function(){
+      let temp = localStorage.getItem('vue-lang')
       localStorage.clear();
+      localStorage.setItem('vue-lang', temp)
       this.$router.push('/login')
+    },
+    switchLang: function(){
+      if(this.language == 'en'){
+        this.language = 'fr'
+      }else{
+        this.language = 'en'
+      }
     }
   }
 }
@@ -102,7 +126,6 @@ router-view {
   margin-top: 20px;
 }
 #deco_button{
-
   text-align: right;
   border: none;
   background-color: #222222;
@@ -123,6 +146,20 @@ img {
 .navbar{
   background-color: #222222;
   z-index: 2000;
+}
+.lang-flag{
+  text-align: right;
+  border: none;
+  background-color: #222222;
+  margin: 26% 10px auto auto;
+}
+@media (max-width:900px) {
+
+  .lang-flag { 
+    text-align: center;
+    margin: auto auto 2% auto;    
+    }
+
 }
 </style>
 
