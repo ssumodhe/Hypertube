@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 
   resources :comments, only: [:create, :update]
   get 'users/:username', to: 'users#show'
+  get 'users/:username/avatar', to: 'users#avatar'
 
   get 'search', to: 'search#query'
 

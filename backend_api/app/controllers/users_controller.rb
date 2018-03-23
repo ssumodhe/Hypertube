@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :update, :destroy]
+  before_action :set_user, only: [:show, :update, :destroy, :avatar]
   before_action :logged_in?
 
   # GET /users
@@ -37,6 +37,10 @@ class UsersController < ApplicationController
   # DELETE /users/1
   def destroy
     @user.destroy
+  end
+
+  def avatar
+    send_file @user.picture.path, type: 'image/jpeg', disposition: :inline
   end
 
   private
