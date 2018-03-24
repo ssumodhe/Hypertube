@@ -32,9 +32,13 @@
 
             <ul class="nav navbar-nav navbar-right">
               <li role="separator" class="divider"></li>
-              <li>
-                <button class="lang-flag" v-if="this.language == 'fr'" @click="switchLang"><i class="em em-fr"></i></button>    
-                <button class="lang-flag" v-if="this.language == 'en'" @click="switchLang"><i class="em em-gb"></i></button>
+               <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown"><i :class="flag"></i><span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li @click="switchLang('en')"><a href="#"><i class="em em-gb"></i> English</a></li>
+                  <li @click="switchLang('fr')"><a href="#"><i class="em em-fr"></i> Français</a></li>
+                  <li @click="switchLang('it')"><a href="#"><i class="em em-it"></i> Italiano</a></li>
+                </ul>
               </li>
               <li>
                 <button id="deco_button" v-on:click="logOut"><span  class="glyphicon glyphicon-log-out" style="color:white" :alt="log_out" :title="log_out"></span></button>    
@@ -83,6 +87,14 @@ export default {
   computed:{
     log_out()  {
      return this.translate('log_out')
+    },
+    flag(){
+      if(this.language == 'fr')
+        return 'em em-fr'
+      else if(this.language == 'it')
+        return 'em em-it'
+      else
+        return 'em em-gb'
     }
   },
   data(){
@@ -105,10 +117,13 @@ export default {
       localStorage.setItem('vue-lang', temp)
       this.$router.push('/login')
     },
-    switchLang: function(){
-      if(this.language == 'en'){
+    switchLang: function(lang){
+      if(lang == 'fr'){
         this.language = 'fr'
-      }else{
+      }else if(lang == 'it'){
+        this.language = 'it'
+      }
+      else{
         this.language = 'en'
       }
     }
@@ -151,12 +166,6 @@ img {
 .navbar{
   background-color: #222222;
   z-index: 2000;
-}
-.lang-flag{
-  text-align: right;
-  border: none;
-  background-color: #222222;
-  margin: 26% 10px auto auto;
 }
 @media (max-width:900px) {
 
