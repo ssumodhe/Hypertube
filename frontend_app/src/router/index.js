@@ -58,8 +58,7 @@ Vue.use(MultiLanguage, {
     new_pswd: 'New password',
       // Uplaod-file
     msg_upload: 'Drag and drop your profile picture here',
-    
-    
+
   },
   fr: {
     welcome: 'Bienvenue, {name}.',
@@ -107,6 +106,51 @@ Vue.use(MultiLanguage, {
 
 
   },
+  it: {
+    welcome: 'Benvenuto, {name}.',
+      // Login-signup
+    signup: 'Registro',
+    email: 'Email',
+    username: 'Soprannome',
+    first_name: 'Conome',
+    last_name: 'Nome',
+    password: 'Password',
+    msg_pswd: 'La tua password deve contenere almeno 8 caratteri. <br> Con solo lettere minuscole, maiuscole e numeri.',
+    confirm_password: 'Conferma password',
+    btn_signup: 'Registro!',
+      // Login-signin
+    signin: 'Il login',
+    with: 'Con :',
+    or: 'O :',
+    remember_me: 'Ricordati di me',
+    btn_signin: 'Il login!',
+      // Video
+    msg_ad: 'Pub: il tuo video inizierà dopo questo annuncio.',
+    msg_cmt: 'Condividi la tua impressione, aggiungi un commento :) ',
+    btn_share: 'Suddividere',
+    prev_cmt: 'Commenti precedenti',
+    commented : ' ha commentato ',
+    no_cmt: 'Ancora nessun commento! Sii il primo a condividere! ;)',
+      // Home
+    new: ' Nuovo',
+    prev: 'precedente',
+    next: 'Seguente',
+    watch: ' Guardare',
+    all_we_got: 'Questo è tutto ciò che abbiamo!',
+      // Searchbar
+    looking_for: 'Stai cercando qualcosa in particolare ?',
+      // App (NavBar)
+    home: 'Accoglienza',
+    profile: 'Profilo',
+    log_out: 'Esci',
+      // User
+    msg_modif: 'Clicca sulle tue informazioni per cambiare il valore',
+    old_pswd: 'Vecchia password',
+    new_pswd: 'Nuova password',
+      // Upload-file
+    msg_upload: 'Aggiungi la tua immagine del profilo qui.',
+  },
+
 })
 
 
