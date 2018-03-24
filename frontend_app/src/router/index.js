@@ -48,6 +48,10 @@ Vue.use(MultiLanguage, {
     all_we_got: 'That\'s all we\'ve got !',
       // Searchbar
     looking_for: 'Are you looking for something in particular ?',
+      // App (NavBar)
+    home: 'Home',
+    profile: 'Profile',
+    log_out: 'Log Out',
     
   },
   fr: {
@@ -83,6 +87,11 @@ Vue.use(MultiLanguage, {
     all_we_got: 'Voilà tout ce que nous ayons !',
       // Searchbar
     looking_for: 'Cherchez vous quelque chose ?',
+      // App (NavBar)
+    home: 'Accueil',
+    profile: 'Compte',
+    log_out: 'Déconnexion',
+
 
   },
 })

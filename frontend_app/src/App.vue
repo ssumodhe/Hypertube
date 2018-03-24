@@ -17,8 +17,8 @@
           </div>
           <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
-              <li data-toggle="collapse" data-target="#myNavbar"><router-link to="/">Home</router-link></li>
-              <li data-toggle="collapse" data-target="#myNavbar"><router-link :to="'/user/' + username">Profile</router-link></li>
+              <li data-toggle="collapse" data-target="#myNavbar"><router-link to="/"><span v-lang.home></span></router-link></li>
+              <li data-toggle="collapse" data-target="#myNavbar"><router-link :to="'/user/' + username"><span v-lang.profile></span></router-link></li>
               <li data-toggle="collapse" data-target="#myNavbar"><router-link :to="'/video/' + loggedIn">Videos</router-link></li>
               <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">Page 1 <span class="caret"></span></a>
@@ -37,7 +37,7 @@
                 <button class="lang-flag" v-if="this.language == 'en'" @click="switchLang"><i class="em em-gb"></i></button>
               </li>
               <li>
-                <button id="deco_button" v-on:click="logOut"><span  class="glyphicon glyphicon-log-out" style="color:white" alt="Deconnexion" title="Deconnexion"></span></button>    
+                <button id="deco_button" v-on:click="logOut"><span  class="glyphicon glyphicon-log-out" style="color:white" :alt="log_out" :title="log_out"></span></button>    
         <!--          <router-link to="/login" id="deco_button"><span v-on:click="logOut" class="glyphicon glyphicon-log-out" style="color:white" alt="Deconnexion" title="Deconnexion"></span></router-link> -->
               </li>
 
@@ -80,6 +80,11 @@
 <script>
 export default {
   name: 'app',
+  computed:{
+    log_out()  {
+     return this.translate('log_out')
+    }
+  },
   data(){
     return{
       loggedIn: localStorage.getItem('token'),
