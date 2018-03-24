@@ -1,6 +1,5 @@
 <template>
   <div class="user">
-    <h1>User Page</h1>
     {{note}}
     {{stalker}}
 
@@ -25,7 +24,7 @@
 
       <div class="col-md-5">
         <div v-if="!stalker" class="badge badge-secondary" style="margin-bottom: 5px;">
-          <span>Click on any item to modify your data.</span>
+          <span v-lang.msg_modif></span>
         </div>
         <div id="accordion" role="tablist" aria-multiselectable="true">
           <div class="card">
@@ -104,32 +103,25 @@
               <h5 class="mb-0">
                 <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
                   <span class="glyphicon glyphicon-lock"></span>
-                  <p>Password.</p>
+                  <p v-lang.password></p>
                 </a>
               </h5>
             </div>
             <div id="collapseFour" class="collapse" role="tabpanel" aria-labelledby="headingFour">
               <div class="card-block">
-
-                    <small><mark>
-                    Your password needs to be at least 8 chars long.
-                    <br> With lower and upper cases and digits only.
-                    </mark></small>
-
+                <small><mark v-lang.msg_pswd></mark></small>
 
                 <form @submit.prevent="submitPwd">
-
-
                   <div class="form-group has-feedback" v-bind:class="[crtPwdSuccessClass]">
-                    <input ref="txtCrtPwd" type="password" class="form-control" placeholder="Old Password" @input="crtPwdValidation" pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]+).{7,}$" required>
+                    <input ref="txtCrtPwd" type="password" class="form-control" :placeholder="old_pswd" @input="crtPwdValidation" pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]+).{7,}$" required>
                   </div>
 
                   <div class="form-group has-feedback" v-bind:class="[newPwdSuccessClass]">
-                    <input ref="txtNewPwd" type="password" class="form-control" placeholder="New Password" @input="newPwdValidation" pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]+).{7,}$" required>
+                    <input ref="txtNewPwd" type="password" class="form-control" :placeholder="new_pswd" @input="newPwdValidation" pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]+).{7,}$" required>
                   </div>
 
                   <div class="form-group has-feedback" v-bind:class="[cfmPwdSuccessClass]">
-                    <input ref="txtCfmPwd" type="password" class="form-control" placeholder="Please confirm" @input="cfmPwdValidation" pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]+).{7,}$" required>
+                    <input ref="txtCfmPwd" type="password" class="form-control" :placeholder="confirm_password" @input="cfmPwdValidation" pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]+).{7,}$" required>
                   </div>
                   <input v-bind:disabled="pwdSubmitBtnDisabled" class="btn btn-default" type="submit" value="Modif.">
                 </form>
@@ -178,6 +170,17 @@ export default{
       .catch( (error) => {
         console.log(error)
       });
+  },
+  computed:{
+    new_pswd()  {
+     return this.translate('new_pswd')
+    },
+    old_pswd()  {
+     return this.translate('old_pswd')
+    },
+    confirm_password()  {
+     return this.translate('confirm_password')
+    },
   },
   data(){
     return {

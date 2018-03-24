@@ -52,6 +52,13 @@ Vue.use(MultiLanguage, {
     home: 'Home',
     profile: 'Profile',
     log_out: 'Log Out',
+      // User
+    msg_modif: 'Click on any item to modify your data.',
+    old_pswd: 'Old password',
+    new_pswd: 'New password',
+      // Uplaod-file
+    msg_upload: 'Drag and drop your profile picture here',
+    
     
   },
   fr: {
@@ -91,6 +98,12 @@ Vue.use(MultiLanguage, {
     home: 'Accueil',
     profile: 'Compte',
     log_out: 'Déconnexion',
+      // User
+    msg_modif: 'Cliquez sur vos informations pour en modifier la valeur',
+    old_pswd: 'Ancien mot de passe',
+    new_pswd: 'Nouveau mot de passe',
+      // Upload-file
+    msg_upload: 'Ajoutez votre photo de profil ici.',
 
 
   },
