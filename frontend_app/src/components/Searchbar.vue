@@ -6,7 +6,7 @@
       :src="search_url"
       :getResponse="getResponse"
       :onHit="onHit"
-      :placeholder="placeholder"
+      :placeholder="looking_for"
     ></TypeAhead>
 <!-- 	<div class="row">    
       <div class="col-sm-12 col-md-6 col-md-offset-3">
@@ -46,11 +46,15 @@ export default{
 	components:{
 		TypeAhead
 	},
+  computed: {
+    looking_for()  {
+     return this.translate('looking_for')
+    }
+  },
 	data(){
 		return{
 			searchResponse: [],
-      search_url: searchUrl,
-      placeholder: 'Are you looking for something in particular ?'
+      search_url: searchUrl
 		}
 	},
 	methods: {
