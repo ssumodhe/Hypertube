@@ -169,12 +169,18 @@ export default{
         return "today"
       else if (diff == 0 && this.language == 'fr')
         return "aujourd'hui"
+      else if (diff == 0 && this.language == 'it')
+        return "oggi"
       else if (diff == 1 && this.language == 'en')
         return "yesterday"
       else if (diff == 1 && this.language == 'fr')
         return "hier"
+      else if (diff == 1 && this.language == 'it')
+        return "ieri"
       else if (this.language == 'fr')
         return "il y a " + diff + " jours."
+      else if (this.language == 'it')
+        return diff + " giorni fa."
       else
         return diff + " days ago."
     }
