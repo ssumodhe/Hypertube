@@ -10,6 +10,7 @@
               <h5 class="mb-0">
                 <!-- <a data-toggle="collapse" data-parent="#accordion" href="#collapseZero" aria-expanded="true" aria-controls="collapseZero"> -->
                   <img class="img" src="/static/img/emoji_kitty.png" width="100px">
+                  <img class="img" :src="usersPicture" width="100px">
                 <!-- </a> -->
               </h5>
             </div>
@@ -155,21 +156,36 @@ export default{
     else{
       this.stalker = true
     }
+
     axios({
       method: 'get',
       url: userUrl + this.$route.params.username,
       headers: this.headers
-      })
-      .then( (response) => {
-        console.log(response)
-        this.userName = response.data.username
-        this.email = response.data.email
-        this.firstName = response.data.firstname
-        this.lastName = response.data.lastname
-      })
-      .catch( (error) => {
-        console.log(error)
-      });
+    })
+    .then( (response) => {
+      this.userName = response.data.username
+      this.email = response.data.email
+      this.firstName = response.data.firstname
+      this.lastName = response.data.lastname
+    })
+    .catch( (error) => {
+      console.log(error)
+    });
+
+    axios({
+      method: 'get',
+      url: userUrl + this.$route.params.username + '/avatar',
+      headers: this.headers
+    })
+    .then( (response) => {
+      console.log("in users.vue created-axios get AVATAR")
+      console.log(response)
+      // this.usersPicture = "data:image/png;base64," + response.data
+      this.usersPicture = response.data
+    })
+    .catch( (error) => {
+      console.log(error)
+    });
   },
   computed:{
     new_pswd()  {
@@ -187,13 +203,14 @@ export default{
       note: "This is " + this.$route.params.username + "'s profile page!!",
       stalker: false,
       headers: {
-          'access-token': localStorage.getItem('token'),
-          'client': localStorage.getItem('client'),
-          'expiry': localStorage.getItem('expiry'),
-          'token-type': localStorage.getItem('token-type'),
-          'uid': localStorage.getItem('uid'),
-          'Content-Type': 'application/json'
-        },
+      'access-token': localStorage.getItem('token'),
+      'client': localStorage.getItem('client'),
+      'expiry': localStorage.getItem('expiry'),
+      'token-type': localStorage.getItem('token-type'),
+      'uid': localStorage.getItem('uid'),
+      'Content-Type': 'application/json'
+      },
+      usersPicture: "",
       userName: "",
       email: "",
       firstName: "",
