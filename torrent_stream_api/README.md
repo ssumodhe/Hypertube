@@ -38,4 +38,33 @@ WEBVTT FILE
 $> curl -XDELETE "http://e1r3p13.42.fr:5555/video/44f91a15dfc1c68b3a2d49d452a40dae4b7ae3d7"
 OK
 
+# POST /search
+# return an array of films, sorted by seeds
+$> curl -XPOST http://e1r3p13.42.fr:5555/search -H "Content-Type: application/json" -d '{"title":"film_title"}'
+# example:
+$> curl -XPOST http://e1r3p13.42.fr:5555/infos -H "Content-Type: application/json" -d '{"title":"interstellar"}'
+
+[ { id: 1632,
+    name: 'Interstellar (2014)',
+    seeds: 1405,
+    leeches: 138,
+    category: 'Video',
+    link: 'https://yts.am/movie/interstellar-2014',
+    magnet_link: 'https://yts.am/torrent/download/89599BF4DC369A3A8ECA26411C5CCF922D78B486' },
+  { id: 1632,
+    name: 'Interstellar (2014)',
+    seeds: 488,
+    leeches: 50,
+    category: 'Video',
+    link: 'https://yts.am/movie/interstellar-2014',
+    magnet_link: 'https://yts.am/torrent/download/6E88B3F25BA49D483D740A652BF013C341BC5373' },
+  { id: '11756796',
+    name: 'Interstellar 2014 Movies 720p BluRay x264 ESubs AAC New ~ ☻rDX☻',
+    seeds: 29,
+    leeches: 8,
+    category: 'Interstellar 2014 Movies 720p BluRay x264 ESubs AAC New ~ ☻rDX☻',
+    link: 'https://thepiratebay.org/torrent/11756796/Interstellar_2014_Movies_720p_BluRay_x264_ESubs_AAC_New____rDX_',
+    magnet_link: 'magnet:?xt=urn:btih:611bd431861c5dc5be0333b0656af705e4a7dfa7&dn=Interstellar+2014+Movies+720p+BluRay+x264+ESubs+AAC+New+%7E+%E2%98%BBrDX%E2%98%BB&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Fzer0day.ch%3A1337&tr=udp%3A%2F%2Fopen.demonii.com%3A1337&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Fexodus.desync.com%3A6969' },
+...
+
 ```

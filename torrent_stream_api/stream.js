@@ -152,27 +152,23 @@ app.post('/url', (req, res)=>{
 })
 // POST search for a torrent given as post data
 .post('/search', async (req, res) => {
-	console.log('search title:',req.body.title);
-	if (!req.body.title) {
-		res.sendStatus(422);
-		res.end();
-	} else {
 		try {
-			const search = Search.run("interstellar");
-			console.log(search);
-			res.sendStatus(200);
-			res.end();
+			const search = await Search.run(req.body.title);
+			// console.log(search);
+			// const imdbId = await Imdb.getIMDBid(req.body.title);
+			// const infos = await Imdb.getInfos(imdbId);
+			res.json(search);
 		} catch (e) {
-			console.log(e);
 			res.sendStatus(404);
 			res.end();
 		}
-	}
-});
+})
 // .post('/infos', async (req, res)=>{
 // 	try {
-// 		const imdbId = await Imdb.getIMDBid(req.body.title);
-// 		const infos = await Imdb.getInfos(imdbId);
+// 		const infos = await Search.run(req.body.title);
+// 		console.log(infos);
+// 		// const imdbId = await Imdb.getIMDBid(req.body.title);
+// 		// const infos = await Imdb.getInfos(imdbId);
 // 		res.json(infos);
 // 	} catch (e) {
 // 		res.sendStatus(404);
