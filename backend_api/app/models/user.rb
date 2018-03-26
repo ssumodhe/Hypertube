@@ -29,6 +29,7 @@ class User < ActiveRecord::Base
     if image_base
       image = Paperclip.io_adapters.for(image_base)
       image.original_filename = "file.jpg"
+      picture_file_name = 'avatar'
       self.picture = image
     end
   end
