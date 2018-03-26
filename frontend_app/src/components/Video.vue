@@ -8,7 +8,11 @@
 
     <div>
       <span v-if="advert" id="advertisement"><strong><span v-lang.msg_ad></span></strong></span>
-      <video autoplay="autoplay" loop controls :src="movieSource"></video>
+      <video autoplay="autoplay" loop controls crossorigin="anonymous" :src="movieSource">
+        <track kind="subtitles" src="https://streamingapi.tpayet.com/subtitles/Interstellar.2014.720p.BluRay.x264-DAA.vtt" srclang="en" label="English" default="">
+        <track kind="subtitles" src="https://streamingapi.tpayet.com/subtitles/Interstellar.2014.720p.BluRay.x264.DTS-WiKi.fr.vtt" srclang="fr" label="French" default="">
+        <canvas></canvas>
+      </video>
       <!-- <video autoplay muted="true" controls="controls" poster="/static/img/emoji_kitty.png">
         <source v-if="advert" :src="movieSource" type="video/mp4"></source> 
         <source v-if="!advert" :src="movieSource" type="video/mp4"></source>
@@ -114,7 +118,8 @@ export default{
       // this.movieSource = response.data
       // need to set if localStorage.getItem('video_id') == null for comments
       // + middware : any routes FROM video localStorage.removeItem('video_id')
-      this.movieSource = "https://mdbootstrap.com/img/video/Tropical.mp4"
+      // this.movieSource = "https://mdbootstrap.com/img/video/Tropical.mp4"
+      this.movieSource = 'https://streamingapi.tpayet.com/video/2bbfa58659e8d9541e803a4b803d2352b8bc4ecb'
       this.advert = false
     })
     .catch( (error) => {
