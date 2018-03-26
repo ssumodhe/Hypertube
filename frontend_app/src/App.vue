@@ -65,11 +65,15 @@
           </div>
           <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav navbar-right">
-                <li role="separator" class="divider"></li>
-                <li>
-                  <button class="lang-flag" v-if="this.language == 'fr'" @click="switchLang"><i class="em em-fr"></i></button>    
-                  <button class="lang-flag" v-if="this.language == 'en'" @click="switchLang"><i class="em em-gb"></i></button>
-                </li>
+              <li role="separator" class="divider"></li>
+               <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown"><i :class="flag"></i><span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li @click="switchLang('en')"><a href="#"><i class="em em-gb"></i> English</a></li>
+                  <li @click="switchLang('fr')"><a href="#"><i class="em em-fr"></i> Français</a></li>
+                  <li @click="switchLang('it')"><a href="#"><i class="em em-it"></i> Italiano</a></li>
+                </ul>
+              </li>
             </ul>
          </div>
 
