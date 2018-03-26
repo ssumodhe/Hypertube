@@ -39,7 +39,7 @@
 
 <script>
 import TypeAhead from 'vue2-typeahead'
-import {searchUrl} from '../config.js'
+import {searchUrl} from '@/config.js'
 
 export default{
 	name: 'Searchbar',

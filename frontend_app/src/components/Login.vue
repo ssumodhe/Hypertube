@@ -45,8 +45,8 @@
 <script>
 import Signup from '@/components/login-signup'
 import Signin from '@/components/login-signin'
-import {signInUrl} from '../config.js'
-import {signUpUrl} from '../config.js'
+import {signInUrl} from '@/config.js'
+import {signUpUrl} from '@/config.js'
 export default{
   name: 'login',
   data(){

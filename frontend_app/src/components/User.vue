@@ -139,8 +139,8 @@
 
 <script>
 import Uploadfile from '@/components/upload-file'
-import {userUrl} from '../config.js'
-import {signUpUrl} from '../config.js'
+import {userUrl} from '@/config.js'
+import {signUpUrl} from '@/config.js'
 
 
 export default{

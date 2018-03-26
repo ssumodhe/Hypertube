@@ -72,7 +72,7 @@
 <script>
 import InfiniteLoading from 'vue-infinite-loading';
 import Searchbar from '@/components/searchbar'
-import {videoUrl} from '../config.js'
+import {videoUrl} from '@/config.js'
 
 
 export default{
