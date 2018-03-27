@@ -182,7 +182,7 @@ Vue.use(MultiLanguage, {
       // Searchbar
     looking_for: '¿Estás buscando algo?',
       // App (NavBar)
-    home: 'Bienvenida',
+    home: 'Inicio',
     profile: 'Perfil',
     log_out: 'Salir',
       // User
@@ -191,6 +191,50 @@ Vue.use(MultiLanguage, {
     new_pswd: 'Nuevo contraseña',
       // Upload-file
     msg_upload: 'Agrega tu foto de perfil aquí.',
+  },
+  de: {
+    welcome: 'Willkommen, {name}.',
+      // Login-signup
+    signup: 'Registrieren',
+    email: 'Email',
+    username: 'Spitzname',
+    first_name: 'Vorname',
+    last_name: 'Name',
+    password: 'Passwort',
+    msg_pswd: 'Ihr Passwort muss mindestens 8 Zeichen enthalten. <br> Mit nur Kleinbuchstaben, Großbuchstaben und Zahlen.',
+    confirm_password: 'Passwort bestätigen',
+    btn_signup: 'Registrieren!',
+      // Login-signin
+    signin: 'Einloggen',
+    with: 'Mit :',
+    or: 'Oder :',
+    remember_me: 'Erinnere mich an mich!',
+    btn_signin: 'Einloggen!',
+      // Video
+    msg_ad: 'Pub: Dein Video beginnt nach dieser Werbung.',
+    msg_cmt: 'Teilen Sie Ihre Impression, fügen Sie einen Kommentar hinzu :) ',
+    btn_share: 'Aktie',
+    prev_cmt: 'Vorige Kommentare',
+    commented : ' kommentierte ',
+    no_cmt: 'Noch keine Kommentare! Sei der Erste, der teilt ! ;)',
+      // Home
+    new: ' Neu',
+    prev: 'Früher',
+    next: 'Folgende',
+    watch: ' Aussehen',
+    all_we_got: 'Das ist alles was wir haben !',
+      // Searchbar
+    looking_for: 'Suchst du etwas?',
+      // App (NavBar)
+    home: 'Startseite',
+    profile: 'Profil',
+    log_out: 'Austragen',
+      // User
+    msg_modif: 'Klicken Sie auf Ihre Informationen, um den Wert zu ändern',
+    old_pswd: 'Altes Passwort',
+    new_pswd: 'Neues Passwort',
+      // Upload-file
+    msg_upload: 'Fügen Sie Ihr Profilbild hier hinzu.',
   },
 
 })
