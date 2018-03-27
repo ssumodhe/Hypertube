@@ -38,6 +38,7 @@
                   <li @click="switchLang('en')"><a href="#"><i class="em em-gb"></i> English</a></li>
                   <li @click="switchLang('fr')"><a href="#"><i class="em em-fr"></i> Français</a></li>
                   <li @click="switchLang('it')"><a href="#"><i class="em em-it"></i> Italiano</a></li>
+                  <li @click="switchLang('es')"><a href="#"><i class="em em-es"></i> Español</a></li>
                 </ul>
               </li>
               <li>
@@ -72,6 +73,7 @@
                   <li @click="switchLang('en')"><a href="#"><i class="em em-gb"></i> English</a></li>
                   <li @click="switchLang('fr')"><a href="#"><i class="em em-fr"></i> Français</a></li>
                   <li @click="switchLang('it')"><a href="#"><i class="em em-it"></i> Italiano</a></li>
+                  <li @click="switchLang('es')"><a href="#"><i class="em em-es"></i> Español</a></li>
                 </ul>
               </li>
             </ul>
@@ -97,6 +99,8 @@ export default {
         return 'em em-fr'
       else if(this.language == 'it')
         return 'em em-it'
+      else if(this.language == 'es')
+        return 'em em-es'
       else
         return 'em em-gb'
     }
@@ -126,6 +130,8 @@ export default {
         this.language = 'fr'
       }else if(lang == 'it'){
         this.language = 'it'
+      }else if(lang == 'es'){
+        this.language = 'es'
       }
       else{
         this.language = 'en'

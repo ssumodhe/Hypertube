@@ -103,8 +103,6 @@ Vue.use(MultiLanguage, {
     new_pswd: 'Nouveau mot de passe',
       // Upload-file
     msg_upload: 'Ajoutez votre photo de profil ici.',
-
-
   },
   it: {
     welcome: 'Benvenuto, {name}.',
@@ -149,6 +147,50 @@ Vue.use(MultiLanguage, {
     new_pswd: 'Nuova password',
       // Upload-file
     msg_upload: 'Aggiungi la tua immagine del profilo qui.',
+  },
+  es: {
+    welcome: 'Bienvenida, {name}.',
+      // Login-signup
+    signup: 'Inscribirse',
+    email: 'Email',
+    username: 'Apodo',
+    first_name: 'Nombre',
+    last_name: 'Apellido',
+    password: 'Contraseña',
+    msg_pswd: 'La contraseña debe tener al menos 8 caracteres. <br> Con solo minúsculas, mayúsculas y números.',
+    confirm_password: 'Confirmar la contraseña',
+    btn_signup: '¡Inscribirs!',
+      // Login-signin
+    signin: 'Conectarse',
+    with: 'Con :',
+    or: 'O :',
+    remember_me: 'Recuérdame',
+    btn_signin: '¡Conectarse!',
+      // Video
+    msg_ad: 'Pub: su video comenzará después de este anuncio.',
+    msg_cmt: 'Comparta su impresión, agregue un comentario :) ',
+    btn_share: 'Compartir',
+    prev_cmt: 'Comentarios anteriores',
+    commented : ' comentó ',
+    no_cmt: 'No hay comentarios todavía ¡Sé el primero en compartir! ;)',
+      // Home
+    new: ' Nuevo',
+    prev: 'Anterior',
+    next: 'Próximo',
+    watch: ' Mirar',
+    all_we_got: 'Eso es todo lo que tenemos !',
+      // Searchbar
+    looking_for: '¿Estás buscando algo?',
+      // App (NavBar)
+    home: 'Bienvenida',
+    profile: 'Perfil',
+    log_out: 'Salir',
+      // User
+    msg_modif: 'Haga clic en su información para modificar su valor',
+    old_pswd: 'Antigua contraseña',
+    new_pswd: 'Nuevo contraseña',
+      // Upload-file
+    msg_upload: 'Agrega tu foto de perfil aquí.',
   },
 
 })
