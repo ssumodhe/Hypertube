@@ -52,7 +52,10 @@
       <hr>
       <div class="card-body">
         <h5 class="card-title">{{lib.title}}</h5>
-        <p class="card-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+        
+        <p v-if="lib.description" class="card-text">{{lib.description}}</p>
+        <p v-else class="card-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+
         <button @click="setAndSend(lib.id, lib.token)" class="btn btn-default glyphicon glyphicon-film" style="margin-bottom: 5px;"><span v-lang.watch></span></button>
       </div>
     </div>
