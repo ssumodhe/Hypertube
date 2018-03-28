@@ -17,11 +17,11 @@ body {
 }
 footer {
 	text-align: center;
+	/*background: linear-gradient(to top, #434343, #222222); */
 	background-color: #222;
-	/*color: white;*/
-	color: #f0f0f0;
+	color: #f0f0f099;
 	font-family: "Josefin Slab";
-	position:absolute;
+	position: absolute;
 	bottom:0;
 	width:100%;
 	height:135px;   /* Height of the footer */

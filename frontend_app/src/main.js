@@ -24,6 +24,10 @@ router.beforeEach((to, from, next) => {
   else {
     // console.log(router)
     // console.log(router.options.routes)
+    console.log("in main.js - current v-lang:")
+    console.log(localStorage.getItem('vue-lang'))    
+    console.log("in main.js - localStorage:")
+    console.log(localStorage)
     next();
   }
 });

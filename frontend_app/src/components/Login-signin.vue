@@ -1,7 +1,7 @@
 <template>
   <div class="signin">
     
-    <p>With the following :</p>
+    <p v-lang.with></p>
     <div class="social-buttons">
       <a href="#42"><img width="10%" src="/static/img/social-icons/42-icon.png" title="Connect with 42" alt="42-icon"></a>
       <a href="#facebook"><img width="10%" src="/static/img/social-icons/facebook-icon.png" title="Connect with facebook" alt="facebook-icon"></a>
@@ -9,13 +9,13 @@
       <a href="#gmail"><img width="10%" src="/static/img/social-icons/gmail-icon.png" title="Connect with gmail" alt="gmail-icon"></a>
     </div>
 
-    <p>Or here :</p>
+    <p v-lang.or></p>
     <form @submit.prevent="submitSignIn">
     	<div class="form-group has-feedback" v-bind:class="[userSuccessClass]">
     		<label for="signInUser" class="control-label sr-only">
     			user name
     		</label>
-    		<input ref="txtUser" type="text" id="signInUser" class="form-control" name="user" placeholder="UserName." @input="checkUserValidation" required>
+    		<input ref="txtUser" type="text" id="signInUser" class="form-control" name="user" :placeholder="username" @input="checkUserValidation" required>
     		<span  v-bind:class="[userIconClass]"></span>
     	</div>
 
@@ -23,7 +23,7 @@
     		<label for="signInPassword" class="control-label sr-only">
     			secret password
     		</label>
-    		<input ref="txtPassword"  id="signInPassword"  type="password" class="form-control" name="password" placeholder="Password." @input="checkPasswordValidation" pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]+).{6,}$" required>
+    		<input ref="txtPassword"  id="signInPassword"  type="password" class="form-control" name="password" :placeholder="password" @input="checkPasswordValidation" pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]+).{6,}$" required>
     		<span  v-bind:class="[passwordIconClass]"></span>
     	</div>
 
@@ -32,11 +32,15 @@
 
       <div class="checkbox">
         <label>
-          <input type="checkbox" id="checkRemember" v-model="rememberMe"> Remember Me!
+          <input type="checkbox" id="checkRemember" v-model="rememberMe"> <span v-lang.remember_me></span>
         </label>
       </div>
 
-    	<input v-bind:disabled="submitBtnDisabled" class="btn btn-default" type="submit" value="Sign In!">
+      <div>
+        <button type="button" class="btn btn-xs btn-link" v-lang.forgotten_pswd></button>
+      </div>
+
+    	<input v-bind:disabled="submitBtnDisabled" class="btn btn-default" type="submit" :value="btn_signin">
     </form>
 
   </div>
@@ -52,6 +56,17 @@ export default{
       default: ''
     }
   },
+  computed: {
+    username()  {
+     return this.translate('username')
+    },
+    password()  {
+     return this.translate('password')
+    },
+    btn_signin()  {
+     return this.translate('btn_signin')
+    }
+  },
   data(){
     return {
       note: "Form sign In here",
@@ -60,7 +75,7 @@ export default{
       userIconClass: '',
       passwordIconClass: '',
       submitBtnDisabled: true,
-      rememberMe: false
+      rememberMe: true
     }
   },
   mounted: function(){

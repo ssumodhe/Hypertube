@@ -1,6 +1,5 @@
 <template>
   <div class="user">
-    <h1>User Page</h1>
     {{note}}
     {{stalker}}
 
@@ -11,6 +10,7 @@
               <h5 class="mb-0">
                 <!-- <a data-toggle="collapse" data-parent="#accordion" href="#collapseZero" aria-expanded="true" aria-controls="collapseZero"> -->
                   <img class="img" src="/static/img/emoji_kitty.png" width="100px">
+                  <img class="img" :src="usersPicture" width="100px">
                 <!-- </a> -->
               </h5>
             </div>
@@ -25,7 +25,7 @@
 
       <div class="col-md-5">
         <div v-if="!stalker" class="badge badge-secondary" style="margin-bottom: 5px;">
-          <span>Click on any item to modify your data.</span>
+          <span v-lang.msg_modif></span>
         </div>
         <div id="accordion" role="tablist" aria-multiselectable="true">
           <div class="card">
@@ -104,32 +104,25 @@
               <h5 class="mb-0">
                 <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
                   <span class="glyphicon glyphicon-lock"></span>
-                  <p>Password.</p>
+                  <p v-lang.password></p>
                 </a>
               </h5>
             </div>
             <div id="collapseFour" class="collapse" role="tabpanel" aria-labelledby="headingFour">
               <div class="card-block">
-
-                    <small><mark>
-                    Your password needs to be at least 8 chars long.
-                    <br> With lower and upper cases and digits only.
-                    </mark></small>
-
+                <small><mark v-lang.msg_pswd></mark></small>
 
                 <form @submit.prevent="submitPwd">
-
-
                   <div class="form-group has-feedback" v-bind:class="[crtPwdSuccessClass]">
-                    <input ref="txtCrtPwd" type="password" class="form-control" placeholder="Old Password" @input="crtPwdValidation" pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]+).{7,}$" required>
+                    <input ref="txtCrtPwd" type="password" class="form-control" :placeholder="old_pswd" @input="crtPwdValidation" pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]+).{7,}$" required>
                   </div>
 
                   <div class="form-group has-feedback" v-bind:class="[newPwdSuccessClass]">
-                    <input ref="txtNewPwd" type="password" class="form-control" placeholder="New Password" @input="newPwdValidation" pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]+).{7,}$" required>
+                    <input ref="txtNewPwd" type="password" class="form-control" :placeholder="new_pswd" @input="newPwdValidation" pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]+).{7,}$" required>
                   </div>
 
                   <div class="form-group has-feedback" v-bind:class="[cfmPwdSuccessClass]">
-                    <input ref="txtCfmPwd" type="password" class="form-control" placeholder="Please confirm" @input="cfmPwdValidation" pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]+).{7,}$" required>
+                    <input ref="txtCfmPwd" type="password" class="form-control" :placeholder="confirm_password" @input="cfmPwdValidation" pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]+).{7,}$" required>
                   </div>
                   <input v-bind:disabled="pwdSubmitBtnDisabled" class="btn btn-default" type="submit" value="Modif.">
                 </form>
@@ -147,8 +140,8 @@
 
 <script>
 import Uploadfile from '@/components/upload-file'
-import {userUrl} from '../config.js'
-import {signUpUrl} from '../config.js'
+import {userUrl} from '@/config.js'
+import {signUpUrl} from '@/config.js'
 
 
 export default{
@@ -163,34 +156,61 @@ export default{
     else{
       this.stalker = true
     }
+
     axios({
       method: 'get',
       url: userUrl + this.$route.params.username,
       headers: this.headers
-      })
-      .then( (response) => {
-        console.log(response)
-        this.userName = response.data.username
-        this.email = response.data.email
-        this.firstName = response.data.firstname
-        this.lastName = response.data.lastname
-      })
-      .catch( (error) => {
-        console.log(error)
-      });
+    })
+    .then( (response) => {
+      this.userName = response.data.username
+      this.email = response.data.email
+      this.firstName = response.data.firstname
+      this.lastName = response.data.lastname
+    })
+    .catch( (error) => {
+      console.log(error)
+    });
+
+    axios({
+      method: 'get',
+      url: userUrl + this.$route.params.username + '/avatar',
+      headers: this.headers
+    })
+    .then( (response) => {
+      console.log("in users.vue created-axios get AVATAR")
+      console.log(response)
+      // this.usersPicture = "data:image/png;base64," + response.data
+      this.usersPicture = response.data
+    })
+    .catch( (error) => {
+      console.log(error)
+    });
+  },
+  computed:{
+    new_pswd()  {
+     return this.translate('new_pswd')
+    },
+    old_pswd()  {
+     return this.translate('old_pswd')
+    },
+    confirm_password()  {
+     return this.translate('confirm_password')
+    },
   },
   data(){
     return {
       note: "This is " + this.$route.params.username + "'s profile page!!",
       stalker: false,
       headers: {
-          'access-token': localStorage.getItem('token'),
-          'client': localStorage.getItem('client'),
-          'expiry': localStorage.getItem('expiry'),
-          'token-type': localStorage.getItem('token-type'),
-          'uid': localStorage.getItem('uid'),
-          'Content-Type': 'application/json'
-        },
+      'access-token': localStorage.getItem('token'),
+      'client': localStorage.getItem('client'),
+      'expiry': localStorage.getItem('expiry'),
+      'token-type': localStorage.getItem('token-type'),
+      'uid': localStorage.getItem('uid'),
+      'Content-Type': 'application/json'
+      },
+      usersPicture: "",
       userName: "",
       email: "",
       firstName: "",

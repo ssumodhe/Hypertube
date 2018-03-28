@@ -16,7 +16,7 @@
         buttonClass="ui button primary"
         :customStrings="{
         upload: '<h1>Upload it!</h1>',
-        drag: 'Drag and drop your profile picture here'}">
+        drag: msg_upload}">
 
       </picture-input>
   </div>
@@ -27,6 +27,11 @@ import PictureInput from 'vue-picture-input'
 
 export default{
   name: 'uploadfile',
+  computed:{
+    msg_upload()  {
+     return this.translate('msg_upload')
+    }
+  },
   data(){
     return {
     }
