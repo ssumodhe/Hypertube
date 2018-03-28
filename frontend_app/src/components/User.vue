@@ -9,7 +9,6 @@
             <div class="card-header" role="tab" id="headingZero">
               <h5 class="mb-0">
                 <!-- <a data-toggle="collapse" data-parent="#accordion" href="#collapseZero" aria-expanded="true" aria-controls="collapseZero"> -->
-                  <img class="img" src="/static/img/emoji_kitty.png" width="100px">
                   <img class="img" :src="usersPicture" width="100px">
                 <!-- </a> -->
               </h5>
@@ -167,21 +166,7 @@ export default{
       this.email = response.data.email
       this.firstName = response.data.firstname
       this.lastName = response.data.lastname
-    })
-    .catch( (error) => {
-      console.log(error)
-    });
-
-    axios({
-      method: 'get',
-      url: userUrl + this.$route.params.username + '/avatar',
-      headers: this.headers
-    })
-    .then( (response) => {
-      console.log("in users.vue created-axios get AVATAR")
-      console.log(response)
-      // this.usersPicture = "data:image/png;base64," + response.data
-      this.usersPicture = response.data
+      this.usersPicture = userUrl + this.$route.params.username + '/avatar';
     })
     .catch( (error) => {
       console.log(error)
