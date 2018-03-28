@@ -179,17 +179,5 @@ img {
   width: 5%;
   margin-top: 0;
 }
-.navbar{
-  background-color: #222222;
-  z-index: 2000;
-}
-@media (max-width:900px) {
-
-  .lang-flag { 
-    text-align: center;
-    margin: auto auto 2% auto;    
-    }
-
-}
 </style>
 
