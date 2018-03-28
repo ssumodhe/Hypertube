@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :update, :destroy, :avatar]
-  before_action :logged_in?
+  before_action :logged_in?, except: [:avatar]
 
   # GET /users
   def index
