@@ -8,7 +8,7 @@
 
     <div>
       <span v-if="advert" id="advertisement"><strong><span v-lang.msg_ad></span></strong></span>
-      <video autoplay="autoplay" loop controls crossorigin="anonymous" :src="movieSource" poster="/static/img/loading.gif">
+      <video autoplay="autoplay" loop controls preload="metadata" :src="movieSource" poster="/static/img/loading.gif">
         <track kind="subtitles" src="https://streamingapi.tpayet.com/subtitles/Interstellar.2014.720p.BluRay.x264-DAA.vtt" srclang="en" label="English" default="">
         <track kind="subtitles" src="https://streamingapi.tpayet.com/subtitles/Interstellar.2014.720p.BluRay.x264.DTS-WiKi.fr.vtt" srclang="fr" label="French">
         <canvas></canvas>
@@ -74,12 +74,6 @@ export default{
   computed: {
     msg_cmt()  {
      return this.translate('msg_cmt')
-    },
-    password()  {
-     return this.translate('password')
-    },
-    btn_signin()  {
-     return this.translate('btn_signin')
     }
   },
   data(){
