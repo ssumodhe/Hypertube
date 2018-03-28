@@ -90,7 +90,6 @@ export default{
     infiniteHandler($state) {
       axios.get(videoUrl)
       .then(({ data }) => {
-        this.length = data.length
         if (data.length) {
           const temp = [];
           for (let i = this.page; i < this.page + 20; i++) {
