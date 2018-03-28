@@ -6,6 +6,10 @@ networks:
   hypertube_network:
     external: false
 
+volumes:
+  users_avatar:
+    driver: local
+
 services:
 
   postgres:
@@ -36,6 +40,8 @@ services:
     networks:
       - proxy
       - hypertube_network
+    volumes:
+      - users_avatar:/app/public/system/users
     env_file: backend_api/.env
 
   streamingapi:
