@@ -36,6 +36,10 @@
         </label>
       </div>
 
+      <div>
+        <button type="button" class="btn btn-xs btn-link" v-lang.forgotten_pswd></button>
+      </div>
+
     	<input v-bind:disabled="submitBtnDisabled" class="btn btn-default" type="submit" :value="btn_signin">
     </form>
 
@@ -71,7 +75,7 @@ export default{
       userIconClass: '',
       passwordIconClass: '',
       submitBtnDisabled: true,
-      rememberMe: false
+      rememberMe: true
     }
   },
   mounted: function(){

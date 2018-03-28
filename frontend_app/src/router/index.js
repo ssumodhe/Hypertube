@@ -32,6 +32,7 @@ Vue.use(MultiLanguage, {
     with: 'With the following :',
     or: 'Or here :',
     remember_me: 'Remember Me!',
+    forgotten_pswd: 'Forgot your password?',
     btn_signin: 'Sign Me In!',
       // Video
     msg_ad: 'Ad : Your video will play after this ad.',
@@ -77,6 +78,7 @@ Vue.use(MultiLanguage, {
     with: 'Avec :',
     or: 'Ou alors :',
     remember_me: 'Se souvenir de moi!',
+    forgotten_pswd: 'Mot de passe oublié?',
     btn_signin: 'Se connecter!',
       // Video
     msg_ad: 'Pub: Votre vidéo commencera après cette publicité.',
@@ -121,6 +123,7 @@ Vue.use(MultiLanguage, {
     with: 'Con :',
     or: 'O :',
     remember_me: 'Ricordati di me',
+    forgotten_pswd: 'Hai dimenticato la password?',
     btn_signin: 'Il login!',
       // Video
     msg_ad: 'Pub: il tuo video inizierà dopo questo annuncio.',
@@ -165,6 +168,7 @@ Vue.use(MultiLanguage, {
     with: 'Con :',
     or: 'O :',
     remember_me: 'Recuérdame',
+    forgotten_pswd: '¿Contraseña olvidada?',
     btn_signin: '¡Conectarse!',
       // Video
     msg_ad: 'Pub: su video comenzará después de este anuncio.',
@@ -209,6 +213,7 @@ Vue.use(MultiLanguage, {
     with: 'Mit :',
     or: 'Oder :',
     remember_me: 'Erinnere mich an mich!',
+    forgotten_pswd: 'Passwort vergessen?',
     btn_signin: 'Einloggen!',
       // Video
     msg_ad: 'Pub: Dein Video beginnt nach dieser Werbung.',
