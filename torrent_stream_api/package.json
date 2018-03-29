@@ -20,6 +20,9 @@
     "parse-torrent": "^5.8.3",
     "request": "^2.83.0",
     "srt-to-vtt": "^1.1.1",
-    "torrent-stream": "^1.0.3"
+    "thepiratebay": "^1.4.7",
+    "torrent-search-api": "^1.0.27",
+    "torrent-stream": "^1.0.3",
+    "yify-search": "^1.0.0"
   }
 }

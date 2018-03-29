@@ -8,6 +8,7 @@ const bodyParser = require('body-parser');
 
 const Hypertube = new (require('./Hypertube.class.js'))();
 const Tools = new (require('./Tools.class.js'))(Hypertube);
+const Search = new (require('./Search.class.js'))();
 
 
 try {
@@ -24,6 +25,7 @@ app.use((req, res, next)=>{
 	next();
 });
 
+// POST start torrent download
 app.post('/url', (req, res)=>{
 	let TYPE = 0;
 	console.log(req.body.url);
@@ -119,19 +121,23 @@ app.post('/url', (req, res)=>{
 		}
 	});
 })
+
+// GET video stream
 .get('/video/:token', async (req, res) => {
+	try {
+		const ret = await Hypertube.get(req.params.token);
+		await Tools.streamVideo(req, res, ret)
+	} catch(e) {
 		try {
-			const ret = await Hypertube.get(req.params.token);
-			await Tools.streamVideo(req, res, ret)
-		} catch(e) {
-			try {
-				await Hypertube.delete(req.params.token)
-			} catch (e) {
-			}
-			res.sendStatus(404);
-			res.end();
+			await Hypertube.delete(req.params.token)
+		} catch (e) {
 		}
+		res.sendStatus(404);
+		res.end();
+	}
 })
+
+// DELETE video in filesystem
 .delete('/video/:token', (req, res)=>{
 	if (/^[0-9a-z]{40}$/.test(req.params.token)) {
 		const path = process.env.HYPERTUBE_DOWNLOAD_PATH + "/" + req.params.token;
@@ -144,10 +150,25 @@ app.post('/url', (req, res)=>{
 		res.end();
 	}
 })
+// POST search for a torrent given as post data
+.post('/search', async (req, res) => {
+		try {
+			const search = await Search.run(req.body.title);
+			// console.log(search);
+			// const imdbId = await Imdb.getIMDBid(req.body.title);
+			// const infos = await Imdb.getInfos(imdbId);
+			res.json(search);
+		} catch (e) {
+			res.sendStatus(404);
+			res.end();
+		}
+})
 // .post('/infos', async (req, res)=>{
 // 	try {
-// 		const imdbId = await Imdb.getIMDBid(req.body.title);
-// 		const infos = await Imdb.getInfos(imdbId);
+// 		const infos = await Search.run(req.body.title);
+// 		console.log(infos);
+// 		// const imdbId = await Imdb.getIMDBid(req.body.title);
+// 		// const infos = await Imdb.getInfos(imdbId);
 // 		res.json(infos);
 // 	} catch (e) {
 // 		res.sendStatus(404);
