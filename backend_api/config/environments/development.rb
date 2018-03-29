@@ -37,7 +37,6 @@ Rails.application.configure do
   # Raise an error on page load if there are pending migrations.
   config.active_record.migration_error = :page_load
 
-
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 
@@ -45,6 +44,22 @@ Rails.application.configure do
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
-  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
-  config.signup_redirect_url = 'http://localhost:3000'
+  config.action_mailer.default_url_options = { host: ENV['SIGNUP_REDIRECT_URL'] }
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.perform_deliveries = true
+
+  config.action_mailer.smtp_settings = {
+    address:              'smtp.gmail.com',
+    port:                 587,
+    user_name:            ENV['GMAIL_USERNAME'],
+    password:             ENV['GMAIL_PASSWORD'],
+    authentification:     :login,
+    enable_starttls_auto: true,
+    tls:                  false,
+    domain:               'gmail.com',
+    openssl_verify_mode:  'none'
+  }
+
+  config.signup_redirect_url = ENV['SIGNUP_REDIRECT_URL']
 end
