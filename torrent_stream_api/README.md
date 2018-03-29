@@ -67,4 +67,23 @@ $> curl -XPOST http://e1r3p13.42.fr:5555/infos -H "Content-Type: application/jso
     magnet_link: 'magnet:?xt=urn:btih:611bd431861c5dc5be0333b0656af705e4a7dfa7&dn=Interstellar+2014+Movies+720p+BluRay+x264+ESubs+AAC+New+%7E+%E2%98%BBrDX%E2%98%BB&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Fzer0day.ch%3A1337&tr=udp%3A%2F%2Fopen.demonii.com%3A1337&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Fexodus.desync.com%3A6969' },
 ...
 
+# POST /infos
+# return IMDB film's infos
+$> curl -XPOST http://localhost:5555/infos -H "Content-Type: application/json" -d '{"title":"film_title"}'
+# example:
+curl -XPOST http://localhost:5555/infos -H "Content-Type: application/json" -d '{"title":"Interstellar 2014"}'
+
+{
+	"title":"Interstellar",
+	"year":"2014",
+	"contentRating":"TOUS PUBLICS",
+	"runtime":"2h 49min",
+	"description":"A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.",
+	"rating":"8.6",
+	"poster":"https://ia.media-imdb.com/images/M/MV5BZjdkOTU3MDktN2IxOS00OGEyLWFmMjktY2FiMmZkNWIyODZiXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_UX182_CR0,0,182,268_AL_.jpg",
+	"genre":["Adventure"," Drama"," Sci-Fi"],
+	"director":"Christopher Nolan",
+	"metascore":"74",
+	"writer":"Jonathan Nolan"
+}
 ```
