@@ -66,7 +66,7 @@ export default{
         method: 'post',
         url: signInUrl,
         data: {
-          username: form.user,
+          username: form.user.toLowerCase().trim(),
           password: form.password
         }
       })
@@ -101,8 +101,8 @@ export default{
         method: 'post',
         url: signUpUrl,
         data: {
-          email: form.email,
-          username: form.user,
+          email: form.email.toLowerCase().trim(),
+          username: form.user.toLowerCase().trim(),
           image_base: form.picture,
           firstname: form.firstName,
           lastname: form.lastName,

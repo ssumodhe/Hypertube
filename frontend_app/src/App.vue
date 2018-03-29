@@ -132,8 +132,6 @@ export default {
     closeNav: function(event){
       console.log(window.innerWidth)
       if (window.innerWidth <= '768'){
-        console.log('aria-expanded set to false')
-        console.log(event.target.tagName)
         event.target.setAttribute("data-toggle", "collapse")
         event.target.setAttribute("data-target", "#myNavbar")
       }
