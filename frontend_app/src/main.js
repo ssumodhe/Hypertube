@@ -13,19 +13,16 @@ router.beforeEach((to, from, next) => {
   if (!to.matched.length) {
     next('/404');
   } 
+  else if (to.name == "password" && !localStorage.getItem('token')){
+    next();
+  }
   else if (to.name != "login" && to.name != "notFound" && !localStorage.getItem('token')){
     next('/login');
   }
   else if (localStorage.getItem('token') && to.name == "login"){
-    next(from.path)
+    next(from.path);
   }
   else {
-    // console.log(router)
-    // console.log(router.options.routes)
-    console.log("in main.js - current v-lang:")
-    console.log(localStorage.getItem('vue-lang'))    
-    console.log("in main.js - localStorage:")
-    console.log(localStorage)
     next();
   }
 });

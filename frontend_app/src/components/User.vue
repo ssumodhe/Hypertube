@@ -8,9 +8,7 @@
         <div class="card">
             <div class="card-header" role="tab" id="headingZero">
               <h5 class="mb-0">
-                <!-- <a data-toggle="collapse" data-parent="#accordion" href="#collapseZero" aria-expanded="true" aria-controls="collapseZero"> -->
                   <img class="img" :src="usersPicture" width="100px">
-                <!-- </a> -->
               </h5>
             </div>
             <div v-if="!stalker" id="collapseZero" class="collapse show" role="tabpanel" aria-labelledby="headingZero">
@@ -239,8 +237,8 @@ export default{
         }
       })
       .then( (response) => {
-        console.log(response)
         this.usersPicture = userUrl + this.$route.params.username + '/avatar'
+        console.log("modif picture ok + set success msg + for pswd too")
       })
       .catch( (error) => {
         if (error.response.status == "422"){

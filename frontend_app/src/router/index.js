@@ -9,6 +9,7 @@ import Home from '@/components/home'
 import User from '@/components/user'
 import Movie from '@/components/video'
 import NotFound from '@/components/404NotFound'
+import Password from '@/components/forgotPassword'
 
 Vue.use(Router)
 Vue.use(vueResource)
@@ -251,6 +252,11 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: Login
+    },
+    {
+      path: '/password',
+      name: 'password',
+      component: Password
     },
     {
       path: '/',

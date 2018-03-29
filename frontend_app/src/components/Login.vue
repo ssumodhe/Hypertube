@@ -77,7 +77,6 @@ export default{
           localStorage.setItem('token-type', response.headers['token-type'])
           localStorage.setItem('uid', response.headers['uid'])
 
-
           localStorage.setItem('id', response.data.data['id'])
           localStorage.setItem('email', response.data.data['email'])
           localStorage.setItem('picture', response.data.data['picture'])
