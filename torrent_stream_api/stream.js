@@ -9,7 +9,7 @@ const bodyParser = require('body-parser');
 const Hypertube = new (require('./Hypertube.class.js'))();
 const Tools = new (require('./Tools.class.js'))(Hypertube);
 const Search = new (require('./Search.class.js'))();
-
+const Imdb = new (require('./Imdb.class.js'))();
 
 try {
 	fs.mkdirSync(process.env.HYPERTUBE_DOWNLOAD_PATH);
@@ -150,6 +150,7 @@ app.post('/url', (req, res)=>{
 		res.end();
 	}
 })
+
 // POST search for a torrent given as post data
 .post('/search', async (req, res) => {
 		try {
@@ -163,17 +164,19 @@ app.post('/url', (req, res)=>{
 			res.end();
 		}
 })
-// .post('/infos', async (req, res)=>{
-// 	try {
-// 		const infos = await Search.run(req.body.title);
-// 		console.log(infos);
-// 		// const imdbId = await Imdb.getIMDBid(req.body.title);
-// 		// const infos = await Imdb.getInfos(imdbId);
-// 		res.json(infos);
-// 	} catch (e) {
-// 		res.sendStatus(404);
-// 		res.end();
-// 	}
-// })
+
+// POST search for film's infos given as post data
+.post('/infos', async (req, res)=>{
+	try {
+		// const infos = await Search.run(req.body.title);
+		// console.log(infos);
+		const imdbId = await Imdb.getIMDBid(req.body.title);
+		const infos = await Imdb.getInfos(imdbId);
+		res.json(infos);
+	} catch (e) {
+		res.sendStatus(404);
+		res.end();
+	}
+})
 app.listen(5555);
 console.log('listening on:', process.env.HYPERTUBE_STREAMING_URL);
