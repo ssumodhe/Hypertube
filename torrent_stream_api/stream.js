@@ -151,10 +151,10 @@ app.post('/url', (req, res)=>{
 	}
 })
 
-// POST search for a torrent given as post data
-.post('/search', async (req, res) => {
+// GET search for a torrent given as post data
+.get('/search/:title', async (req, res) => {
 		try {
-			const search = await Search.run(req.body.title);
+			const search = await Search.run(req.params.title);
 			// console.log(search);
 			// const imdbId = await Imdb.getIMDBid(req.body.title);
 			// const infos = await Imdb.getInfos(imdbId);
@@ -165,12 +165,12 @@ app.post('/url', (req, res)=>{
 		}
 })
 
-// POST search for film's infos given as post data
-.post('/infos', async (req, res)=>{
+// GET search for film's infos given as post data
+.get('/infos/:title', async (req, res)=>{
 	try {
 		// const infos = await Search.run(req.body.title);
 		// console.log(infos);
-		const imdbId = await Imdb.getIMDBid(req.body.title);
+		const imdbId = await Imdb.getIMDBid(req.params.title);
 		const infos = await Imdb.getInfos(imdbId);
 		res.json(infos);
 	} catch (e) {

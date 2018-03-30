@@ -38,11 +38,11 @@ WEBVTT FILE
 $> curl -XDELETE "http://e1r3p13.42.fr:5555/video/44f91a15dfc1c68b3a2d49d452a40dae4b7ae3d7"
 OK
 
-# POST /search
+# GET /search
 # return an array of films, sorted by seeds
-$> curl -XPOST http://e1r3p13.42.fr:5555/search -H "Content-Type: application/json" -d '{"title":"film_title"}'
+$> curl -XPOST http://e1r3p13.42.fr:5555/search/:title
 # example:
-$> curl -XPOST http://e1r3p13.42.fr:5555/infos -H "Content-Type: application/json" -d '{"title":"interstellar"}'
+$> curl -XPOST http://e1r3p13.42.fr:5555/search/interstellar
 
 [ { id: 1632,
     name: 'Interstellar (2014)',
@@ -67,11 +67,11 @@ $> curl -XPOST http://e1r3p13.42.fr:5555/infos -H "Content-Type: application/jso
     magnet_link: 'magnet:?xt=urn:btih:611bd431861c5dc5be0333b0656af705e4a7dfa7&dn=Interstellar+2014+Movies+720p+BluRay+x264+ESubs+AAC+New+%7E+%E2%98%BBrDX%E2%98%BB&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Fzer0day.ch%3A1337&tr=udp%3A%2F%2Fopen.demonii.com%3A1337&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Fexodus.desync.com%3A6969' },
 ...
 
-# POST /infos
+# GET /infos
 # return IMDB film's infos
-$> curl -XPOST http://localhost:5555/infos -H "Content-Type: application/json" -d '{"title":"film_title"}'
+$> curl -XPOST http://localhost:5555/infos/:title -H
 # example:
-curl -XPOST http://localhost:5555/infos -H "Content-Type: application/json" -d '{"title":"Interstellar 2014"}'
+curl -XPOST http://localhost:5555/infos/Interstellar%202014
 
 {
 	"title":"Interstellar",
