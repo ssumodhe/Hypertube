@@ -24,7 +24,6 @@ services:
       context: ./backend_api
     environment:
       RAILS_ENV: production
-      SIGNUP_REDIRECT_URL: http://192.168.99.100:3000
     entrypoint: /app/entrypoint.sh
     volumes:
       - .:/myapp
@@ -63,3 +62,4 @@ services:
     networks:
       - proxy
     env_file: torrent_stream_api/.env
+
