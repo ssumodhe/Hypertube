@@ -1,5 +1,5 @@
-export const apiDomain = 'http://localhost:3000/'
-// export const apiDomain = 'https://hypertubeapi.tpayet.com/'
+export const apiDomain = 'https://hypertubeapi.tpayet.com/'
+// export const apiDomain = 'http://e2r12p2:3000/'
 export const signUpUrl = apiDomain + 'auth/'
 export const signInUrl = apiDomain + 'auth/sign_in'
 export const videoUrl = apiDomain + 'videos/'
