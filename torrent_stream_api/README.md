@@ -14,9 +14,9 @@ node stream.js
 * API
 ```bash
 # POST /url
-$> curl -XPOST http://e1r3p13.42.fr:5555/url -H "Content-Type: application/json" -d '{"url":"torrent url or magnet", "title":"Film title"}'
+$> curl -XPOST http://localhost:5555/url -H "Content-Type: application/json" -d '{"url":"torrent url or magnet", "title":"Film title"}'
 # example:
-$> curl -XPOST http://e1r3p13.42.fr:5555/url -H "Content-Type: application/json" -d '{"url":"http://www.torrent9.red/get_torrent/interstellar-french-dvdrip-2014.torrent", "title":"Interstellar FRENCH DVDRIP 2014"}'
+$> curl -XPOST http://localhost:5555/url -H "Content-Type: application/json" -d '{"url":"http://www.torrent9.red/get_torrent/interstellar-french-dvdrip-2014.torrent", "title":"Interstellar FRENCH DVDRIP 2014"}'
 
 {
 	"videoUrl" : "http://e1r3p13.42.fr:5555/video/2bbfa58659e8d9541e803a4b803d2352b8bc4ecb",
@@ -27,7 +27,7 @@ $> curl -XPOST http://e1r3p13.42.fr:5555/url -H "Content-Type: application/json"
 }
 
 # GET /subtitles/:suburi
-$> curl http://e1r3p13.42.fr:5555/subtitles/Interstellar.2014.720p.BluRay.x264-DAA.vtt
+$> curl http://localhost:5555/subtitles/Interstellar.2014.720p.BluRay.x264-DAA.vtt
 WEBVTT FILE
 
 1
@@ -40,9 +40,9 @@ OK
 
 # GET /search
 # return an array of films, sorted by seeds
-$> curl -XPOST http://e1r3p13.42.fr:5555/search/:title
+$> curl http://localhost:5555/search/:title
 # example:
-$> curl -XPOST http://e1r3p13.42.fr:5555/search/interstellar
+$> curl http://localhost:5555/search/interstellar
 
 [ { id: 1632,
     name: 'Interstellar (2014)',
@@ -69,9 +69,9 @@ $> curl -XPOST http://e1r3p13.42.fr:5555/search/interstellar
 
 # GET /infos
 # return IMDB film's infos
-$> curl -XPOST http://localhost:5555/infos/:title -H
+$> curl http://localhost:5555/infos/:title -H
 # example:
-curl -XPOST http://localhost:5555/infos/Interstellar%202014
+curl http://localhost:5555/infos/Interstellar%202014
 
 {
 	"title":"Interstellar",
