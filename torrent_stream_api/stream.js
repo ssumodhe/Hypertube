@@ -128,10 +128,10 @@ app.post('/url', (req, res)=>{
 		const ret = await Hypertube.get(req.params.token);
 		await Tools.streamVideo(req, res, ret)
 	} catch(e) {
-		try {
-			await Hypertube.delete(req.params.token)
-		} catch (e) {
-		}
+		// try {
+		// 	await Hypertube.delete(req.params.token)
+		// } catch (e) {
+		// }
 		res.sendStatus(404);
 		res.end();
 	}

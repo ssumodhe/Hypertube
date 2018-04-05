@@ -45,20 +45,38 @@ class Tools {
 				if (fs.existsSync(path)) {
 					console.log('start streaming:', req.params.token);
 					console.log(path);
+					const file = fs.statSync(path);
+
+					res.writeHead(200, {
+						'Cache-Control': 'no-cache',
+						'Content-Length': file.size,
+						'Content-Type': 'video/mp4'
+					})
+
 					const fileStream = fs.createReadStream(path);
 					const converter = ffmpeg()
 					.input(fileStream)
-					.outputOptions('-movflags frag_keyframe+empty_moov')
 					.outputFormat('mp4')
+					.outputOptions([
+						'-movflags empty_moov',
+						'-frag_size 4096',
+						'-cpu-used 2',
+						'-deadline realtime',
+						'-error-resilient 1',
+						'-threads 4'
+					])
+					.videoBitrate(256)
+					.audioCodec('aac')
+					.videoCodec('libx264')
 					.output(res)
 					.on('error', (err, stdout, stderr) => {
 						console.error('ffmpeg error:', err);
 						reject(err);
 					})
+
 					converter
-					.audioCodec('aac')
-					.videoCodec('libx264')
 					.run();
+
 					res.on('close', () => {
 						resolve(null);
 						console.log('stream closed');
@@ -69,7 +87,7 @@ class Tools {
 					reject("file does not exist");
 				}
 			} catch (e) {
-				console.error('error streamVideo');
+				console.error('error streamVideo:', e);
 				reject(e);
 			}
 		});
