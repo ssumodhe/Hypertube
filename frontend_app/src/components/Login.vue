@@ -66,7 +66,7 @@ export default{
         method: 'post',
         url: signInUrl,
         data: {
-          username: form.user,
+          username: form.user.toLowerCase().trim(),
           password: form.password
         }
       })
@@ -76,7 +76,6 @@ export default{
           localStorage.setItem('expiry', response.headers['expiry'])
           localStorage.setItem('token-type', response.headers['token-type'])
           localStorage.setItem('uid', response.headers['uid'])
-
 
           localStorage.setItem('id', response.data.data['id'])
           localStorage.setItem('email', response.data.data['email'])
@@ -101,8 +100,8 @@ export default{
         method: 'post',
         url: signUpUrl,
         data: {
-          email: form.email,
-          username: form.user,
+          email: form.email.toLowerCase().trim(),
+          username: form.user.toLowerCase().trim(),
           image_base: form.picture,
           firstname: form.firstName,
           lastname: form.lastName,
@@ -116,6 +115,7 @@ export default{
           console.log(response)
         })
         .catch( (error) => {
+          console.log(error)
           if (error.response.status == "422"){
             this.errorMsgSignUp = error.response.data.errors.full_messages[0];
           } else {

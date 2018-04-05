@@ -8,15 +8,16 @@
         <div class="card">
             <div class="card-header" role="tab" id="headingZero">
               <h5 class="mb-0">
-                <!-- <a data-toggle="collapse" data-parent="#accordion" href="#collapseZero" aria-expanded="true" aria-controls="collapseZero"> -->
                   <img class="img" :src="usersPicture" width="100px">
-                <!-- </a> -->
               </h5>
             </div>
             <div v-if="!stalker" id="collapseZero" class="collapse show" role="tabpanel" aria-labelledby="headingZero">
               <div class="card-block">
-                <uploadfile class="uploadfile" v-on:uploadedPicture="addPicture"></uploadfile>
-                <input v-bind:disabled="submitBtnDisabled" class="btn btn-default" type="submit" value="Modif.">
+                <uploadfile class="uploadfile" v-on:uploadedPicture="addPicture" remove='Remove Photo'></uploadfile>
+                <form @submit.prevent="submitPicture">
+                  <input v-bind:disabled="submitBtnDisabled" class="btn btn-default" type="submit" value="Modif.">
+                </form>
+
               </div>
             </div>
           </div>
@@ -219,14 +220,33 @@ export default{
   },
   methods: {
     addPicture: function(form) {
-      console.log("H E R E")
-      console.log(form)
       this.picture = form.picture
       if (this.picture)
         this.submitBtnDisabled = false
       else{
         this.submitBtnDisabled = true
       } 
+    },
+    submitPicture: function(){
+      axios({
+        method: 'put',
+        url: signUpUrl,
+        headers: this.headers,
+        data: {
+          'image_base': this.picture,
+        }
+      })
+      .then( (response) => {
+        this.usersPicture = userUrl + this.$route.params.username + '/avatar'
+        console.log("modif picture ok + set success msg + for pswd too")
+      })
+      .catch( (error) => {
+        if (error.response.status == "422"){
+          console.log(error.response.data.errors.full_messages[0]);
+        } else {
+          console.log("An error occurred. Please try again.");
+        }
+      });
     },
     setLocalStorage: function(response){
       localStorage.setItem('token', response.headers['access-token'])

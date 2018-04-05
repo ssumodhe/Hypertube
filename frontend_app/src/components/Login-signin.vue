@@ -37,7 +37,15 @@
       </div>
 
       <div>
-        <button type="button" class="btn btn-xs btn-link" v-lang.forgotten_pswd></button>
+        <button type="button" class="btn btn-xs btn-link" data-toggle="collapse" data-target="#forgottenPassword" aria-expanded="false" aria-controls="forgottenPassword" v-lang.forgotten_pswd></button>
+        <div class="collapse" id="forgottenPassword">
+          <form id="frgtPwdForm" @submit.prevent="forgotPswd">
+            <input ref="txtFrgtPswd" @input="checkFrgtPswdValidation" style="margin-bottom: 5px;" class="form-control" type="email" placeholder="Please enter your email">
+            <div v-if="errorFrgtPswd" class="alert alert-danger" role="alert">{{errorFrgtPswd}}
+            </div>
+            <input v-bind:disabled="submitBtnFrgtPswd" class="btn btn-default" type="submit" value="Change my password">
+          </form>
+        </div>
       </div>
 
     	<input v-bind:disabled="submitBtnDisabled" class="btn btn-default" type="submit" :value="btn_signin">
@@ -70,12 +78,14 @@ export default{
   data(){
     return {
       note: "Form sign In here",
+      errorFrgtPswd: '',
       userSuccessClass: '',
       passwordSuccessClass: '',
       userIconClass: '',
       passwordIconClass: '',
       submitBtnDisabled: true,
-      rememberMe: true
+      rememberMe: true,
+      submitBtnFrgtPswd: true
     }
   },
   mounted: function(){
@@ -87,6 +97,35 @@ export default{
       }
   },
   methods: {
+    checkFrgtPswdValidation: function(){
+      if(this.$refs.txtFrgtPswd.checkValidity()){
+        this.submitBtnFrgtPswd = false
+      } else{
+        this.submitBtnFrgtPswd = true
+      }
+    },
+    forgotPswd: function(){
+      axios({
+        method: 'post',
+        url: 'http://e2r11p21:3000/auth/password',
+        data: {
+          "email": this.$refs.txtFrgtPswd.value, 
+          "redirect_url": "http://localhost:8080/password"
+        },
+        headers:{
+            'Content-Type': 'application/json'
+        }
+      })
+      .then( (response) => {
+        this.errorFrgtPswd = response.data.message
+        console.log(response)
+
+      })
+      .catch( (error) => {
+        this.errorFrgtPswd = "This email adress does not exists."
+        console.log(error)
+      });
+    },
     checkUserValidation: function(){
       if(this.$refs.txtUser.checkValidity()){
         this.userSuccessClass = "has-success"
@@ -150,5 +189,13 @@ export default{
   margin: auto 5% 5% 5%;
   border: 1px solid gainsboro;
   border-radius: 30%;
+}
+#forgottenPassword{
+  border: 1px solid gainsboro;
+  margin: 5px auto 5px auto;
+}
+#frgtPwdForm{
+  margin: 5px 5px 5px 5px;
+
 }
 </style>
