@@ -19,7 +19,6 @@
             <ul class="nav navbar-nav">
               <li v-on:click="closeNav"><router-link to="/"><span v-lang.home></span></router-link></li>
               <li v-on:click="closeNav"><router-link :to="'/user/' + username"><span v-lang.profile></span></router-link></li>
-              <li v-on:click="closeNav"><router-link :to="'/video/' + loggedIn">Videos</router-link></li>
               <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">Page 1 <span class="caret"></span></a>
                 <ul class="dropdown-menu">
@@ -130,7 +129,6 @@ export default {
       this.$router.push('/login')
     },
     closeNav: function(event){
-      console.log(window.innerWidth)
       if (window.innerWidth <= '768'){
         event.target.setAttribute("data-toggle", "collapse")
         event.target.setAttribute("data-target", "#myNavbar")

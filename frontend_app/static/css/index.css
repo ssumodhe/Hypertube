@@ -5,6 +5,7 @@ body {
    height:100%;
 }
 #container {
+	margin-top: 40px;
    min-height:100%;
    position:relative;
 }
