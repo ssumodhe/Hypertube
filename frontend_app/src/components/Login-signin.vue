@@ -41,6 +41,8 @@
         <div class="collapse" id="forgottenPassword">
           <form id="frgtPwdForm" @submit.prevent="forgotPswd">
             <input ref="txtFrgtPswd" @input="checkFrgtPswdValidation" style="margin-bottom: 5px;" class="form-control" type="email" placeholder="Please enter your email">
+            <div v-if="errorFrgtPswd" class="alert alert-danger" role="alert">{{errorFrgtPswd}}
+            </div>
             <input v-bind:disabled="submitBtnFrgtPswd" class="btn btn-default" type="submit" value="Change my password">
           </form>
         </div>
@@ -76,6 +78,7 @@ export default{
   data(){
     return {
       note: "Form sign In here",
+      errorFrgtPswd: '',
       userSuccessClass: '',
       passwordSuccessClass: '',
       userIconClass: '',
@@ -102,10 +105,9 @@ export default{
       }
     },
     forgotPswd: function(){
-      console.log("FORGOTTEN PASSWORD")
       axios({
         method: 'post',
-        url: 'https://hypertubeapi.tpayet.com/auth/password',
+        url: 'http://e2r11p21:3000/auth/password',
         data: {
           "email": this.$refs.txtFrgtPswd.value, 
           "redirect_url": "http://localhost:8080/password"
@@ -115,11 +117,12 @@ export default{
         }
       })
       .then( (response) => {
-        console.log("JE VEUX CHANGER MON MOT DE PASSE !")
+        this.errorFrgtPswd = response.data.message
         console.log(response)
 
       })
       .catch( (error) => {
+        this.errorFrgtPswd = "This email adress does not exists."
         console.log(error)
       });
     },
