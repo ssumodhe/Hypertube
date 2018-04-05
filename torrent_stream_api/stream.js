@@ -16,21 +16,21 @@ try {
 } catch (e) {
 }
 
-app.use(express.static(__dirname+ '/subtitles'));
-
-app.use(bodyParser.json());
-app.use((req, res, next)=>{
+app.use((req, res, next) => {
 	res.header("Access-Control-Allow-Origin", "*");
 	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 	next();
 });
 
+app.use(express.static(__dirname+ '/subtitles'));
+app.use(bodyParser.json());
+
 // POST start torrent download
-app.post('/url', (req, res)=>{
+app.post('/url', (req, res) => {
 	let TYPE = 0;
 	console.log(req.body.url);
 	Tools.getFile(req.body.url, async (err, file) => {
-		if (err) { throw new Error(err); }
+		if (err) { res.sendStatus(404).end(); return 0; }
 		if (file.indexOf("magnet") == 0) {
 			TYPE = 1;
 		}
@@ -122,6 +122,10 @@ app.post('/url', (req, res)=>{
 	});
 })
 
+.get('/test',  (req, res) => {
+	res.send('<html><video autoplay loop muted="true" controls class="video-js" crossorigin="*"><source src="http://localhost:5555/video/3815d0bdec07c925b6b2247736956b897c1a5de2" type="video/mp4"><track kind="subtitles" src="http://localhost:5556/subtitles/The.Post.2017.720p.BluRay.x264-GECKOS.HI.vtt" lang="en" label="English" default=""></video></html>')
+})
+
 // GET video stream
 .get('/video/:token', async (req, res) => {
 	try {
@@ -138,7 +142,7 @@ app.post('/url', (req, res)=>{
 })
 
 // DELETE video in filesystem
-.delete('/video/:token', (req, res)=>{
+.delete('/video/:token', (req, res) => {
 	if (/^[0-9a-z]{40}$/.test(req.params.token)) {
 		const path = process.env.HYPERTUBE_DOWNLOAD_PATH + "/" + req.params.token;
 		exec('/bin/rm -rf '+ path, (error, stdout, stderr)=>{
@@ -153,20 +157,20 @@ app.post('/url', (req, res)=>{
 
 // GET search for a torrent given as post data
 .get('/search/:title', async (req, res) => {
-		try {
-			const search = await Search.run(req.params.title);
-			// console.log(search);
-			// const imdbId = await Imdb.getIMDBid(req.body.title);
-			// const infos = await Imdb.getInfos(imdbId);
-			res.json(search);
-		} catch (e) {
-			res.sendStatus(404);
-			res.end();
-		}
+	try {
+		const search = await Search.run(req.params.title);
+		// console.log(search);
+		// const imdbId = await Imdb.getIMDBid(req.body.title);
+		// const infos = await Imdb.getInfos(imdbId);
+		res.json(search);
+	} catch (e) {
+		res.sendStatus(404);
+		res.end();
+	}
 })
 
 // GET search for film's infos given as post data
-.get('/infos/:title', async (req, res)=>{
+.get('/infos/:title', async (req, res) => {
 	try {
 		// const infos = await Search.run(req.body.title);
 		// console.log(infos);
@@ -178,5 +182,18 @@ app.post('/url', (req, res)=>{
 		res.end();
 	}
 })
+
+// .get('/subtitles/:token', (req, res) => {
+// 	if (fs.existsSync('subtitles/subtitles/Interstellar.2014.720p.BluRay.x264.DTS-WiKi.fr.vtt'/* + req.params.token*/)) {
+// 		// console.log();
+// 		res.header('Content-Type', 'text/plain')
+// 		res.send('data:text/plain;base64,'+base64js.fromByteArray(fs.readFileSync('subtitles/subtitles/Interstellar.2014.720p.BluRay.x264.DTS-WiKi.fr.vtt'/* + req.params.token*/)));
+// 		res.end();
+// 		// const datab64 = base64js(fs.readFileSync())
+// 	} else {
+// 		res.sendStatus(404);
+// 		res.end();
+// 	}
+// })
 app.listen(5555);
 console.log('listening on:', process.env.HYPERTUBE_STREAMING_URL);
