@@ -1,6 +1,7 @@
 const fs = require('fs');
 const ffmpeg = require('fluent-ffmpeg');
 const http = require('http');
+const https = require('https');
 const request = require('request');
 const Imdb = new (require('./Imdb.class.js'))();
 
@@ -23,7 +24,16 @@ class Tools {
 		if (url.indexOf("magnet") == 0) {
 			callback(null, url);
 		} else {
-			http.get(url, res => {
+			let protocol = null;
+			if (/^http:/.test(url)) {
+				protocol = http;
+			} else if (/^https:/.test(url)) {
+				protocol = https;
+			} else {
+				callback("Invalid url");
+				return ;
+			}
+			protocol.get(url, res => {
 				const bufs = [];
 				res.on('data', (chunk) => {
 					bufs.push(chunk)
