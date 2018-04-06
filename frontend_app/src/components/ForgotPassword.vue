@@ -24,6 +24,10 @@
 <script>
 export default{
   name: 'password',
+  created: function(){
+    console.log('reset token')
+    console.log(this.$route.params['reset_password_token'])
+  },
   computed:{
     new_pswd()  {
      return this.translate('new_pswd')
