@@ -23,7 +23,7 @@ services:
     build:
       context: ./backend_api
     environment:
-      RAILS_ENV: production
+      RAILS_ENV: development
     entrypoint: /app/entrypoint.sh
     volumes:
       - .:/myapp
@@ -33,7 +33,7 @@ services:
       - postgres
     labels:
       - traefik.backend=hypertubeapi
-      - traefik.frontend.rule=Host:hypertubeapi.tpayet.com
+      - traefik.frontend.rule=Host:hypertubeapi
       - traefik.docker.network=proxy
       - traefik.port=3000
     networks:
@@ -48,18 +48,17 @@ services:
       context: ./torrent_stream_api
     environment:
       HYPERTUBE_DOWNLOAD_PATH: /app/data
-      HYPERTUBE_STREAMING_URL: https://streamingapi.tpayet.com
-      HYPERTUBE_VIDEO_API: https://hypertubeapi.tpayet.com/videos
+      HYPERTUBE_STREAMING_URL: streamingapi
+      HYPERTUBE_VIDEO_API: hypertubeapi
 
     command: node stream.js
     ports:
       - "5555:5555"
     labels:
       - traefik.backend=streamingapi
-      - traefik.frontend.rule=Host:streamingapi.tpayet.com
+      - traefik.frontend.rule=Host:streamingapi
       - traefik.docker.network=proxy
       - traefik.port=5555
     networks:
       - proxy
     env_file: torrent_stream_api/.env
-

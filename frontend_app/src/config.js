@@ -1,5 +1,5 @@
 // export const apiDomain = 'https://hypertubeapi.tpayet.com/'
-export const apiDomain = 'http://e2r11p21:3000/'
+export const apiDomain = 'http://192.168.99.100:3000/'
 export const signUpUrl = apiDomain + 'auth/'
 export const signInUrl = apiDomain + 'auth/sign_in'
 export const forgotPswd = apiDomain + 'auth/password'
