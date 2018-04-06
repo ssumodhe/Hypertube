@@ -53,7 +53,7 @@ OK
 
 #### Search route
 ```bash
-# GET /search
+# GET /search/:title
 # return an array of films, sorted by seeds
 $> curl http://localhost:5555/search/:title
 # example:
@@ -85,7 +85,7 @@ $> curl http://localhost:5555/search/interstellar
 
 #### Infos route
 ```bash
-# GET /infos
+# GET /infos/:title
 # return IMDB film's infos
 $> curl http://localhost:5555/infos/:title
 # example:
