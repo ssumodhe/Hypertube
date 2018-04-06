@@ -41,7 +41,7 @@
         <div class="collapse" id="forgottenPassword">
           <form id="frgtPwdForm" @submit.prevent="forgotPswd">
             <input ref="txtFrgtPswd" @input="checkFrgtPswdValidation" style="margin-bottom: 5px;" class="form-control" type="email" placeholder="Please enter your email">
-            <div v-if="errorFrgtPswd" class="alert alert-danger" role="alert">{{errorFrgtPswd}}
+            <div v-if="errorFrgtPswd" class="alert alert-info" role="alert">{{errorFrgtPswd}}
             </div>
             <input v-bind:disabled="submitBtnFrgtPswd" class="btn btn-default" type="submit" value="Change my password">
           </form>
