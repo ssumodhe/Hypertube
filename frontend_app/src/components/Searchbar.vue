@@ -53,23 +53,37 @@ export default{
   },
 	data(){
 		return{
-			searchResponse: [],
+      searchResponse: [],
+			movieData: [],
       search_url: searchUrl
 		}
 	},
 	methods: {
       getResponse: function (response) {
+        console.log(response.data)
     		let n = response.data.results.length
     		if (n > 10){
     			n = 10
     		}
     		for (var i = 0; i < n; i++) {
           this.searchResponse[i] = response.data.results[i]['name'];
+          this.movieData[i] = response.data.results[i]
         }
         return this.searchResponse
       },
       onHit: function (item, vue, index) {
-        this.$router.push('/video/' + item)
+        console.log(this.movieData)
+        let n = this.movieData.length
+        for (var i = 0; i < n; i++) {
+          if (this.movieData[i]['name'] == item){
+            localStorage.setItem('video-name', this.movieData[i]['name'])
+            localStorage.setItem('video-link', this.movieData[i]['link'])
+            localStorage.setItem('video-magnet', this.movieData[i]['magnet_link'])
+            this.$router.push('/video/' + item)
+          }
+        }
+
+        
       }
     }
 }
