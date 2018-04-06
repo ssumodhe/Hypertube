@@ -104,6 +104,7 @@ export default{
           }
           this.page = this.page + 20;
           this.library = this.library.concat(temp);
+          console.log(this.library)
           $state.loaded();
           if (data.length / 20 === 10) {
             $state.complete();

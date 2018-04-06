@@ -23,7 +23,7 @@
     		<label for="signInPassword" class="control-label sr-only">
     			secret password
     		</label>
-    		<input ref="txtPassword"  id="signInPassword"  type="password" class="form-control" name="password" :placeholder="password" @input="checkPasswordValidation" pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]+).{6,}$" required>
+    		<input ref="txtPassword"  id="signInPassword"  type="password" class="form-control" name="password" :placeholder="password" @input="checkPasswordValidation" pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]+).{7,}$" required>
     		<span  v-bind:class="[passwordIconClass]"></span>
     	</div>
 
@@ -55,6 +55,8 @@
 </template>
 
 <script>
+import {forgotPswd} from '@/config.js'
+
 export default{
   name: 'signin',
   props:{
@@ -107,7 +109,7 @@ export default{
     forgotPswd: function(){
       axios({
         method: 'post',
-        url: 'http://e2r11p21:3000/auth/password',
+        url: forgotPswd,
         data: {
           "email": this.$refs.txtFrgtPswd.value, 
           "redirect_url": "http://localhost:8080/password"

@@ -69,6 +69,9 @@
 </template>
 
 <script>
+import {videoUrl} from '@/config.js'
+import {commentsUrl} from '@/config.js'
+
 export default{
   name: 'movie',
   computed: {
@@ -122,7 +125,7 @@ export default{
 
     axios({
       method: 'get',
-      url: 'https://hypertubeapi.tpayet.com/videos/'+ this.$route.params.which +'/comments'
+      url: videoUrl + this.$route.params.which +'/comments'
       })
       .then( (response) => {
         //latest comment displayed last with .slice().reverse()
@@ -140,7 +143,7 @@ export default{
     sendComment: function(e){
       axios({
         method: 'post',
-        url: 'https://hypertubeapi.tpayet.com/comments',
+        url: commentsUrl,
         data: {
           "comment": 
             {
