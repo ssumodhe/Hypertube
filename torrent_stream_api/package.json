@@ -1,0 +1,28 @@
+{
+  "name": "ffmpeg",
+  "version": "1.0.0",
+  "description": "",
+  "main": "stream.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "ffmpeg-wrap": "^1.1.0",
+    "fluent-ffmpeg": "^2.1.2",
+    "imdb": "^1.1.0",
+    "imdb-api": "^3.1.2",
+    "name-to-imdb": "^2.0.1",
+    "opensubtitles-api": "^4.0.0",
+    "parse-torrent": "^5.8.3",
+    "request": "^2.83.0",
+    "srt-to-vtt": "^1.1.1",
+    "thepiratebay": "^1.4.7",
+    "torrent-search-api": "^1.0.27",
+    "torrent-stream": "^1.0.3",
+    "yify-search": "^1.0.0"
+  }
+}

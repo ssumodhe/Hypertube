@@ -22,12 +22,23 @@ gem 'puma', '~> 3.7'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
-# Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
-# gem 'rack-cors'
+# Use Rack CORS for handling Cross-Origin Resource Sharing (CORS),
+# making cross-origin AJAX possible
+gem 'rack-cors'
 
 gem 'omniauth'
 # Token based authentication for Rails JSON APIs.
 gem 'devise_token_auth'
+
+# gem for postgresql
+gem 'pg', '0.21.0'
+
+# Torrents search APIs
+gem 'torrent_api'
+gem 'rarbg'
+
+gem 'httparty'
+gem 'paperclip'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

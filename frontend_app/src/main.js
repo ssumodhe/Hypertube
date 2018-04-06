@@ -8,6 +8,8 @@ require('../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss')
 
 Vue.config.productionTip = false
 
+Vue.http.headers.common['Access-Control-Allow-Origin'] = 'https://hypertubeapi.tpayet.com'
+
 // MiddleWare
 router.beforeEach((to, from, next) => {
   if (!to.matched.length) {

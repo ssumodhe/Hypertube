@@ -1,0 +1,65 @@
+version: '3'
+
+networks:
+  proxy:
+    external: true
+  hypertube_network:
+    external: false
+
+volumes:
+  users_avatar:
+    driver: local
+
+services:
+
+  postgres:
+    image: postgres:10.3
+    networks:
+      - hypertube_network
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+
+  hypertubeapi:
+    build:
+      context: ./backend_api
+    environment:
+      RAILS_ENV: production
+    entrypoint: /app/entrypoint.sh
+    volumes:
+      - .:/myapp
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+    labels:
+      - traefik.backend=hypertubeapi
+      - traefik.frontend.rule=Host:hypertubeapi.tpayet.com
+      - traefik.docker.network=proxy
+      - traefik.port=3000
+    networks:
+      - proxy
+      - hypertube_network
+    volumes:
+      - users_avatar:/app/public/system/users
+    env_file: backend_api/.env
+
+  streamingapi:
+    build:
+      context: ./torrent_stream_api
+    environment:
+      HYPERTUBE_DOWNLOAD_PATH: /app/data
+      HYPERTUBE_STREAMING_URL: https://streamingapi.tpayet.com
+      HYPERTUBE_VIDEO_API: https://hypertubeapi.tpayet.com/videos
+
+    command: node stream.js
+    ports:
+      - "5555:5555"
+    labels:
+      - traefik.backend=streamingapi
+      - traefik.frontend.rule=Host:streamingapi.tpayet.com
+      - traefik.docker.network=proxy
+      - traefik.port=5555
+    networks:
+      - proxy
+    env_file: torrent_stream_api/.env
+
