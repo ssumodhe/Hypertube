@@ -11,7 +11,9 @@ npm install
 node stream.js
 ```
 
-* API
+### API
+
+#### Download torrent route
 ```bash
 # POST /url
 $> curl -XPOST http://localhost:5555/url -H "Content-Type: application/json" -d '{"url":"torrent url or magnet", "title":"Film title"}'
@@ -25,7 +27,10 @@ $> curl -XPOST http://localhost:5555/url -H "Content-Type: application/json" -d 
 		"fr" : "http://e1r3p13.42.fr:5555/subtitles/Interstellar.2014.720p.BluRay.x264.DTS-WiKi.fr.vtt"
 	}
 }
+```
 
+#### Subtitles route
+```bash
 # GET /subtitles/:suburi
 $> curl http://localhost:5555/subtitles/Interstellar.2014.720p.BluRay.x264-DAA.vtt
 WEBVTT FILE
@@ -33,17 +38,26 @@ WEBVTT FILE
 1
 00:01:14.910 --> 00:01:16.995
 <i>Well, my dad was a farmer.</i>...
+```
+
+#### Video routes
+```bash
+# GET /video/:token
+# start streaming the video through this uri
+$> curl -XDELETE "http://localhost:5555/video/44f91a15dfc1c68b3a2d49d452a40dae4b7ae3d7"
 
 # DELETE /video/:token
-$> curl -XDELETE "http://e1r3p13.42.fr:5555/video/44f91a15dfc1c68b3a2d49d452a40dae4b7ae3d7"
+$> curl -XDELETE "http://localhost:5555/video/44f91a15dfc1c68b3a2d49d452a40dae4b7ae3d7"
 OK
+```
 
+#### Search route
+```bash
 # GET /search
 # return an array of films, sorted by seeds
 $> curl http://localhost:5555/search/:title
 # example:
 $> curl http://localhost:5555/search/interstellar
-
 [ { id: 1632,
     name: 'Interstellar (2014)',
     seeds: 1405,
@@ -67,12 +81,15 @@ $> curl http://localhost:5555/search/interstellar
     magnet_link: 'magnet:?xt=urn:btih:611bd431861c5dc5be0333b0656af705e4a7dfa7&dn=Interstellar+2014+Movies+720p+BluRay+x264+ESubs+AAC+New+%7E+%E2%98%BBrDX%E2%98%BB&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Fzer0day.ch%3A1337&tr=udp%3A%2F%2Fopen.demonii.com%3A1337&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Fexodus.desync.com%3A6969' },
 ...
 
+```
+
+#### Infos route
+```bash
 # GET /infos
 # return IMDB film's infos
-$> curl http://localhost:5555/infos/:title -H
+$> curl http://localhost:5555/infos/:title
 # example:
-curl http://localhost:5555/infos/Interstellar%202014
-
+$> curl http://localhost:5555/infos/Interstellar%202014
 {
 	"title":"Interstellar",
 	"year":"2014",
