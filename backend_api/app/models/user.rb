@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
 
   devise :database_authenticatable, :registerable,
           :recoverable, :rememberable, :trackable, :validatable,
-          :omniauthable
+          :omniauthable, omniauth_providers: [:github]
 
   has_attached_file :picture, styles: { medium: "300x300>", thumb: "100x100>" }, default_url: "/images/:style/missing.png"
   validates_attachment :picture, presence: true
