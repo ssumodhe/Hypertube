@@ -115,7 +115,7 @@ export default{
     },
     setAndSend: function(id, token){
       let link = "/video/" + token
-      localStorage.setItem('video_id', id)
+      localStorage.setItem('video-id', id)
       this.$router.push(link)
     },
     switchLang: function(){
