@@ -61,13 +61,13 @@ export default{
 	methods: {
       getResponse: function (response) {
         console.log(response.data)
-    		let n = response.data.results.length
+    		let n = response.data.length
     		if (n > 10){
     			n = 10
     		}
     		for (var i = 0; i < n; i++) {
-          this.searchResponse[i] = response.data.results[i]['name'];
-          this.movieData[i] = response.data.results[i]
+          this.searchResponse[i] = response.data[i]['name'];
+          this.movieData[i] = response.data[i]
         }
         return this.searchResponse
       },
