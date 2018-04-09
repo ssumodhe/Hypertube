@@ -128,17 +128,19 @@ export default{
       console.log(error)
     });
 
-    axios({
-      method: 'get',
-      url: videoUrl + this.$route.params.which +'/comments'
-      })
-      .then( (response) => {
-        //latest comment displayed last with .slice().reverse()
-        this.comments = response.data.slice().reverse()
-      })
-      .catch( (error) => {
-        console.log(error)
-    });
+    if (localStorage.getItem('video-db') == true){
+      axios({
+        method: 'get',
+        url: videoUrl + this.$route.params.which +'/comments'
+        })
+        .then( (response) => {
+          //latest comment displayed last with .slice().reverse()
+          this.comments = response.data.slice().reverse()
+        })
+        .catch( (error) => {
+          console.log(error)
+        });
+    }
   },
   methods:{
     isEnter: function(e){

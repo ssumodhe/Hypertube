@@ -29,6 +29,8 @@ router.beforeEach((to, from, next) => {
     localStorage.removeItem('video-name')
     localStorage.removeItem('video-link')
     localStorage.removeItem('video-magnet')
+    localStorage.removeItem('video-db')
+
     next()
   }
   else {

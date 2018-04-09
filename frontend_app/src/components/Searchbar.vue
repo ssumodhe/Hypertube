@@ -79,6 +79,7 @@ export default{
             localStorage.setItem('video-name', this.movieData[i]['name'])
             localStorage.setItem('video-link', this.movieData[i]['link'])
             localStorage.setItem('video-magnet', this.movieData[i]['magnet_link'])
+            localStorage.setItem('video-db', false)
             this.$router.push('/video/' + item)
           }
         }
