@@ -24,6 +24,15 @@ router.beforeEach((to, from, next) => {
   else if (localStorage.getItem('token') && to.name == "login"){
     next(from.path);
   }
+  else if (from.name == "movie"){
+    localStorage.removeItem('video-id')
+    localStorage.removeItem('video-name')
+    localStorage.removeItem('video-link')
+    localStorage.removeItem('video-magnet')
+    localStorage.removeItem('video-db')
+
+    next()
+  }
   else {
     next();
   }

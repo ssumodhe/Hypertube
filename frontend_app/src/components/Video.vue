@@ -69,6 +69,9 @@
 </template>
 
 <script>
+import {videoUrl} from '@/config.js'
+import {commentsUrl} from '@/config.js'
+
 export default{
   name: 'movie',
   computed: {
@@ -95,13 +98,16 @@ export default{
   created: function(){
     axios({
       method: 'post',
-      url: 'https://hypertubeapi.tpayet.com/streaming/download',
+      // url: 'https://hypertubeapi.tpayet.com/streaming/download',
+      url: 'http://localhost:5555/url',
       data: {
-        "streaming": 
-          {
-            "url": "http://www.torrent9.red/get_torrent/interstellar-french-dvdrip-2014.torrent",
-            "title": "interstellar"
-          }
+        // "streaming": 
+        //   {
+        //     "url": "http://www.torrent9.red/get_torrent/interstellar-french-dvdrip-2014.torrent",
+        //     "title": "interstellar"
+        //   }
+          "url": localStorage.getItem('video-magnet'),
+          "title": localStorage.getItem('video-name')
       },
       headers:{
           'Content-Type': 'application/json'
@@ -109,6 +115,8 @@ export default{
     })
     .then( (response) => {
       this.note = response.data
+      console.log("response from streaming download | VIDEO")
+      console.log(response.data)
       // this.movieSource = response.data
       // need to set if localStorage.getItem('video_id') == null for comments
       // + middware : any routes FROM video localStorage.removeItem('video_id')
@@ -120,17 +128,19 @@ export default{
       console.log(error)
     });
 
-    axios({
-      method: 'get',
-      url: 'https://hypertubeapi.tpayet.com/videos/'+ this.$route.params.which +'/comments'
-      })
-      .then( (response) => {
-        //latest comment displayed last with .slice().reverse()
-        this.comments = response.data.slice().reverse()
-      })
-      .catch( (error) => {
-        console.log(error)
-    });
+    if (localStorage.getItem('video-db') == true){
+      axios({
+        method: 'get',
+        url: videoUrl + this.$route.params.which +'/comments'
+        })
+        .then( (response) => {
+          //latest comment displayed last with .slice().reverse()
+          this.comments = response.data.slice().reverse()
+        })
+        .catch( (error) => {
+          console.log(error)
+        });
+    }
   },
   methods:{
     isEnter: function(e){
@@ -140,13 +150,13 @@ export default{
     sendComment: function(e){
       axios({
         method: 'post',
-        url: 'https://hypertubeapi.tpayet.com/comments',
+        url: commentsUrl,
         data: {
           "comment": 
             {
               "body": this.$refs.commentTxtArea.value,
               "user_id": localStorage.getItem('id'),
-              "video_id": localStorage.getItem('video_id')
+              "video_id": localStorage.getItem('video-id')
             }
         },
         headers: this.headers

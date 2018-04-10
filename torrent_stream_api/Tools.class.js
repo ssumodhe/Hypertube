@@ -154,74 +154,87 @@ class Tools {
 		});
 	}
 
-	async generalHandler(torrent, torrentParsed, downloadPath, title, res) {
-		const t = torrent;
-		try {
-			const subtitles = await this.getSubtitles(title);
-			let subtitlesHash = {}
-			for (let i in subtitles) {
-				subtitlesHash[subtitles[i].lang] = subtitles[i].filename;
-			}
-			const imdbId = await Imdb.getIMDBid(title);
-			const infos = await Imdb.getInfos(imdbId);
 
-			console.log(infos);
-			// process.exit(0);
-			this.Hypertube.post({
-				"title":title,
-				"token":torrentParsed.infoHash,
-				"path":t.name,
-				"subtitles_fr":subtitlesHash.fr ? subtitlesHash.fr : "",
-				"subtitles_en":subtitlesHash.en ? subtitlesHash.en : "",
-				"content_rating":infos.contentRating,
-				"runtime":infos.runtime,
-				"description":infos.description,
-				"rating":infos.rating,
-				"poster":infos.poster,
-				"director":infos.director,
-				"metascore":infos.metascore,
-				"writer":infos.writer
-			})
-			.then(r => {
-				const size = t.length / (1024 * 1024)
-				let MIN_SIZE = 0;
-				console.log('size:', size);
-				if (size < 400) {
-					MIN_SIZE = t.length * 0.1;
-				} else if (size < 800) {
-					MIN_SIZE = t.length * 0.05;
-				} else if (size < 1200) {
-					MIN_SIZE = t.length * 0.035;
-				} else {
-					MIN_SIZE = t.length * 0.02;
+
+	async generalHandler(torrent, torrentParsed, downloadPath, title, res) {
+		const THAT = this;
+		console.log("start generalHandler");
+		return new Promise(async (resolve, reject)=>{
+			const t = torrent;
+			try {
+				const subtitles = await THAT.getSubtitles(title);
+				let subtitlesHash = {}
+				for (let i in subtitles) {
+					subtitlesHash[subtitles[i].lang] = subtitles[i].filename;
 				}
-				console.log("min size:", MIN_SIZE);
-				const interval = setInterval(()=>{
-					try {
-						if (fs.existsSync(downloadPath+'/'+t.name)) {
-							console.log('size:', fs.statSync(downloadPath+'/'+t.name).size);
-							if (fs.statSync(downloadPath+'/'+t.name).size > MIN_SIZE) {
-								clearInterval(interval);
-								this.sendHtml(res, downloadPath, torrentParsed,
-									{
-										'fr': subtitlesHash.fr ? `${process.env.HYPERTUBE_STREAMING_URL}/${subtitlesHash.fr}` : "",
-										'en': subtitlesHash.en ? `${process.env.HYPERTUBE_STREAMING_URL}/${subtitlesHash.en}` : ""
-									}
-								);
-							}
-						}
-					} catch (e) {
-						console.error('here:', e);
+				const imdbId = await Imdb.getIMDBid(title);
+				console.log("imdbId:", imdbId);
+				const infos = await Imdb.getInfos(imdbId);
+
+				console.log("infos:",infos);
+				// process.exit(0);
+				this.Hypertube.post({
+					"title":title,
+					"token":torrentParsed.infoHash,
+					"path":t.name,
+					"subtitles_fr":subtitlesHash.fr ? subtitlesHash.fr : "",
+					"subtitles_en":subtitlesHash.en ? subtitlesHash.en : "",
+					"content_rating":infos.contentRating,
+					"runtime":infos.runtime,
+					"description":infos.description,
+					"rating":infos.rating,
+					"poster":infos.poster,
+					"director":infos.director,
+					"metascore":infos.metascore,
+					"writer":infos.writer
+				})
+				.then(r => {
+					const size = t.length / (1024 * 1024)
+					let MIN_SIZE = 0;
+					console.log('size:', size);
+					if (size < 400) {
+						MIN_SIZE = t.length * 0.1;
+					} else if (size < 800) {
+						MIN_SIZE = t.length * 0.05;
+					} else if (size < 1200) {
+						MIN_SIZE = t.length * 0.035;
+					} else {
+						MIN_SIZE = t.length * 0.02;
 					}
-				}, 1000);
-			}).catch(e => {
-				console.error('error Hypertube.post:',e);
-				res.sendStatus(500);
-				res.send();
-			})
-		} catch (e) {
-			console.error('error getSubtitles:', e);
-		}
+					console.log("min size:", MIN_SIZE);
+					const interval = setInterval(()=>{
+						try {
+							if (fs.existsSync(downloadPath+'/'+t.name)) {
+								console.log('size:', fs.statSync(downloadPath+'/'+t.name).size);
+								if (fs.statSync(downloadPath+'/'+t.name).size > MIN_SIZE) {
+									clearInterval(interval);
+									this.sendHtml(res, downloadPath, torrentParsed,
+										{
+											'fr': subtitlesHash.fr ? `${process.env.HYPERTUBE_STREAMING_URL}/${subtitlesHash.fr}` : "",
+											'en': subtitlesHash.en ? `${process.env.HYPERTUBE_STREAMING_URL}/${subtitlesHash.en}` : ""
+										}
+									);
+								}
+							}
+							resolve(null)
+						} catch (e) {
+							console.error('here:', e);
+							reject(404);
+						}
+					}, 1000);
+				}).catch(e => {
+					console.error('error Hypertube.post:',e);
+					// res.sendStatus(404);
+					// res.send();
+					reject(404);
+				})
+			} catch (e) {
+				console.error('error getSubtitles:', e);
+				// res.sendStatus(417); /* Unexpectetion failed */
+				// res.send();
+				reject(417);
+			}
+		});
 	}
 }
 
