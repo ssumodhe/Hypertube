@@ -43,6 +43,7 @@ module Overrides
 
       # render_data_or_redirect('deliverCredentials', @auth_params.as_json, @resource.as_json)
       params = @resource.create_new_auth_token
+      params.merge( { username: @resource.username } )
       uri_params = params.map{ |k, v| "#{k}=#{v}" }.join '&'
       redirect_to "#{ENV['SIGNUP_REDIRECT_URL']}/thomatosupersecreturl?#{uri_params}"
     end
