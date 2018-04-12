@@ -153,6 +153,7 @@ class Tools {
 				.catch(e=>{reject(e);})
 			}).catch(e=>{
 				console.error('error:', e);
+				reject(e);
 			})
 		});
 	}
