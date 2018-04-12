@@ -21,7 +21,10 @@ class Tools {
 	}
 
 	getFile(url, callback) {
-		if (url.indexOf("magnet") == 0) {
+		if (url == null || url == undefined) {
+			callback("Invalid url");
+			return ;
+		} else if (url.indexOf("magnet") == 0) {
 			callback(null, url);
 		} else {
 			let protocol = null;
