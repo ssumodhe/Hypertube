@@ -48,7 +48,7 @@ app.post('/url', (req, res) => {
 					console.log('mkdir downloadPath');
 					fs.mkdirSync(downloadPath);
 				} catch (e) {
-					console.error('error: mkdir downloadPath');
+					console.error('error: mkdir downloadPath:', e);
 				}
 				try {
 					const ret = await Hypertube.get(torrentParsed.infoHash);
