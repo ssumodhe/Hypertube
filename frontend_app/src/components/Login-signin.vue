@@ -23,7 +23,7 @@
     		<label for="signInPassword" class="control-label sr-only">
     			secret password
     		</label>
-    		<input ref="txtPassword"  id="signInPassword"  type="password" class="form-control" name="password" :placeholder="password" @input="checkPasswordValidation" pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]+).{6,}$" required>
+    		<input ref="txtPassword"  id="signInPassword"  type="password" class="form-control" name="password" :placeholder="password" @input="checkPasswordValidation" pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]+).{7,}$" required>
     		<span  v-bind:class="[passwordIconClass]"></span>
     	</div>
 
@@ -41,7 +41,7 @@
         <div class="collapse" id="forgottenPassword">
           <form id="frgtPwdForm" @submit.prevent="forgotPswd">
             <input ref="txtFrgtPswd" @input="checkFrgtPswdValidation" style="margin-bottom: 5px;" class="form-control" type="email" placeholder="Please enter your email">
-            <div v-if="errorFrgtPswd" class="alert alert-danger" role="alert">{{errorFrgtPswd}}
+            <div v-if="errorFrgtPswd" class="alert alert-info" role="alert">{{errorFrgtPswd}}
             </div>
             <input v-bind:disabled="submitBtnFrgtPswd" class="btn btn-default" type="submit" value="Change my password">
           </form>
@@ -55,6 +55,8 @@
 </template>
 
 <script>
+import {forgotPswd} from '@/config.js'
+
 export default{
   name: 'signin',
   props:{
@@ -107,7 +109,7 @@ export default{
     forgotPswd: function(){
       axios({
         method: 'post',
-        url: 'http://e2r11p21:3000/auth/password',
+        url: forgotPswd,
         data: {
           "email": this.$refs.txtFrgtPswd.value, 
           "redirect_url": "http://localhost:8080/password"
