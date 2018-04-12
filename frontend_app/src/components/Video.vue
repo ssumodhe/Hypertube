@@ -1,7 +1,5 @@
 <template>
   <div class="movie">
-    {{note}}
-
     <br>
     <br>
     <br>
@@ -9,8 +7,8 @@
     <div>
       <span v-if="advert" id="advertisement"><strong><span v-lang.msg_ad></span></strong></span>
       <video autoplay="autoplay" loop controls preload="metadata" :src="movieSource" poster="/static/img/loading.gif">
-        <track kind="subtitles" src="https://streamingapi.tpayet.com/subtitles/Interstellar.2014.720p.BluRay.x264-DAA.vtt" srclang="en" label="English" default="">
-        <track kind="subtitles" src="https://streamingapi.tpayet.com/subtitles/Interstellar.2014.720p.BluRay.x264.DTS-WiKi.fr.vtt" srclang="fr" label="French">
+        <track kind="subtitles" :src="subEn" srclang="en" label="English" default="">
+        <track kind="subtitles" :src="subFr" srclang="fr" label="French">
         <canvas></canvas>
       </video>
       <!-- <video autoplay muted="true" controls="controls" poster="/static/img/emoji_kitty.png">
@@ -81,7 +79,6 @@ export default{
   },
   data(){
     return {
-      note: "This is the Streaming page !",
       headers: {
           'Content-Type': 'application/json',
           'access-token': localStorage.getItem('token'),
@@ -92,7 +89,9 @@ export default{
         },
       comments: [],
       advert: true, 
-      movieSource: "https://www.w3schools.com/html/mov_bbb.mp4"
+      movieSource: "https://www.w3schools.com/html/mov_bbb.mp4",
+      subEn: "",
+      subFr: "",
     }
   },
   created: function(){
@@ -114,14 +113,14 @@ export default{
       }
     })
     .then( (response) => {
-      this.note = response.data
       console.log("response from streaming download | VIDEO")
-      console.log(response.data)
-      // this.movieSource = response.data
+      console.log(response.data.videoUrl)
+      this.movieSource = response.data.videoUrl
+      this.subEn = response.data.subtitles['en']
+      this.subFr = response.data.subtitles['fr']
       // need to set if localStorage.getItem('video_id') == null for comments
       // + middware : any routes FROM video localStorage.removeItem('video_id')
       // this.movieSource = "https://mdbootstrap.com/img/video/Tropical.mp4"
-      this.movieSource = 'https://streamingapi.tpayet.com/video/2bbfa58659e8d9541e803a4b803d2352b8bc4ecb'
       this.advert = false
     })
     .catch( (error) => {
