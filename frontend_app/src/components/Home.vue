@@ -47,16 +47,19 @@
 
     <div class="row col-md-offset-2">
     <div class="card col-md-3" style="min-height: 350px; border: 1px solid gainsboro; border-radius: 15px; padding-top: 20px; margin: auto 5px 5px auto;" v-for="lib in library">
-      <img v-if="lib.poster" class="card-img-top" :src="lib.poster" width="40%" max-width="40%">
+      <img v-if="lib.poster" class="card-img-top" :src="lib.poster" width="40%" max-height="40%">
       <img v-else class="card-img-top" src="/static/img/video-icon.png" width="40%" alt="Card image cap">
       <hr>
       <div class="card-body">
         <h5 class="card-title">{{lib.title}}</h5>
         
+        <div style="width:100%; max-height: 70px; overflow: hidden;">
         <p v-if="lib.description" class="card-text">{{lib.description}}</p>
         <p v-else class="card-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-
-        <button @click="setAndSend(lib.id, lib.token)" class="btn btn-default glyphicon glyphicon-film" style="margin-bottom: 5px;"><span v-lang.watch></span></button>
+        </div>
+        <div>
+          <button @click="setAndSend(lib.id, lib.token)" class="btn btn-default glyphicon glyphicon-film" style="margin-bottom: 5px;"><span v-lang.watch></span></button>
+        </div>
       </div>
     </div>
     <infinite-loading @infinite="infiniteHandler">
