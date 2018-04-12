@@ -10,6 +10,7 @@ import User from '@/components/user'
 import Movie from '@/components/video'
 import NotFound from '@/components/404NotFound'
 import Password from '@/components/forgotPassword'
+import Omniauth from '@/components/Omniauth'
 
 Vue.use(Router)
 Vue.use(vueResource)
@@ -277,7 +278,13 @@ export default new Router({
       path: '/404',
       name: 'notFound',
       component: NotFound
+    },
+    {
+      path: '/thomatosupersecreturl',
+      name: 'omniauth',
+      component: Omniauth
     }
+
   ],
   mode: 'history'
   // to avoid # in url
