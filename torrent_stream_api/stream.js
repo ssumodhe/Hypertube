@@ -30,7 +30,7 @@ app.post('/url', (req, res) => {
 	let TYPE = 0;
 	console.log(req.body.url);
 	Tools.getFile(req.body.url, async (err, file) => {
-		// if (err) { res.sendStatus(404).end(); return 0; }
+		if (err) { res.sendStatus(404).end(); return 0; }
 		if (file.indexOf("magnet") == 0) {
 			TYPE = 1;
 		}
