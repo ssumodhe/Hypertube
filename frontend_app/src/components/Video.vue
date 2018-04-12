@@ -4,17 +4,22 @@
     <br>
     <br>
 
-    <div>
+    <div v-if="advert">
       <span v-if="advert" id="advertisement"><strong><span v-lang.msg_ad></span></strong></span>
       <video autoplay="autoplay" loop controls preload="metadata" :src="movieSource" poster="/static/img/loading.gif">
         <track kind="subtitles" :src="subEn" srclang="en" label="English" default="">
         <track kind="subtitles" :src="subFr" srclang="fr" label="French">
-        <canvas></canvas>
       </video>
       <!-- <video autoplay muted="true" controls="controls" poster="/static/img/emoji_kitty.png">
         <source v-if="advert" :src="movieSource" type="video/mp4"></source> 
         <source v-if="!advert" :src="movieSource" type="video/mp4"></source>
       </video> -->
+    </div>
+    <div v-else>
+      <video autoplay="autoplay" loop controls preload="metadata" :src="movieSource" poster="/static/img/loading.gif">
+        <track kind="subtitles" :src="subEn" srclang="en" label="English" default="">
+        <track kind="subtitles" :src="subFr" srclang="fr" label="French">
+      </video>
     </div>
 
 <!--     <video autoplay loop muted="true" controls class="video-js">
@@ -69,6 +74,7 @@
 <script>
 import {videoUrl} from '@/config.js'
 import {commentsUrl} from '@/config.js'
+import {backApi} from '@/config.js'
 
 export default{
   name: 'movie',
@@ -95,7 +101,10 @@ export default{
     }
   },
   created: function(){
+
     if (localStorage.getItem('video-db') == 'false'){
+      this.advert = true
+      this.movieSource = "https://www.w3schools.com/html/mov_bbb.mp4"
       axios({
         method: 'post',
         url: 'http://localhost:5555/url',
@@ -108,8 +117,6 @@ export default{
         }
       })
       .then( (response) => {
-        console.log("response from streaming download | VIDEO")
-        console.log(response.data.videoUrl)
         this.movieSource = response.data.videoUrl
         this.subEn = response.data.subtitles['en']
         this.subFr = response.data.subtitles['fr']
@@ -125,19 +132,18 @@ export default{
 
     if (localStorage.getItem('video-db') == 'true'){
       this.advert = false
+      this.movieSource = 'http://localhost:5555/video/' + this.$route.params.which
+      
       axios({
-        method: 'post',
-        url: 'http://localhost:5555/video/' + this.$route.params.which,
+        method: 'get',
+        url: videoUrl + this.$route.params.which,
         headers:{
             'Content-Type': 'application/json'
         }
       })
       .then( (response) => {
-        console.log("response from streaming download ALREADY EXISTING | VIDEO")
-        console.log(response.data.videoUrl)
-        this.movieSource = response.data.videoUrl
-        this.subEn = response.data.subtitles['en']
-        this.subFr = response.data.subtitles['fr']
+        this.subEn = backApi + response.data['subtitles_en']
+        this.subFr = backApi + response.data['subtitles_fr']
       })
       .catch( (error) => {
         console.log(error)
