@@ -18,6 +18,9 @@ router.beforeEach((to, from, next) => {
   else if (to.name == "password" && !localStorage.getItem('token')){
     next();
   }
+  else if (to.name == "omniauth" && !localStorage.getItem('token')){
+    next();
+  }
   else if (to.name != "login" && to.name != "notFound" && !localStorage.getItem('token')){
     next('/login');
   }
@@ -34,6 +37,7 @@ router.beforeEach((to, from, next) => {
     next()
   }
   else {
+    console.log(localStorage)
     next();
   }
 });
