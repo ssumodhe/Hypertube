@@ -30,7 +30,7 @@ module Overrides
       set_token_on_resource
       create_auth_params
 
-      if confirmable_enabled?
+      if resource_class.devise_modules.include?(:confirmable)
         # don't send confirmation email!!!
         @resource.skip_confirmation!
       end
@@ -42,14 +42,7 @@ module Overrides
       yield @resource if block_given?
 
       # render_data_or_redirect('deliverCredentials', @auth_params.as_json, @resource.as_json)
-      token, client, expiry = @resource.create_token
-      params = {
-        token: token,
-        client: client,
-        expiry: expiry,
-        'token-type' => 'Bearer',
-        uid: @resource.uid
-      }
+      params = @resource.create_new_auth_token
       uri_params = params.map{ |k, v| "#{k}=#{v}" }.join '&'
       redirect_to "http://localhost:8080?#{uri_params}"
     end
@@ -88,8 +81,8 @@ module Overrides
 
     # break out provider attribute assignment for easy method extension
     def assign_provider_attrs(user, auth_hash)
-      attrs = auth_hash['info'].slice(*user.attributes.keys)
-      user.assign_attributes(attrs)
+      attrs = auth_hash['info'].slice(*user.attributes.keys).to_hash
+      user.update_attributes(attrs)
     end
 
     # derive allowed params from the standard devise parameter sanitizer
@@ -179,7 +172,7 @@ module Overrides
 
     def set_token_on_resource
       @config = omniauth_params['config_name']
-      @client_id, @token, @expiry = @resource.create_token
+      @client_id, @token, @expiry = @resource.create_new_auth_token
     end
 
     def render_data(message, data)
