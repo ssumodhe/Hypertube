@@ -95,50 +95,66 @@ export default{
     }
   },
   created: function(){
-    axios({
-      method: 'post',
-      // url: 'https://hypertubeapi.tpayet.com/streaming/download',
-      url: 'http://localhost:5555/url',
-      data: {
-        // "streaming": 
-        //   {
-        //     "url": "http://www.torrent9.red/get_torrent/interstellar-french-dvdrip-2014.torrent",
-        //     "title": "interstellar"
-        //   }
-          "url": localStorage.getItem('video-magnet'),
-          "title": localStorage.getItem('video-name')
-      },
-      headers:{
-          'Content-Type': 'application/json'
-      }
-    })
-    .then( (response) => {
-      console.log("response from streaming download | VIDEO")
-      console.log(response.data.videoUrl)
-      this.movieSource = response.data.videoUrl
-      this.subEn = response.data.subtitles['en']
-      this.subFr = response.data.subtitles['fr']
-      // need to set if localStorage.getItem('video_id') == null for comments
-      // + middware : any routes FROM video localStorage.removeItem('video_id')
-      // this.movieSource = "https://mdbootstrap.com/img/video/Tropical.mp4"
-      this.advert = false
-    })
-    .catch( (error) => {
-      console.log(error)
-    });
+    if (localStorage.getItem('video-db') == 'false'){
+      axios({
+        method: 'post',
+        url: 'http://localhost:5555/url',
+        data: {
+            "url": localStorage.getItem('video-magnet'),
+            "title": localStorage.getItem('video-name')
+        },
+        headers:{
+            'Content-Type': 'application/json'
+        }
+      })
+      .then( (response) => {
+        console.log("response from streaming download | VIDEO")
+        console.log(response.data.videoUrl)
+        this.movieSource = response.data.videoUrl
+        this.subEn = response.data.subtitles['en']
+        this.subFr = response.data.subtitles['fr']
+        // need to set if localStorage.getItem('video_id') == null for comments
+        // + middware : any routes FROM video localStorage.removeItem('video_id')
+        // this.movieSource = "https://mdbootstrap.com/img/video/Tropical.mp4"
+        this.advert = false
+      })
+      .catch( (error) => {
+        console.log(error)
+      });
+    }
 
-    if (localStorage.getItem('video-db') == true){
+    if (localStorage.getItem('video-db') == 'true'){
+      this.advert = false
+      axios({
+        method: 'post',
+        url: 'http://localhost:5555/video/' + this.$route.params.which,
+        headers:{
+            'Content-Type': 'application/json'
+        }
+      })
+      .then( (response) => {
+        console.log("response from streaming download ALREADY EXISTING | VIDEO")
+        console.log(response.data.videoUrl)
+        this.movieSource = response.data.videoUrl
+        this.subEn = response.data.subtitles['en']
+        this.subFr = response.data.subtitles['fr']
+      })
+      .catch( (error) => {
+        console.log(error)
+      });
+
+      
       axios({
         method: 'get',
         url: videoUrl + this.$route.params.which +'/comments'
-        })
-        .then( (response) => {
-          //latest comment displayed last with .slice().reverse()
-          this.comments = response.data.slice().reverse()
-        })
-        .catch( (error) => {
-          console.log(error)
-        });
+      })
+      .then( (response) => {
+        //latest comment displayed last with .slice().reverse()
+        this.comments = response.data.slice().reverse()
+      })
+      .catch( (error) => {
+        console.log(error)
+      });
     }
   },
   methods:{
