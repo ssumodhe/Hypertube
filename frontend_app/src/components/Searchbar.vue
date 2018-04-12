@@ -65,6 +65,7 @@ export default{
     		if (n > 10){
     			n = 10
     		}
+        this.movieData = []
     		for (var i = 0; i < n; i++) {
           this.searchResponse[i] = response.data[i]['name'];
           this.movieData[i] = response.data[i]
@@ -83,8 +84,6 @@ export default{
             this.$router.push('/video/' + item)
           }
         }
-
-        
       }
     }
 }
