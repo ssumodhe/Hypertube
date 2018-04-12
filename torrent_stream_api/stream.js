@@ -30,7 +30,7 @@ app.post('/url', (req, res) => {
 	let TYPE = 0;
 	console.log(req.body.url);
 	Tools.getFile(req.body.url, async (err, file) => {
-		if (err) { res.sendStatus(404).end(); return 0; }
+		// if (err) { res.sendStatus(404).end(); return 0; }
 		if (file.indexOf("magnet") == 0) {
 			TYPE = 1;
 		}
@@ -68,52 +68,66 @@ app.post('/url', (req, res) => {
 					} else {
 						console.log('unknown file, start downloading');
 						const engine = torrentStream(torrentRaw);
-						let path = ""
+
+						// let path = ""
 						let i = 0;
 
 						console.log('torrent hash:',torrentParsed.infoHash);
 						/* Start torrent-stream engine, create readStream for each files and start downloading */
 						engine.on('ready', ()=>{
+							console.log("torrent ready");
 							engine.files.forEach( async (file) => {
-								console.log('filename:', file.name);
-								const stream = file.createReadStream();
-								stream.on('data', (d)=>{
-									i++;
-									if (!(i % 100)) console.log('data:', i, file.name);
-									fs.appendFileSync(downloadPath+'/'+file.name, d);
-								})
-								.on('end', ()=>{
-									console.log('download done:', file.name);
-								})
-								.on('error', (e)=>{
-									console.error('error downloading:', e);
-								});
+								console.log("file:", file.name, "size:", file.length);
 								/* Trigger only if file size > 200Mo */
-								if (TYPE == 1 && file.length > 200 * (1024 * 1024)) {
-									Tools.generalHandler(file, torrentParsed, downloadPath, req.body.title, res);
-									TYPE = 0;
+								if (/*TYPE == 1 && */file.length > 200 * (1024 * 1024)) {
+									try {
+										await Tools.generalHandler(file, torrentParsed, downloadPath, req.body.title, res);
+										TYPE = 2;
+										console.log('filename:', file.name);
+										const stream = file.createReadStream();
+										stream.on('data', (d)=>{
+											i++;
+											// if (!(i % 100)) console.log('data:', i, file.name);
+											if (!(i % 100)) console.log('data:', i, file.name);
+											fs.appendFileSync(downloadPath+'/'+file.name, d);
+										})
+										.on('end', ()=>{
+											console.log('download done:', file.name);
+										})
+										.on('error', (e)=>{
+											console.error('error downloading:', e);
+										});
+									} catch (e) {
+										console.log("error status:", e);
+										res.sendStatus(e);
+										res.end();
+									}
 								}
 							});
+						})
+						.on('error', (err)=>{
+							console.log(err);
 						});
 						/* Add the new file in db, set MIN_SIZE downloaded file that trigger the stream */
 						if (TYPE == 0) {
-							Tools.generalHandler(
-								torrentParsed.files.sort((a, b)=>{return b.length - a.length})[0],
-								torrentParsed,
-								downloadPath,
-								req.body.title,
-								res
-							);
+							console.log("TYPE 0");
+							// Tools.generalHandler(
+							// 	torrentParsed.files.sort((a, b)=>{return b.length - a.length})[0],
+							// 	torrentParsed,
+							// 	downloadPath,
+							// 	req.body.title,
+							// 	res
+							// );
 						}
 					}
 				} catch (e) {
 					console.error('error: check env variables:', e);
-					res.sendStatus(500);
+					res.sendStatus(404);
 					res.send();
 				}
 			} catch (e) {
 				console.error('write file error: chmod 0000 on download path or torrents path?');
-				res.sendStatus(500);
+				res.sendStatus(404);
 			}
 		} catch (e) {
 			res.sendStatus(404);

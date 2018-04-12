@@ -45,7 +45,7 @@
     		<label for="signUpPassword" class="control-label sr-only">
     			secret password
     		</label>
-    		<input ref="txtPassword" type="password" id="signUpPassword" class="form-control" name="password" :placeholder="password" @input="checkPasswordValidation" pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]+).{6,}$" required>
+    		<input ref="txtPassword" type="password" id="signUpPassword" class="form-control" name="password" :placeholder="password" @input="checkPasswordValidation" pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]+).{7,}$" required>
     		<span  v-bind:class="[passwordIconClass]"></span>
         <small><mark>
         <span v-lang.msg_pswd></span>
