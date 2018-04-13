@@ -1,5 +1,4 @@
 class User < ActiveRecord::Base
-  has_many :performances
 
   include DeviseTokenAuth::Concerns::User
 
@@ -17,7 +16,7 @@ class User < ActiveRecord::Base
   # validates_attachment :picture, presence: true
   do_not_validate_attachment_file_type :picture
   has_many :comments
-
+  has_many :performances
   
   def password_complexity
     if password.present?
