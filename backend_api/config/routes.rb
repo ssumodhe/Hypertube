@@ -12,6 +12,7 @@ Rails.application.routes.draw do
 
   resources :videos, except: [:update], param: :token do
     get :comments
+    get :perform
   end
   # get 'videos/:id/comments', to: 'videos#comments'
   mount_devise_token_auth_for 'User', at: 'auth', controllers: {

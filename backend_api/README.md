@@ -77,8 +77,17 @@ These route needs [authentication](https://github.com/tpayet/Hypertube/tree/mast
 $> curl https://hypertubeapi.tpayet.com/videos
 
 # GET /videos/:token/comments
-curl https://hypertubeapi.tpayet.com/videos/:token/comments
+$> curl https://hypertubeapi.tpayet.com/videos/:token/comments
 [{"id":1,"body":"hello","user_id":7,"video_id":6,"created_at":"2018-03-10T18:27:33.853Z","updated_at":"2018-03-10T18:27:33.853Z"}]
+```
+
+##### Register video played by user
+
+You should call the following route with your authentication headers
+```bash
+# GET /videos/:token/perform
+$> curl https://hypertubeapi.tpayet.com/videos/qwerty/perform
+{"id":3,"user_id":7,"video_id":1,"created_at":"2018-04-13T12:48:02.939Z","updated_at":"2018-04-13T12:48:02.939Z"}
 ```
 #### Comments routes
 
