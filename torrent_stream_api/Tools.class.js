@@ -195,21 +195,21 @@ class Tools {
 				.then(r => {
 					const size = t.length / (1024 * 1024)
 					let MIN_SIZE = 0;
-					console.log('size:', size);
+					console.log('size:', size / (1024 * 1024));
 					if (size < 400) {
 						MIN_SIZE = t.length * 0.1;
 					} else if (size < 800) {
 						MIN_SIZE = t.length * 0.05;
 					} else if (size < 1200) {
-						MIN_SIZE = t.length * 0.035;
+						MIN_SIZE = t.length * 0.025;
 					} else {
-						MIN_SIZE = t.length * 0.02;
+						MIN_SIZE = t.length * 0.015;
 					}
 					console.log("min size:", MIN_SIZE);
 					const interval = setInterval(()=>{
 						try {
 							if (fs.existsSync(downloadPath+'/'+t.name)) {
-								console.log('size:', fs.statSync(downloadPath+'/'+t.name).size);
+								console.log('size:', fs.statSync(downloadPath+'/'+t.name).size / (1024 * 1024));
 								if (fs.statSync(downloadPath+'/'+t.name).size > MIN_SIZE) {
 									clearInterval(interval);
 									this.sendHtml(res, downloadPath, torrentParsed,
