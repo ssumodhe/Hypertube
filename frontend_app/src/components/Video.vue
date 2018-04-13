@@ -4,9 +4,9 @@
     <br>
     <br>
 
-    <div v-if="advert">
+    <div>
       <span v-if="advert" id="advertisement"><strong><span v-lang.msg_ad></span></strong></span>
-      <video autoplay="autoplay" loop controls preload="metadata" :src="movieSource" poster="/static/img/loading.gif">
+      <video  ref="videoPlaying" autoplay="autoplay" loop controls preload="metadata" :src="movieSource" crossorigin="anonymous">
         <track kind="subtitles" :src="subEn" srclang="en" label="English" default="">
         <track kind="subtitles" :src="subFr" srclang="fr" label="French">
       </video>
@@ -15,12 +15,7 @@
         <source v-if="!advert" :src="movieSource" type="video/mp4"></source>
       </video> -->
     </div>
-    <div v-else>
-      <video autoplay="autoplay" loop controls preload="metadata" :src="movieSource" poster="/static/img/loading.gif">
-        <track kind="subtitles" :src="subEn" srclang="en" label="English" default="">
-        <track kind="subtitles" :src="subFr" srclang="fr" label="French">
-      </video>
-    </div>
+    
 
 <!--     <video autoplay loop muted="true" controls class="video-js">
       <source
@@ -104,7 +99,7 @@ export default{
 
     if (localStorage.getItem('video-db') == 'false'){
       this.advert = true
-      this.movieSource = "https://www.w3schools.com/html/mov_bbb.mp4"
+      this.movieSource = "https://mdbootstrap.com/img/video/Tropical.mp4"
       axios({
         method: 'post',
         url: 'http://localhost:5555/url',
@@ -120,6 +115,8 @@ export default{
         this.movieSource = response.data.videoUrl
         this.subEn = response.data.subtitles['en']
         this.subFr = response.data.subtitles['fr']
+        this.$refs.videoPlaying.removeAttribute("loop")
+        this.$refs.videoPlaying.setAttribute('poster', '/static/img/loading.gif')
         // need to set if localStorage.getItem('video_id') == null for comments
         // + middware : any routes FROM video localStorage.removeItem('video_id')
         // this.movieSource = "https://mdbootstrap.com/img/video/Tropical.mp4"
@@ -144,6 +141,8 @@ export default{
       .then( (response) => {
         this.subEn = backApi + response.data['subtitles_en']
         this.subFr = backApi + response.data['subtitles_fr']
+        this.$refs.videoPlaying.removeAttribute("loop")
+        this.$refs.videoPlaying.setAttribute('poster', '/static/img/loading.gif')
       })
       .catch( (error) => {
         console.log(error)

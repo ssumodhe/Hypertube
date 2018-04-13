@@ -62,7 +62,7 @@ class Tools {
 
 					res.writeHead(200, {
 						'Cache-Control': 'no-cache',
-						'Content-Length': file.size,
+						// 'Content-Length': file.size,
 						'Content-Type': 'video/mp4'
 					})
 
