@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :update, :destroy, :avatar]
-  before_action :logged_in?, except: [:avatar]
+  before_action :set_user, only: [:show, :update, :destroy, :avatar, :performances]
+  before_action :logged_in?, except: [:avatar, :performances]
 
   # GET /users
   def index
@@ -41,6 +41,12 @@ class UsersController < ApplicationController
 
   def avatar
     send_file @user.picture.path, type: 'image/jpeg', disposition: :inline
+  end
+
+  def performances
+    perfs = Performance.where(user: @user)
+
+    render json: perfs
   end
 
   private
