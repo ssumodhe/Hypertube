@@ -5,39 +5,30 @@
     <br>
     <br>
 
+    <!-- Video PART -->
     <div>
       <span v-if="advert" id="advertisement"><strong><span v-lang.msg_ad></span></strong></span>
       <video  ref="videoPlaying" autoplay="autoplay" loop controls :src="movieSource" crossorigin="anonymous">
         <track kind="subtitles" :src="subEn" srclang="en" label="English" default="">
         <track kind="subtitles" :src="subFr" srclang="fr" label="French">
       </video>
-      <!-- <video autoplay muted="true" controls="controls" poster="/static/img/emoji_kitty.png">
-        <source v-if="advert" :src="movieSource" type="video/mp4"></source> 
-        <source v-if="!advert" :src="movieSource" type="video/mp4"></source>
-      </video> -->
     </div>
     
-
-<!--     <video autoplay loop muted="true" controls class="video-js">
-      <source
-        src="http://e1r5p16.42.fr:5555/video/YmsorVS9x4x1YA4abxEV3LQ7LAoDH2xXXTjgyMcZWeXdYPmf1xutJJcSEQWESRRMMDSDaQQwXWR8JsK6tSkjpakbPKQszXLx1Tfu4EXDarC1Gk6xxdY6j5t5eL3NJihJPsrQBmmf6BtT1R42uLvHWxvYfBxJwJH6R7hCxRAbvQjTphupyj92" type="video/mp4">
-      <track kind="subtitles" src="http://localhost:8080/static/sub.vtt" srclang="en" label="English" default="">
-      <track kind="subtitles" src="http://e1r5p16.42.fr:5555/sub.vtt" srclang="fr" label="French" default="">
-    </video> -->
-
+    <!-- Write Comments PART -->
     <div class="comments">
       <div id="comment-area">
         <textarea ref="commentTxtArea" @keydown="isEnter" @keydown.enter.prevent class="comment" cols="60" rows="6" :placeholder="msg_cmt"></textarea>
         <button @click="sendComment" class="comment"><span v-lang.btn_share></span></button>
       </div>
 
-      <div>
-        <span id="title-previous-comments" v-lang.prev_cmt></span>
-      </div>
-      <div v-if="comments.length != 0">
+    <!-- Read Comments PART -->
+    <div>
+      <span id="title-previous-comments" v-lang.prev_cmt></span>
+    </div>
+
+    <div v-if="comments.length != 0">
       <div class="container" v-for="comment in comments">
         <div class="row">
-
           <div class="col-sm-1">
             <div class="thumbnail">
               <img class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
@@ -47,21 +38,20 @@
           <div class="col-sm-5">
             <div class="panel panel-default">
               <div class="panel-heading">
-                <router-link to="/user/totolapaille"> <strong>{{comment.user_id}}</strong></router-link> <span class="text-muted"><span v-lang.commented></span>{{setCommentsCreatedAt(comment.created_at)}}</span>
+                <router-link to="/user/totolapaille"> <strong>{{comment.user_id}}</strong></router-link>
+                <span class="text-muted"><span v-lang.commented></span>{{setCommentsCreatedAt(comment.created_at)}}</span>
               </div>
               <div class="panel-body">
               {{comment.body}}
               </div>
             </div>
           </div>
-
         </div>
       </div>
-      </div>
-      <div v-if="comments.length == 0" class="badge badge-secondary">
-        <span v-lang.no_cmt></span>
-
-      </div>
+    </div>
+    <div v-if="comments.length == 0" class="badge badge-secondary">
+      <span v-lang.no_cmt></span>
+    </div>
   </div>
 
   </div>

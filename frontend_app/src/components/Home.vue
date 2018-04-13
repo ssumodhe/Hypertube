@@ -122,13 +122,6 @@ export default{
       localStorage.setItem('video-db', true)
       localStorage.setItem('video-name', name)
       this.$router.push(link)
-    },
-    switchLang: function(){
-      if(this.language == 'en'){
-        this.language = 'fr'
-      }else{
-        this.language = 'en'
-      }
     }
   }
 }
