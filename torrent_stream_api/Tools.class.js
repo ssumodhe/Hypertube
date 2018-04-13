@@ -193,24 +193,24 @@ class Tools {
 					"writer":infos.writer
 				})
 				.then(r => {
-					const size = t.length / (1024 * 1024)
+					const size = t.length / (1024 * 1024);
 					let MIN_SIZE = 0;
-					console.log('size:', size / (1024 * 1024));
+					console.log('size:', size);
 					if (size < 400) {
-						MIN_SIZE = t.length * 0.1;
+						MIN_SIZE = (t.length * 0.1) / (1024 * 1024);
 					} else if (size < 800) {
-						MIN_SIZE = t.length * 0.05;
+						MIN_SIZE = (t.length * 0.05) / (1024 * 1024);
 					} else if (size < 1200) {
-						MIN_SIZE = t.length * 0.025;
+						MIN_SIZE = (t.length * 0.025) / (1024 * 1024);
 					} else {
-						MIN_SIZE = t.length * 0.015;
+						MIN_SIZE = (t.length * 0.015) / (1024 * 1024);
 					}
 					console.log("min size:", MIN_SIZE);
 					const interval = setInterval(()=>{
 						try {
 							if (fs.existsSync(downloadPath+'/'+t.name)) {
 								console.log('size:', fs.statSync(downloadPath+'/'+t.name).size / (1024 * 1024));
-								if (fs.statSync(downloadPath+'/'+t.name).size > MIN_SIZE) {
+								if (fs.statSync(downloadPath+'/'+t.name).size / (1024 * 1024) > MIN_SIZE) {
 									clearInterval(interval);
 									this.sendHtml(res, downloadPath, torrentParsed,
 										{
