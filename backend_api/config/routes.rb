@@ -5,8 +5,9 @@ Rails.application.routes.draw do
   get 'sleep', to: 'sleep#time'
 
   resources :comments, only: [:create, :update]
-  get 'users/:username', to: 'users#show'
-  get 'users/:username/avatar', to: 'users#avatar'
+  get 'users/:username', to: 'users#show', constraints: { username: %r{[^\/]+} }
+  get 'users/:username/avatar', to: 'users#avatar', constraints: { username: %r{[^\/]+} }
+  get 'users/:username/performances', to: 'users#performances', constraints: { username: %r{[^\/]+} }
 
   get 'search', to: 'search#query'
 
