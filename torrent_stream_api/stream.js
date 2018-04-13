@@ -63,7 +63,8 @@ app.post('/url', (req, res) => {
 							{
 								'fr': retBody.subtitles_fr ? `${process.env.HYPERTUBE_STREAMING_URL}/${retBody.subtitles_fr}` : "",
 								'en': retBody.subtitles_en ? `${process.env.HYPERTUBE_STREAMING_URL}/${retBody.subtitles_en}` : ""
-							}
+							},
+							torrentParsed.infoHash
 						);
 					} else {
 						console.log('unknown file, start downloading');
