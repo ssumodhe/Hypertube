@@ -112,7 +112,7 @@ class Tools {
 			const retJSON = {
 				videoUrl: `${process.env.HYPERTUBE_STREAMING_URL}/video/${torrentParsed.infoHash}`,
 				subtitles: subtitlesFilename,
-				token: token
+				token: tok
 			}
 			console.log(retJSON);
 			res.json(retJSON);
@@ -218,7 +218,8 @@ class Tools {
 										{
 											'fr': subtitlesHash.fr ? `${process.env.HYPERTUBE_STREAMING_URL}/${subtitlesHash.fr}` : "",
 											'en': subtitlesHash.en ? `${process.env.HYPERTUBE_STREAMING_URL}/${subtitlesHash.en}` : ""
-										}
+										},
+										torrentParsed.infoHash
 									);
 								}
 							}
