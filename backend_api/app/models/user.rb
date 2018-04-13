@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  has_many :performances
+
   include DeviseTokenAuth::Concerns::User
 
   attr_accessor :image_base
