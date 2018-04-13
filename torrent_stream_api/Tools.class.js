@@ -106,17 +106,19 @@ class Tools {
 		});
 	}
 
-	sendHtml(res, downloadPath, torrentParsed, subtitlesFilename) {
+	sendHtml(res, downloadPath, torrentParsed, subtitlesFilename, tok) {
 		console.log(subtitlesFilename);
 		try {
 			const retJSON = {
 				videoUrl: `${process.env.HYPERTUBE_STREAMING_URL}/video/${torrentParsed.infoHash}`,
-				subtitles: subtitlesFilename
+				subtitles: subtitlesFilename,
+				token: tok
 			}
 			console.log(retJSON);
 			res.json(retJSON);
 		} catch(e) {
 			console.error('sendHtml catch:', e);
+			res.sendStatus(404);
 		}
 	}
 
@@ -153,6 +155,7 @@ class Tools {
 				.catch(e=>{reject(e);})
 			}).catch(e=>{
 				console.error('error:', e);
+				reject(e);
 			})
 		});
 	}
@@ -192,30 +195,31 @@ class Tools {
 					"writer":infos.writer
 				})
 				.then(r => {
-					const size = t.length / (1024 * 1024)
+					const size = t.length / (1024 * 1024);
 					let MIN_SIZE = 0;
 					console.log('size:', size);
 					if (size < 400) {
-						MIN_SIZE = t.length * 0.1;
+						MIN_SIZE = (t.length * 0.1) / (1024 * 1024);
 					} else if (size < 800) {
-						MIN_SIZE = t.length * 0.05;
+						MIN_SIZE = (t.length * 0.05) / (1024 * 1024);
 					} else if (size < 1200) {
-						MIN_SIZE = t.length * 0.035;
+						MIN_SIZE = (t.length * 0.025) / (1024 * 1024);
 					} else {
-						MIN_SIZE = t.length * 0.02;
+						MIN_SIZE = (t.length * 0.015) / (1024 * 1024);
 					}
 					console.log("min size:", MIN_SIZE);
 					const interval = setInterval(()=>{
 						try {
 							if (fs.existsSync(downloadPath+'/'+t.name)) {
-								console.log('size:', fs.statSync(downloadPath+'/'+t.name).size);
-								if (fs.statSync(downloadPath+'/'+t.name).size > MIN_SIZE) {
+								console.log('size:', fs.statSync(downloadPath+'/'+t.name).size / (1024 * 1024));
+								if (fs.statSync(downloadPath+'/'+t.name).size / (1024 * 1024) > MIN_SIZE) {
 									clearInterval(interval);
 									this.sendHtml(res, downloadPath, torrentParsed,
 										{
 											'fr': subtitlesHash.fr ? `${process.env.HYPERTUBE_STREAMING_URL}/${subtitlesHash.fr}` : "",
 											'en': subtitlesHash.en ? `${process.env.HYPERTUBE_STREAMING_URL}/${subtitlesHash.en}` : ""
-										}
+										},
+										torrentParsed.infoHash
 									);
 								}
 							}

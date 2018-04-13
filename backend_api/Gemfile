@@ -25,16 +25,18 @@ gem 'puma', '~> 3.7'
 # making cross-origin AJAX possible
 gem 'rack-cors'
 
-gem 'omniauth'
+
 # Token based authentication for Rails JSON APIs.
 gem 'devise_token_auth', '=0.1.42'
-
+gem 'omniauth-github'
+gem 'omniauth-marvin', '>=1.0.2'
+gem 'devise', '>=4.3.0'
 # gem for postgresql
 gem 'pg', '0.21.0'
 
 # Torrents search APIs
-gem 'torrent_api'
-gem 'rarbg'
+# gem 'torrent_api'
+# gem 'rarbg'
 
 gem 'httparty'
 gem 'paperclip'

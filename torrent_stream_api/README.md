@@ -25,7 +25,8 @@ $> curl -XPOST http://localhost:5555/url -H "Content-Type: application/json" -d 
 	"subtitles" : {
 		"en" : "http://e1r3p13.42.fr:5555/subtitles/Interstellar.2014.720p.BluRay.x264-DAA.vtt",
 		"fr" : "http://e1r3p13.42.fr:5555/subtitles/Interstellar.2014.720p.BluRay.x264.DTS-WiKi.fr.vtt"
-	}
+	},
+	"token" : "2bbfa58659e8d9541e803a4b803d2352b8bc4ecb"
 }
 ```
 
@@ -44,7 +45,7 @@ WEBVTT FILE
 ```bash
 # GET /video/:token
 # start streaming the video through this uri
-$> curl -XDELETE "http://localhost:5555/video/44f91a15dfc1c68b3a2d49d452a40dae4b7ae3d7"
+$> curl "http://localhost:5555/video/44f91a15dfc1c68b3a2d49d452a40dae4b7ae3d7"
 
 # DELETE /video/:token
 $> curl -XDELETE "http://localhost:5555/video/44f91a15dfc1c68b3a2d49d452a40dae4b7ae3d7"

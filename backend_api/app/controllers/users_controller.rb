@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :update, :destroy, :avatar]
-  before_action :logged_in?, except: [:avatar]
+  before_action :set_user, only: [:show, :update, :destroy, :avatar, :performances]
+  before_action :logged_in?, except: [:avatar, :performances]
 
   # GET /users
   def index
@@ -43,10 +43,16 @@ class UsersController < ApplicationController
     send_file @user.picture.path, type: 'image/jpeg', disposition: :inline
   end
 
+  def performances
+    perfs = Performance.where(user: @user)
+
+    render json: perfs
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
-      @user = User.find_by_username(params[:username])
+      @user = User.find_by_username(params[:username]) || User.find_by_uid(params[:username])
     end
 
     # Only allow a trusted parameter "white list" through.
