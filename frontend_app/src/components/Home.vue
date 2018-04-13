@@ -58,7 +58,7 @@
         <p v-else class="card-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
         </div>
         <div>
-          <button @click="setAndSend(lib.id, lib.token, lib.title)" class="btn btn-default glyphicon glyphicon-film" style="margin-bottom: 5px;"><span v-lang.watch></span></button>
+          <button @click="setAndSend(lib.token, lib.title)" class="btn btn-default glyphicon glyphicon-film" style="margin-bottom: 5px;"><span v-lang.watch></span></button>
         </div>
       </div>
     </div>
@@ -116,9 +116,9 @@ export default{
         }
       });
     },
-    setAndSend: function(id, token, name){
+    setAndSend: function(token, name){
       let link = "/video/" + token
-      localStorage.setItem('video-id', id)
+      localStorage.setItem('video-token', token)
       localStorage.setItem('video-db', true)
       localStorage.setItem('video-name', name)
       this.$router.push(link)
