@@ -106,17 +106,19 @@ class Tools {
 		});
 	}
 
-	sendHtml(res, downloadPath, torrentParsed, subtitlesFilename) {
+	sendHtml(res, downloadPath, torrentParsed, subtitlesFilename, tok) {
 		console.log(subtitlesFilename);
 		try {
 			const retJSON = {
 				videoUrl: `${process.env.HYPERTUBE_STREAMING_URL}/video/${torrentParsed.infoHash}`,
-				subtitles: subtitlesFilename
+				subtitles: subtitlesFilename,
+				token: tok
 			}
 			console.log(retJSON);
 			res.json(retJSON);
 		} catch(e) {
 			console.error('sendHtml catch:', e);
+			res.sendStatus(404);
 		}
 	}
 
@@ -216,7 +218,8 @@ class Tools {
 										{
 											'fr': subtitlesHash.fr ? `${process.env.HYPERTUBE_STREAMING_URL}/${subtitlesHash.fr}` : "",
 											'en': subtitlesHash.en ? `${process.env.HYPERTUBE_STREAMING_URL}/${subtitlesHash.en}` : ""
-										}
+										},
+										torrentParsed.infoHash
 									);
 								}
 							}
