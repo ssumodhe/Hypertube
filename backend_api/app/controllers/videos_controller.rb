@@ -1,5 +1,5 @@
 class VideosController < ApplicationController
-  before_action :set_video, only: [:show, :update, :destroy, :perform]
+  before_action :set_video, only: [:show, :update, :destroy]
   before_action :logged_in?, only: [:perform]
 
   # GET /videos
@@ -45,6 +45,7 @@ class VideosController < ApplicationController
   end
 
   def perform
+    @video = Video.find_by_token(params[:video_token])
     perf = Performance.new(user: current_user, video: @video)
     if perf.save
       render json: perf, status: :ok
