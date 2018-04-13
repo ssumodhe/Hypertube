@@ -89,6 +89,19 @@ export default{
       page: 0
     }
   },
+  created: function(){
+    axios({
+        method: 'get',
+        url: 'https://hypertubeapi.tpayet.com/users/' + localStorage.getItem('username') + '/performances',
+      })
+      .then( (response) => {
+        console.log("Home PAge : vues videos ok")
+        console.log(response)
+      })
+      .catch( (error) => {
+        console.log(error)
+      });
+  },
   components: {
     InfiniteLoading, Searchbar
   },

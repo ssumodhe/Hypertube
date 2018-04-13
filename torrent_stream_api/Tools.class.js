@@ -73,10 +73,10 @@ class Tools {
 					.outputOptions([
 						'-movflags empty_moov',
 						'-frag_size 4096',
-						'-cpu-used 2',
-						'-deadline realtime',
-						'-error-resilient 1',
-						'-threads 4'
+						// '-cpu-used 2',
+						// '-deadline realtime',
+						// '-error-resilient 1',
+						// '-threads 4'
 					])
 					.videoBitrate(256)
 					.audioCodec('aac')

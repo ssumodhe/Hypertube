@@ -86,6 +86,7 @@ export default{
       subFr: "",
       videoName: localStorage.getItem('video-name'),
       btnCommentDisabled: false,
+      videoToken : localStorage.getItem('video-token'),
     }
   },
   created: function(){
@@ -117,7 +118,8 @@ export default{
         this.$refs.videoPlaying.setAttribute('poster', '/static/img/loading.gif')
         this.advert = false
         localStorage.setItem('video-token', response.data.token)
-        let new_url = "/video/" + response.data.token
+        this.videoToken = response.data.token
+        let new_url = "/video/" + this.videoToken
         this.$router.replace(new_url)
         this.btnCommentDisabled = false
         this.setView()
@@ -176,7 +178,7 @@ export default{
     setView: function(){
       axios({
         method: 'get',
-        url: 'https://hypertubeapi.tpayet.com/videos/' + localStorage.getItem('video-token') + '/perform',
+        url: 'https://hypertubeapi.tpayet.com/videos/' + this.videoToken + '/perform',
         headers: this.headers
       })
       .then( (response) => {
@@ -201,7 +203,7 @@ export default{
             {
               "body": this.$refs.commentTxtArea.value,
               "user_id": localStorage.getItem('id'),
-              "video_id": localStorage.getItem('video-token')
+              "video_id": this.videoToken
             }
         },
         headers: this.headers

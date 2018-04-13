@@ -1,9 +1,5 @@
 <template>
 	<div class="omniauth">
-
-		<p>H E L L O !</p>
-		<router-link to="/">GO GO GO </router-link>	
-		
 	</div>		
 </template>
 
@@ -50,14 +46,14 @@ export default{
       localStorage.setItem('firstname', response.data['firstname'])
       localStorage.setItem('lastname', response.data['lastname'])
       localStorage.setItem('username', response.data['username'])
-	console.log(localStorage)
+	     console.log(localStorage)
 
     })
     .catch( (error) => {
       console.log(error)
     });
 	
-	// this.$router.push('/')
+	this.$router.push('/')
   }
 }
 
