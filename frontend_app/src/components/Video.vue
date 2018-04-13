@@ -18,7 +18,7 @@
     <div class="comments">
       <div id="comment-area">
         <textarea ref="commentTxtArea" @keydown="isEnter" @keydown.enter.prevent class="comment" cols="60" rows="6" :placeholder="msg_cmt"></textarea>
-        <button @click="sendComment" class="comment"><span v-lang.btn_share></span></button>
+        <button :disabled="btnCommentDisabled" @click="sendComment" class="comment"><span v-lang.btn_share></span></button>
       </div>
 
     <!-- Read Comments PART -->
@@ -84,7 +84,8 @@ export default{
       movieSource: "https://www.w3schools.com/html/mov_bbb.mp4",
       subEn: "",
       subFr: "",
-      videoName: localStorage.getItem('video-name')
+      videoName: localStorage.getItem('video-name'),
+      btnCommentDisabled: false,
     }
   },
   created: function(){
@@ -94,6 +95,7 @@ export default{
     if (localStorage.getItem('video-db') == 'false'){
       this.advert = true
       this.movieSource = "https://www.w3schools.com/html/mov_bbb.mp4"
+      this.btnCommentDisabled = true
       axios({
         method: 'post',
         url: 'http://localhost:5555/url',
@@ -113,10 +115,18 @@ export default{
         this.subFr = response.data.subtitles['fr']
         this.$refs.videoPlaying.removeAttribute("loop")
         this.$refs.videoPlaying.setAttribute('poster', '/static/img/loading.gif')
+        this.advert = false
+        localStorage.setItem('video-token', response.data.token)
+        let new_url = "/video/" + response.data.token
+        this.$router.replace(new_url)
+        this.btnCommentDisabled = false
+        this.setView()
+
+
+
         // need to set if localStorage.getItem('video_id') == null for comments
         // + middware : any routes FROM video localStorage.removeItem('video_id')
         // this.movieSource = "https://mdbootstrap.com/img/video/Tropical.mp4"
-        this.advert = false
       })
       .catch( (error) => {
         console.log(error)
@@ -137,10 +147,12 @@ export default{
       .then( (response) => {
         console.log("VIDEO-DB : " + localStorage.getItem('video-db'))
         console.log(response)
-        this.subEn = backApi + response.data['subtitles_en']
-        this.subFr = backApi + response.data['subtitles_fr']
         this.$refs.videoPlaying.removeAttribute("loop")
         this.$refs.videoPlaying.setAttribute('poster', '/static/img/loading.gif')
+        this.setView()
+        this.subEn = backApi + response.data['subtitles_en']
+        this.subFr = backApi + response.data['subtitles_fr']
+        
       })
       .catch( (error) => {
         console.log(error)
@@ -161,6 +173,21 @@ export default{
     }
   },
   methods:{
+    setView: function(){
+      axios({
+        method: 'get',
+        url: 'https://hypertubeapi.tpayet.com/videos/' + localStorage.getItem('video-token') + '/perform',
+        headers: this.headers
+      })
+      .then( (response) => {
+        console.log("Video PAge : setView ok")
+        console.log(response)
+      })
+      .catch( (error) => {
+        console.log(error)
+      });
+
+    },
     isEnter: function(e){
       if (e.key == 'Enter')
         this.sendComment()
@@ -174,7 +201,7 @@ export default{
             {
               "body": this.$refs.commentTxtArea.value,
               "user_id": localStorage.getItem('id'),
-              "video_id": localStorage.getItem('video-id')
+              "video_id": localStorage.getItem('video-token')
             }
         },
         headers: this.headers
