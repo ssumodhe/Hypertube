@@ -1,12 +1,13 @@
 <template>
   <div class="movie">
+    <span id="title-video">{{videoName}}</span>
     <br>
     <br>
     <br>
 
     <div>
       <span v-if="advert" id="advertisement"><strong><span v-lang.msg_ad></span></strong></span>
-      <video  ref="videoPlaying" autoplay="autoplay" loop controls preload="metadata" :src="movieSource" crossorigin="anonymous">
+      <video  ref="videoPlaying" autoplay="autoplay" loop controls :src="movieSource" crossorigin="anonymous">
         <track kind="subtitles" :src="subEn" srclang="en" label="English" default="">
         <track kind="subtitles" :src="subFr" srclang="fr" label="French">
       </video>
@@ -93,13 +94,16 @@ export default{
       movieSource: "https://www.w3schools.com/html/mov_bbb.mp4",
       subEn: "",
       subFr: "",
+      videoName: localStorage.getItem('video-name')
     }
   },
   created: function(){
+    this.movieSource = "https://www.w3schools.com/html/mov_bbb.mp4"
+
 
     if (localStorage.getItem('video-db') == 'false'){
       this.advert = true
-      this.movieSource = "https://mdbootstrap.com/img/video/Tropical.mp4"
+      this.movieSource = "https://www.w3schools.com/html/mov_bbb.mp4"
       axios({
         method: 'post',
         url: 'http://localhost:5555/url',
@@ -112,6 +116,8 @@ export default{
         }
       })
       .then( (response) => {
+        console.log("VIDEO-DB : " + localStorage.getItem('video-db'))
+        console.log(response)
         this.movieSource = response.data.videoUrl
         this.subEn = response.data.subtitles['en']
         this.subFr = response.data.subtitles['fr']
@@ -139,6 +145,8 @@ export default{
         }
       })
       .then( (response) => {
+        console.log("VIDEO-DB : " + localStorage.getItem('video-db'))
+        console.log(response)
         this.subEn = backApi + response.data['subtitles_en']
         this.subFr = backApi + response.data['subtitles_fr']
         this.$refs.videoPlaying.removeAttribute("loop")
@@ -260,7 +268,11 @@ export default{
     padding: 5px 5px 5px 5px;
   }
   #title-previous-comments{
-    font-size: 8vw;
+    font-size: 6vw;
+    margin-bottom: 20px;
+  }
+  #title-video{
+    font-size: 7vw;
     margin-bottom: 20px;
   }
 </style>
