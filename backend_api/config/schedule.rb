@@ -18,3 +18,7 @@
 # end
 
 # Learn more: http://github.com/javan/whenever
+
+every 1.days do
+  runner "Video.joins(:performances).where(Performance.arel_table[:created_at].lt(Time.now - 30.days)).destroy_all"
+end
