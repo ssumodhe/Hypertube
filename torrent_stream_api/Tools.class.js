@@ -193,6 +193,7 @@ class Tools {
 					"director":infos.director,
 					"metascore":infos.metascore,
 					"writer":infos.writer
+					// ,"genre":JSON.stringify(infos.genre)
 				})
 				.then(r => {
 					const size = t.length / (1024 * 1024);
