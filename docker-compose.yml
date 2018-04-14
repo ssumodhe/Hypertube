@@ -9,6 +9,10 @@ networks:
 volumes:
   users_avatar:
     driver: local
+  pg_db:
+    driver: local
+  dev_db:
+    driver: local
 
 services:
 
@@ -17,18 +21,22 @@ services:
     networks:
       - hypertube_network
     volumes:
-      - ./postgres-data:/var/lib/postgresql/data
+      - pg_db:/var/lib/postgresql/data
+
+  front:
+    build:
+      context: ./frontend_app
+    ports:
+      - 5000:5000
 
   hypertubeapi:
     build:
       context: ./backend_api
     environment:
-      RAILS_ENV: production
+      RAILS_ENV: development
     entrypoint: /app/entrypoint.sh
-    volumes:
-      - .:/myapp
     ports:
-      - "3000:3000"
+      - 3000:3000
     depends_on:
       - postgres
     labels:
@@ -41,6 +49,7 @@ services:
       - hypertube_network
     volumes:
       - users_avatar:/app/public/system/users
+      - dev_db:/app/db
     env_file: backend_api/.env
 
   streamingapi:
@@ -53,7 +62,7 @@ services:
 
     command: node stream.js
     ports:
-      - "5555:5555"
+      - 5555:5555
     labels:
       - traefik.backend=streamingapi
       - traefik.frontend.rule=Host:streamingapi.tpayet.com
@@ -62,4 +71,3 @@ services:
     networks:
       - proxy
     env_file: torrent_stream_api/.env
-
