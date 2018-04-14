@@ -181,7 +181,8 @@ export default{
     getComments: function(){
       axios({
         method: 'get',
-        url: videoUrl + this.$route.params.which +'/comments'
+        url: videoUrl + this.$route.params.which +'/comments',
+        headers: this.headers
       })
       .then( (response) => {
         //latest comment displayed last with .slice().reverse()

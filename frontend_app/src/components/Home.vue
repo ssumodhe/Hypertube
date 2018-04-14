@@ -51,7 +51,11 @@
       <img v-else class="card-img-top" src="/static/img/video-icon.png" width="40%" alt="Card image cap">
       <hr>
       <div class="card-body">
-        <h5 class="card-title">{{lib.title}}</h5>
+        
+        <h5 class="card-title" style="display: inline-block;">
+          {{lib.title}}
+          <span v-if="hasBeenSeen(lib.id) == true" class="glyphicon glyphicon-eye-open"></span>
+        </h5>
         
         <div style="width:100%; max-height: 70px; overflow: hidden;">
         <p v-if="lib.description" class="card-text">{{lib.description}}</p>
@@ -86,6 +90,7 @@ export default{
   data(){
     return {
       library : [],
+      videoSeen: [],
       page: 0
     }
   },
@@ -95,8 +100,10 @@ export default{
         url: 'https://hypertubeapi.tpayet.com/users/' + localStorage.getItem('username') + '/performances',
       })
       .then( (response) => {
-        console.log("Home PAge : vues videos ok")
         console.log(response)
+        for (let i = 0; i < response.data.length; i++){
+          this.videoSeen[i] = response.data[i]['video_id']
+        }
       })
       .catch( (error) => {
         console.log(error)
@@ -128,6 +135,13 @@ export default{
           $state.complete();
         }
       });
+    },
+    hasBeenSeen: function(id){
+      for (let i = 0; i < this.videoSeen.length; i++){
+        if(this.videoSeen[i] == id)
+          return true
+      }
+      return false
     },
     setAndSend: function(id, token, name){
       let link = "/video/" + token
