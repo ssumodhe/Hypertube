@@ -109,8 +109,6 @@ export default{
         }
       })
       .then( (response) => {
-        console.log("VIDEO-DB : " + localStorage.getItem('video-db'))
-        console.log(response)
         this.movieSource = response.data.videoUrl
         this.subEn = response.data.subtitles['en']
         this.subFr = response.data.subtitles['fr']
@@ -121,11 +119,18 @@ export default{
         this.videoToken = response.data.token
         let new_url = "/video/" + this.videoToken
         this.$router.replace(new_url)
-        this.btnCommentDisabled = false
         this.setView()
-
-
-
+        axios({
+          method: 'get',
+          url: videoUrl + this.$route.params.which
+        })
+        .then( (response) => {
+          localStorage.setItem('video-id', response.data.id)
+          this.btnCommentDisabled = false
+        })
+        .catch( (error) => {
+          console.log(error)
+        });
         // need to set if localStorage.getItem('video_id') == null for comments
         // + middware : any routes FROM video localStorage.removeItem('video_id')
         // this.movieSource = "https://mdbootstrap.com/img/video/Tropical.mp4"
@@ -147,20 +152,33 @@ export default{
         }
       })
       .then( (response) => {
-        console.log("VIDEO-DB : " + localStorage.getItem('video-db'))
-        console.log(response)
         this.$refs.videoPlaying.removeAttribute("loop")
         this.$refs.videoPlaying.setAttribute('poster', '/static/img/loading.gif')
         this.setView()
         this.subEn = backApi + response.data['subtitles_en']
         this.subFr = backApi + response.data['subtitles_fr']
-        
       })
       .catch( (error) => {
         console.log(error)
       });
 
-      
+      this.getComments()
+    }
+  },
+  methods:{
+    setView: function(){
+      axios({
+        method: 'get',
+        url: 'https://hypertubeapi.tpayet.com/videos/' + this.$route.params.which + '/perform',
+        headers: this.headers
+      })
+      .then( (response) => {
+      })
+      .catch( (error) => {
+        console.log(error)
+      });
+    },
+    getComments: function(){
       axios({
         method: 'get',
         url: videoUrl + this.$route.params.which +'/comments'
@@ -172,29 +190,12 @@ export default{
       .catch( (error) => {
         console.log(error)
       });
-    }
-  },
-  methods:{
-    setView: function(){
-      axios({
-        method: 'get',
-        url: 'https://hypertubeapi.tpayet.com/videos/' + this.videoToken + '/perform',
-        headers: this.headers
-      })
-      .then( (response) => {
-        console.log("Video PAge : setView ok")
-        console.log(response)
-      })
-      .catch( (error) => {
-        console.log(error)
-      });
-
     },
     isEnter: function(e){
-      if (e.key == 'Enter')
+      if (e.key == 'Enter' && this.btnCommentDisabled == false && this.$refs.commentTxtArea.value != "")
         this.sendComment()
     },
-    sendComment: function(e){
+    sendComment: function(){
       axios({
         method: 'post',
         url: commentsUrl,
@@ -203,13 +204,14 @@ export default{
             {
               "body": this.$refs.commentTxtArea.value,
               "user_id": localStorage.getItem('id'),
-              "video_id": this.videoToken
+              "video_id": localStorage.getItem('video-id')
             }
         },
         headers: this.headers
       })
       .then( (response) => {
         //do new axios get comments ?? + set infiniteLoader for comments
+        this.getComments()
       })
       .catch( (error) => {
         console.log(error)
