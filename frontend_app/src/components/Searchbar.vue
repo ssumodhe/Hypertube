@@ -65,6 +65,9 @@ export default{
     		if (n > 10){
     			n = 10
     		}
+        if (n == 0){
+          this.searchResponse = response.data
+        }
         this.movieData = []
     		for (var i = 0; i < n; i++) {
           this.searchResponse[i] = response.data[i]['name'];

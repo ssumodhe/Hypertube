@@ -8,11 +8,13 @@
     <!-- Video PART -->
     <div>
       <span v-if="advert" id="advertisement"><strong><span v-lang.msg_ad></span></strong></span>
-      <video  ref="videoPlaying" autoplay="autoplay" loop controls :src="movieSource" crossorigin="anonymous">
+      <video ref="videoPlaying" :src="movieSource"  autoplay="autoplay" preload="metadata" loop controls>
         <track kind="subtitles" :src="subEn" srclang="en" label="English" default="">
         <track kind="subtitles" :src="subFr" srclang="fr" label="French">
       </video>
+
     </div>
+
 
     <!-- Infos PART -->
     <div class="infos col-md-offset-1">
@@ -93,7 +95,7 @@ export default{
         },
       comments: [],
       advert: true, 
-      movieSource: "https://www.w3schools.com/html/mov_bbb.mp4",
+      movieSource: "",
       subEn: "",
       subFr: "",
       videoName: localStorage.getItem('video-name'),
@@ -107,12 +109,10 @@ export default{
     }
   },
   created: function(){
-    this.movieSource = "https://www.w3schools.com/html/mov_bbb.mp4"
-
+    this.movieSource = 'https://mdbootstrap.com/img/video/Tropical.mp4'
 
     if (localStorage.getItem('video-db') == 'false'){
       this.advert = true
-      this.movieSource = "https://www.w3schools.com/html/mov_bbb.mp4"
       this.btnCommentDisabled = true
       axios({
         method: 'post',
@@ -131,6 +131,7 @@ export default{
         this.subFr = response.data.subtitles['fr']
         this.$refs.videoPlaying.removeAttribute("loop")
         this.$refs.videoPlaying.setAttribute('poster', '/static/img/loading.gif')
+        this.$refs.videoPlaying.setAttribute('crossorigin', 'anonymous')
         this.advert = false
         localStorage.setItem('video-token', response.data.token)
         this.videoToken = response.data.token
@@ -178,6 +179,7 @@ export default{
       .then( (response) => {
         this.$refs.videoPlaying.removeAttribute("loop")
         this.$refs.videoPlaying.setAttribute('poster', '/static/img/loading.gif')
+        this.$refs.videoPlaying.setAttribute('crossorigin', 'anonymous')
         this.setView()
         this.subEn = backApi + response.data['subtitles_en']
         this.subFr = backApi + response.data['subtitles_fr']

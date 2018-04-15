@@ -100,7 +100,6 @@ export default{
         url: 'https://hypertubeapi.tpayet.com/users/' + localStorage.getItem('username') + '/performances',
       })
       .then( (response) => {
-        console.log(response)
         for (let i = 0; i < response.data.length; i++){
           this.videoSeen[i] = response.data[i]['video_id']
         }
@@ -128,6 +127,7 @@ export default{
           }
           this.page = this.page + 20;
           this.library = this.library.concat(temp);
+          console.log(this.library)
           $state.loaded();
           if (data.length / 20 === 10) {
             $state.complete();
