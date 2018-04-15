@@ -40,7 +40,11 @@ class UsersController < ApplicationController
   end
 
   def avatar
-    send_file @user.picture.path, type: 'image/jpeg', disposition: :inline
+    if @user.provider == 'email'
+      send_file @user.picture.path, type: 'image/jpeg', disposition: :inline
+    else
+      redirect @user.image
+    end
   end
 
   def performances
