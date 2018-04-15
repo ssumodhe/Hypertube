@@ -192,8 +192,8 @@ class Tools {
 					"poster":infos.poster,
 					"director":infos.director,
 					"metascore":infos.metascore,
-					"writer":infos.writer
-					// ,"genre":JSON.stringify(infos.genre)
+					"writer":infos.writer,
+					"genre": JSON.stringify(infos.genre ? infos.genre : [])
 				})
 				.then(r => {
 					const size = t.length / (1024 * 1024);
