@@ -78,6 +78,7 @@ class Tools {
 						'-threads 4'
 					])
 					.videoBitrate(640)
+					.audioBitrate(128)
 					.audioCodec('aac')
 					.videoCodec('libx264')
 					.output(res)
