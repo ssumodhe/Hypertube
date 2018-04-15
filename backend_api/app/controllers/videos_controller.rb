@@ -41,7 +41,11 @@ class VideosController < ApplicationController
 
   def comments
     @video = Video.find_by_token(params[:video_token])
-    render json: @video.comments
+    comments = @video.comments.joins(:user)
+                              .select(User.arel_table[:username])
+                              .select(Comment.arel_table[:body])
+                              .select(Comment.arel_table[:created_at])
+    render json: comments
   end
 
   def perform
