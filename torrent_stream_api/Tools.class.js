@@ -62,7 +62,6 @@ class Tools {
 
 					res.writeHead(200, {
 						'Cache-Control': 'no-cache',
-						'Content-Length': file.size,
 						'Content-Type': 'video/mp4'
 					})
 
@@ -72,13 +71,13 @@ class Tools {
 					.outputFormat('mp4')
 					.outputOptions([
 						'-movflags empty_moov',
-						'-frag_size 4096',
+						'-frag_size 8192',
 						'-cpu-used 2',
 						'-deadline realtime',
 						'-error-resilient 1',
 						'-threads 4'
 					])
-					.videoBitrate(256)
+					.videoBitrate(640)
 					.audioCodec('aac')
 					.videoCodec('libx264')
 					.output(res)

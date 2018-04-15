@@ -17,6 +17,7 @@ try {
 }
 
 app.use((req, res, next) => {
+	res.header("Cache-Control", "no-cache");
 	res.header("Access-Control-Allow-Origin", "*");
 	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 	next();
@@ -143,14 +144,26 @@ app.post('/url', (req, res) => {
 
 // GET video stream
 .get('/video/:token', async (req, res) => {
-	try {
-		const ret = await Hypertube.get(req.params.token);
-		await Tools.streamVideo(req, res, ret)
-	} catch(e) {
-		// try {
-		// 	await Hypertube.delete(req.params.token)
-		// } catch (e) {
-		// }
+	if (/^[0-9a-z]{40}$/.test(req.params.token)) {
+		try {
+			const ret = await Hypertube.get(req.params.token);
+			console.log(ret);
+			if (ret.body != "null") {
+				await Tools.streamVideo(req, res, ret)
+			} else {
+				res.sendStatus(404);
+				res.end();
+			}
+		} catch(e) {
+			// try {
+			// 	await Hypertube.delete(req.params.token)
+			// } catch (e) {
+			// }
+			res.sendStatus(404);
+			res.end();
+		}
+
+	} else {
 		res.sendStatus(404);
 		res.end();
 	}
