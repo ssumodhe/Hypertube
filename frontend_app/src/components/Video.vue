@@ -44,14 +44,14 @@
         <div class="row">
           <div class="col-sm-1">
             <div class="thumbnail">
-              <img class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+              <img class="img-responsive user-photo" :src="'https://hypertubeapi.tpayet.com/users/' + comment.username + '/avatar'">
             </div>
           </div>
 
           <div class="col-sm-5">
             <div class="panel panel-default">
               <div class="panel-heading">
-                <router-link to="/user/totolapaille"> <strong>{{comment.user_id}}</strong></router-link>
+                <router-link :to="'/user/' + comment.username"><strong>{{comment.username}}</strong></router-link>
                 <span class="text-muted"><span v-lang.commented></span>{{setCommentsCreatedAt(comment.created_at)}}</span>
               </div>
               <div class="panel-body">
@@ -74,6 +74,7 @@
 import {videoUrl} from '@/config.js'
 import {commentsUrl} from '@/config.js'
 import {backApi} from '@/config.js'
+
 
 export default{
   name: 'movie',
@@ -219,6 +220,8 @@ export default{
       .then( (response) => {
         //latest comment displayed last with .slice().reverse()
         this.comments = response.data.slice().reverse()
+        console.log("get Comments | this.comments")
+        console.log(this.comments)
       })
       .catch( (error) => {
         console.log(error)
@@ -243,7 +246,6 @@ export default{
         headers: this.headers
       })
       .then( (response) => {
-        //do new axios get comments ?? + set infiniteLoader for comments
         this.getComments()
       })
       .catch( (error) => {
@@ -318,6 +320,10 @@ export default{
   }
   #info-mid{
     flex-direction: column;
+    margin-top: 10px;
+  }
+  #info-right{
+    margin-top: 10px;
   }
   #comment-area{
     margin: 6% auto 8% auto;
