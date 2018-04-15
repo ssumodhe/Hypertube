@@ -104,6 +104,7 @@ export default{
         for (let i = 0; i < response.data.length; i++){
           this.videoSeen[i] = response.data[i]['video_id']
         }
+        localStorage.setItem('video-seen', this.videoSeen)
       })
       .catch( (error) => {
         console.log(error)
@@ -137,6 +138,7 @@ export default{
       });
     },
     hasBeenSeen: function(id){
+      this.videoSeen = localStorage.getItem('video-seen')
       for (let i = 0; i < this.videoSeen.length; i++){
         if(this.videoSeen[i] == id)
           return true
