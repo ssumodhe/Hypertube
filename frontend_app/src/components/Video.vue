@@ -13,6 +13,19 @@
         <track kind="subtitles" :src="subFr" srclang="fr" label="French">
       </video>
     </div>
+
+    <!-- Infos PART -->
+    <div class="infos col-md-offset-1">
+      <div id="info-left" class="col-md-3"><img :src="poster" width="100%"></div>
+      <div id="info-mid" class="col-md-4">
+        <span><span v-lang.directed_by></span><strong>{{director}}</strong></span><br>
+        <span><span v-lang.runtime></span><strong>{{runtime}}</strong></span><br>
+        <span><span v-lang.rating></span><strong>{{rating}}</strong></span>
+      </div>
+      <div id="info-right" class="col-md-4"><span><span v-lang.description></span><strong>{{description}}</strong></span></div>
+      
+
+    </div>
     
     <!-- Write Comments PART -->
     <div class="comments">
@@ -87,6 +100,11 @@ export default{
       videoName: localStorage.getItem('video-name'),
       btnCommentDisabled: false,
       videoToken : localStorage.getItem('video-token'),
+      description: '',
+      director: '',
+      poster: '',
+      rating: '',
+      runtime: '',
     }
   },
   created: function(){
@@ -127,6 +145,13 @@ export default{
         .then( (response) => {
           localStorage.setItem('video-id', response.data.id)
           this.btnCommentDisabled = false
+          console.log("IN VIDEO GETTING INFOS IN created")
+          console.log(response)
+          this.description = response.data.description
+          this.director = response.data.director
+          this.poster = response.data.poster
+          this.rating = response.data.rating
+          this.runtime = response.data.runtime
         })
         .catch( (error) => {
           console.log(error)
@@ -157,6 +182,13 @@ export default{
         this.setView()
         this.subEn = backApi + response.data['subtitles_en']
         this.subFr = backApi + response.data['subtitles_fr']
+        console.log("IN VIDEO GETTING INFOS IN created")
+        console.log(response)
+        this.description = response.data.description
+        this.director = response.data.director
+        this.poster = response.data.poster
+        this.rating = response.data.rating
+        this.runtime = response.data.runtime
       })
       .catch( (error) => {
         console.log(error)
@@ -279,6 +311,13 @@ export default{
     font-size: 1.6vw;
     margin-right: 0px;
     padding-right: 0px;
+  }
+  .infos{
+    display: flex;
+    margin-top: 10px;
+  }
+  #info-mid{
+    flex-direction: column;
   }
   #comment-area{
     margin: 6% auto 8% auto;
