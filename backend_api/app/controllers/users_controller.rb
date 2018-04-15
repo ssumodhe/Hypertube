@@ -43,7 +43,7 @@ class UsersController < ApplicationController
     if @user.provider == 'email'
       send_file @user.picture.path, type: 'image/jpeg', disposition: :inline
     else
-      redirect @user.image
+      redirect_to @user.image
     end
   end
 
