@@ -25,7 +25,8 @@ export default{
 	localStorage.setItem('client', this.$route.query.client)
 	localStorage.setItem('expiry', this.$route.query.expiry)
 	localStorage.setItem('token-type', 'Bearer')
-	localStorage.setItem('uid', this.$route.query.uid)
+  localStorage.setItem('uid', this.$route.query.uid)
+	localStorage.setItem('omniauth', true)
 	console.log(localStorage)
 
 

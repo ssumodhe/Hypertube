@@ -23,8 +23,6 @@
         <span><span v-lang.rating></span><strong>{{rating}}</strong></span>
       </div>
       <div id="info-right" class="col-md-4"><span><span v-lang.description></span><strong>{{description}}</strong></span></div>
-      
-
     </div>
     
     <!-- Write Comments PART -->
