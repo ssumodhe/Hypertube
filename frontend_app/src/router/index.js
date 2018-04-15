@@ -63,6 +63,7 @@ Vue.use(MultiLanguage, {
     msg_modif: 'Click on any item to modify your data.',
     old_pswd: 'Old password',
     new_pswd: 'New password',
+    edit: 'Edit',
       // Uplaod-file
     msg_upload: 'Drag and drop your profile picture here',
 
@@ -113,6 +114,7 @@ Vue.use(MultiLanguage, {
     msg_modif: 'Cliquez sur vos informations pour en modifier la valeur',
     old_pswd: 'Ancien mot de passe',
     new_pswd: 'Nouveau mot de passe',
+    edit: 'Modif.',
       // Upload-file
     msg_upload: 'Ajoutez votre photo de profil ici.',
   },
@@ -162,6 +164,7 @@ Vue.use(MultiLanguage, {
     msg_modif: 'Clicca sulle tue informazioni per cambiare il valore',
     old_pswd: 'Vecchia password',
     new_pswd: 'Nuova password',
+    edit: 'Modif.',
       // Upload-file
     msg_upload: 'Aggiungi la tua immagine del profilo qui.',
   },
@@ -211,6 +214,7 @@ Vue.use(MultiLanguage, {
     msg_modif: 'Haga clic en su información para modificar su valor',
     old_pswd: 'Antigua contraseña',
     new_pswd: 'Nuevo contraseña',
+    edit: 'Editar',
       // Upload-file
     msg_upload: 'Agrega tu foto de perfil aquí.',
   },
@@ -260,6 +264,7 @@ Vue.use(MultiLanguage, {
     msg_modif: 'Klicken Sie auf Ihre Informationen, um den Wert zu ändern',
     old_pswd: 'Altes Passwort',
     new_pswd: 'Neues Passwort',
+    edit: 'Bearbeiten',
       // Upload-file
     msg_upload: 'Fügen Sie Ihr Profilbild hier hinzu.',
   },
