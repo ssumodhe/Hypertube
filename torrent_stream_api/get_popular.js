@@ -11,33 +11,64 @@ const yifiSearch = (title) => {
 
 const Imdb = new (require('./Imdb.class.js'))();
 const Hypertube = new (require('./Hypertube.class.js'))();
-const sha1 = require('sha1');
+const parseTorrent = require('parse-torrent');
 
 const MIN_SEEDS = 10;
 const formatRetSearch = (r) => {
 	console.log("format search");
 	let ret = []
 	for (let i in r[0]) {
-			if (r[0][i].seeders > MIN_SEEDS) {
-				ret.push({
-					id:r[0][i].id,
-					name:r[0][i].name,
-					seeds:parseInt(r[0][i].seeders),
-					leeches:parseInt(r[0][i].leechers),
-					category:r[0][i].name,
-					link:r[0][i].link,
-					magnet_link:r[0][i].magnetLink
-				})
-			}
+		if (r[0][i].seeders > MIN_SEEDS) {
+			ret.push({
+				id:r[0][i].id,
+				name:r[0][i].name,
+				seeds:parseInt(r[0][i].seeders),
+				leeches:parseInt(r[0][i].leechers),
+				category:r[0][i].name,
+				link:r[0][i].link,
+				magnet_link:r[0][i].magnetLink
+			})
+		}
 	}
 	return ret;
 }
+
+const getFile = (url, callback) => {
+	if (url == null || url == undefined) {
+		callback("Invalid url");
+		return ;
+	} else if (url.indexOf("magnet") == 0) {
+		callback(null, url);
+	} else {
+		let protocol = null;
+		if (/^http:/.test(url)) {
+			protocol = http;
+		} else if (/^https:/.test(url)) {
+			protocol = https;
+		} else {
+			callback("Invalid url");
+			return ;
+		}
+		protocol.get(url, res => {
+			const bufs = [];
+			res.on('data', (chunk) => {
+				bufs.push(chunk)
+			});
+			res.on('end', () => {
+				const data = Buffer.concat(bufs);
+				callback(null, data);
+			});
+		})
+		.on('error', callback);
+	}
+}
+
 
 class Search {
 	constructor() {}
 
 	tpb(title) {
-			return PirateBay.topTorrents(201);
+		return PirateBay.topTorrents(201);
 	}
 
 	async run() {
@@ -75,11 +106,10 @@ s.run("toto")
 		for (let i in results) {
 			try {
 				infos = await Imdb.getInfos(results[i]);
-				console.log(infos)
-				console.log(r[i]);
+				const match = r[i].magnet_link.match(/urn:btih:([0-9a-f]{40})/);
+				if (match && match[1])
 				ret = await Hypertube.post({
-					// "token": "coucou",
-					"token":sha1(infos.title),
+					"token": match[1],
 					"title":infos.title,
 					"content_rating":infos.rating,
 					"runtime":infos.runtime,
@@ -94,20 +124,11 @@ s.run("toto")
 					"download": 0
 				});
 				console.log(ret);
-				// .then(r=>{
-					// console.log(r);
-				// }).catch(e=>{console.log(e);})
 
 			} catch (e) {
 				console.log(e);
 			}
 		}
-		// Promise.all(infos)
-		// .then(resultsInfos => {
-		// 	console.log(resultsInfos);
-		// }).catch(e=>{
-		// 	console.log(e);
-		// })
 	}).catch(e=>{
 		console.log(e);
 	})
