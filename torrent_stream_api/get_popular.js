@@ -106,6 +106,7 @@ s.run("toto")
 		for (let i in results) {
 			try {
 				infos = await Imdb.getInfos(results[i]);
+				console.log(infos);
 				const match = r[i].magnet_link.match(/urn:btih:([0-9a-f]{40})/);
 				if (match && match[1])
 				ret = await Hypertube.post({
@@ -121,7 +122,8 @@ s.run("toto")
 					"writer":infos.writer,
 					"genre": JSON.stringify(infos.genre ? infos.genre : []),
 					"url": r[i].magnet_link,
-					"download": 0
+					"download": 0,
+					"year":infos.year
 				});
 				console.log(ret);
 

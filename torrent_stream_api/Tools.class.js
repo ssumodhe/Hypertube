@@ -195,7 +195,8 @@ class Tools {
 						"writer":infos.writer,
 						"genre": JSON.stringify(infos.genre ? infos.genre : []),
 						"url": url,
-						"download": 1
+						"download": 1,
+            "year":infos.year
 					})
 					.then(r => {
 						const size = t.length / (1024 * 1024);
