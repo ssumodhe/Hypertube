@@ -83,6 +83,8 @@
 import InfiniteLoading from 'vue-infinite-loading';
 import Searchbar from '@/components/searchbar'
 import {videoUrl} from '@/config.js'
+import {userUrl} from '@/config.js'
+
 
 
 export default{
@@ -113,7 +115,7 @@ export default{
 
     axios({
         method: 'get',
-        url: 'https://hypertubeapi.tpayet.com/users/' + localStorage.getItem('username') + '/performances',
+        url: userUrl + localStorage.getItem('username') + '/performances',
       })
       .then( (response) => {
         for (let i = 0; i < response.data.length; i++){
