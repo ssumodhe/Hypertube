@@ -31,6 +31,26 @@ class Hypertube {
 		});
 	}
 
+	update(datas) {
+		const options = {
+			uri: process.env.HYPERTUBE_VIDEO_API + "/" + datas.token,
+			method: 'PUT',
+			headers: {
+				"Content-Type": "application/json"
+			},
+			json: {
+				"video" : datas
+			}
+		};
+		return new Promise((resolve, reject)=>{
+			this.request.put(options, (err, ret, body) => {
+				console.log(ret);
+				if ((ret.statusCode != 200 && ret.statusCode != 201) || err) reject(err || "error");
+				else resolve(200);
+			});
+		});
+	}
+
 	delete(token) {
 		return new Promise((resolve, reject)=>{
 			this.request.delete(process.env.HYPERTUBE_VIDEO_API+'/'+token, (err, ret, body) => {
@@ -38,7 +58,6 @@ class Hypertube {
 				else resolve(200);
 			});
 		});
-
 	}
 }
 

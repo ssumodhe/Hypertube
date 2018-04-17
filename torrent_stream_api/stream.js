@@ -17,6 +17,7 @@ try {
 }
 
 app.use((req, res, next) => {
+	res.header("Cache-Control", "no-cache");
 	res.header("Access-Control-Allow-Origin", "*");
 	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 	next();
@@ -28,7 +29,6 @@ app.use(bodyParser.json());
 // POST start torrent download
 app.post('/url', (req, res) => {
 	let TYPE = 0;
-	console.log(req.body.url);
 	Tools.getFile(req.body.url, async (err, file) => {
 		if (err) { res.sendStatus(404).end(); return 0; }
 		if (file.indexOf("magnet") == 0) {
@@ -54,7 +54,8 @@ app.post('/url', (req, res) => {
 					const ret = await Hypertube.get(torrentParsed.infoHash);
 					const retBody = JSON.parse(ret.body)
 					console.log(retBody);
-					if ((ret.statusCode == 200 || ret.statusCode == 201) && ret.body != 'null'/* && fs.existsSync(downloadPath+'/'+torrentParsed.files.sort((a, b)=>{return b.length - a.length})[0].name)*/) {
+
+					if ((ret.statusCode == 200 || ret.statusCode == 201) && ret.body != 'null' && retBody["download"] == 1) {
 						console.log('file already downloaded');
 						Tools.sendHtml(
 							res,
@@ -82,7 +83,7 @@ app.post('/url', (req, res) => {
 								/* Trigger only if file size > 200Mo */
 								if (/*TYPE == 1 && */file.length > 200 * (1024 * 1024)) {
 									try {
-										await Tools.generalHandler(file, torrentParsed, downloadPath, req.body.title, res);
+										await Tools.generalHandler(file, torrentParsed, downloadPath, req.body.title, res, 0, req.body.url);
 										TYPE = 2;
 										console.log('filename:', file.name);
 										const stream = file.createReadStream();
@@ -143,14 +144,26 @@ app.post('/url', (req, res) => {
 
 // GET video stream
 .get('/video/:token', async (req, res) => {
-	try {
-		const ret = await Hypertube.get(req.params.token);
-		await Tools.streamVideo(req, res, ret)
-	} catch(e) {
-		// try {
-		// 	await Hypertube.delete(req.params.token)
-		// } catch (e) {
-		// }
+	if (/^[0-9a-z]{40}$/.test(req.params.token)) {
+		try {
+			const ret = await Hypertube.get(req.params.token);
+			console.log(ret);
+			if (ret.body != "null") {
+				await Tools.streamVideo(req, res, ret)
+			} else {
+				res.sendStatus(404);
+				res.end();
+			}
+		} catch(e) {
+			// try {
+			// 	await Hypertube.delete(req.params.token)
+			// } catch (e) {
+			// }
+			res.sendStatus(404);
+			res.end();
+		}
+
+	} else {
 		res.sendStatus(404);
 		res.end();
 	}

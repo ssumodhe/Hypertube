@@ -1,0 +1,4 @@
+RAM: 4096 MB
+Processor: 2
+Execution cap: 90%
+Video memory: 128 MB

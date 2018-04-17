@@ -11,7 +11,7 @@ Rails.application.routes.draw do
 
   get 'search', to: 'search#query'
 
-  resources :videos, except: [:update], param: :token do
+  resources :videos, param: :token do
     get :comments
     get :perform
   end

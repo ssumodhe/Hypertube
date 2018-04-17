@@ -91,6 +91,7 @@ export default{
     return {
       library : [],
       videoSeen: [],
+      movieGenre: [],
       page: 0
     }
   },
@@ -116,6 +117,7 @@ export default{
     infiniteHandler($state) {
       axios.get(videoUrl)
       .then(({ data }) => {
+        console.log(data)
         if (data.length) {
           const temp = [];
           for (let i = this.page; i < this.page + 20; i++) {
@@ -129,6 +131,9 @@ export default{
           this.library = this.library.concat(temp);
           console.log(this.library)
           $state.loaded();
+
+          this.setGenre()
+
           if (data.length / 20 === 10) {
             $state.complete();
           }
@@ -136,6 +141,29 @@ export default{
           $state.complete();
         }
       });
+    },
+    setGenre: function(){
+      let tmp = []
+      for (let i = 0; i < this.library.length; i++){
+        let objGenre = JSON.parse(this.library[i].genre)
+        for (let j = 0; j < objGenre.length; j++){
+          if (this.movieGenre.length == '0'){
+            this.movieGenre[0] = objGenre[0].trim().toLowerCase()
+          }
+          for (let k = 0; k < this.movieGenre.length; k++){
+            if (objGenre[j].trim().toLowerCase() == this.movieGenre[k]){
+              break;
+            }
+            if (objGenre[j].trim().toLowerCase() != this.movieGenre[k] && k == (this.movieGenre.length - 1)){
+              tmp.push(objGenre[j].trim().toLowerCase())
+            }
+          }
+          this.movieGenre = this.movieGenre.concat(tmp)
+          tmp = []
+        }
+      }
+      console.log("HOME PAGE : movieGenre")
+      console.log(this.movieGenre)
     },
     hasBeenSeen: function(id){
       this.videoSeen = localStorage.getItem('video-seen')
