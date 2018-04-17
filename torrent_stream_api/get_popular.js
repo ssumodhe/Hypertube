@@ -135,4 +135,3 @@ s.run("toto")
 }).catch(e=>{
 	console.log(e);
 })
-// PirateBay.topTorrents(201).then(r=>{console.log(r);})
