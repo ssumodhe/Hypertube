@@ -29,7 +29,6 @@ app.use(bodyParser.json());
 // POST start torrent download
 app.post('/url', (req, res) => {
 	let TYPE = 0;
-	console.log("url:",req.body);
 	Tools.getFile(req.body.url, async (err, file) => {
 		if (err) { res.sendStatus(404).end(); return 0; }
 		if (file.indexOf("magnet") == 0) {
@@ -55,7 +54,8 @@ app.post('/url', (req, res) => {
 					const ret = await Hypertube.get(torrentParsed.infoHash);
 					const retBody = JSON.parse(ret.body)
 					console.log(retBody);
-					if ((ret.statusCode == 200 || ret.statusCode == 201) && ret.body != 'null' && ret.body["download"] == 1) {
+
+					if ((ret.statusCode == 200 || ret.statusCode == 201) && ret.body != 'null' && retBody["download"] == 1) {
 						console.log('file already downloaded');
 						Tools.sendHtml(
 							res,
