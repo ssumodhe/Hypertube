@@ -29,7 +29,7 @@ app.use(bodyParser.json());
 // POST start torrent download
 app.post('/url', (req, res) => {
 	let TYPE = 0;
-	console.log(req.body.url);
+	console.log("url:",req.body);
 	Tools.getFile(req.body.url, async (err, file) => {
 		if (err) { res.sendStatus(404).end(); return 0; }
 		if (file.indexOf("magnet") == 0) {
@@ -55,7 +55,7 @@ app.post('/url', (req, res) => {
 					const ret = await Hypertube.get(torrentParsed.infoHash);
 					const retBody = JSON.parse(ret.body)
 					console.log(retBody);
-					if ((ret.statusCode == 200 || ret.statusCode == 201) && ret.body != 'null'/* && fs.existsSync(downloadPath+'/'+torrentParsed.files.sort((a, b)=>{return b.length - a.length})[0].name)*/) {
+					if ((ret.statusCode == 200 || ret.statusCode == 201) && ret.body != 'null' && ret.body["download"] == 1) {
 						console.log('file already downloaded');
 						Tools.sendHtml(
 							res,
@@ -83,7 +83,7 @@ app.post('/url', (req, res) => {
 								/* Trigger only if file size > 200Mo */
 								if (/*TYPE == 1 && */file.length > 200 * (1024 * 1024)) {
 									try {
-										await Tools.generalHandler(file, torrentParsed, downloadPath, req.body.title, res);
+										await Tools.generalHandler(file, torrentParsed, downloadPath, req.body.title, res, 0, req.body.url);
 										TYPE = 2;
 										console.log('filename:', file.name);
 										const stream = file.createReadStream();
