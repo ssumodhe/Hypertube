@@ -45,6 +45,16 @@
       <searchbar class="col-sm-12 col-md-6 col-md-offset-3"></searchbar>
     </div>
 
+
+    <div class="row">
+      <div class="col-sm-12 col-md-8 col-md-offset-2" style="background-color: #222222;">
+        <span>FILTER HERE</span>
+        
+      </div>
+      
+    </div>
+
+
     <div class="row col-md-offset-2">
     <div class="card col-md-3" style="min-height: 350px; border: 1px solid gainsboro; border-radius: 15px; padding-top: 20px; margin: auto 5px 5px auto;" v-for="lib in library">
       <img v-if="lib.poster" class="card-img-top" :src="lib.poster" width="40%" max-height="40%">
