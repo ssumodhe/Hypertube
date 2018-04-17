@@ -92,10 +92,25 @@ export default{
       library : [],
       videoSeen: [],
       movieGenre: [],
+      movieYear: [],
       page: 0
     }
   },
   created: function(){
+    axios({
+        method: 'get',
+        url: videoUrl,
+      })
+      .then( (response) => {
+        console.log(response)
+        this.setGenre(response.data)
+        this.setYear(response.data)
+        
+      })
+      .catch( (error) => {
+        console.log(error)
+      });
+
     axios({
         method: 'get',
         url: 'https://hypertubeapi.tpayet.com/users/' + localStorage.getItem('username') + '/performances',
@@ -117,7 +132,6 @@ export default{
     infiniteHandler($state) {
       axios.get(videoUrl)
       .then(({ data }) => {
-        console.log(data)
         if (data.length) {
           const temp = [];
           for (let i = this.page; i < this.page + 20; i++) {
@@ -129,10 +143,9 @@ export default{
           }
           this.page = this.page + 20;
           this.library = this.library.concat(temp);
-          console.log(this.library)
           $state.loaded();
 
-          this.setGenre()
+          
 
           if (data.length / 20 === 10) {
             $state.complete();
@@ -142,10 +155,10 @@ export default{
         }
       });
     },
-    setGenre: function(){
+    setGenre: function(data){
       let tmp = []
-      for (let i = 0; i < this.library.length; i++){
-        let objGenre = JSON.parse(this.library[i].genre)
+      for (let i = 0; i < data.length; i++){
+        let objGenre = JSON.parse(data[i].genre)
         for (let j = 0; j < objGenre.length; j++){
           if (this.movieGenre.length == '0'){
             this.movieGenre[0] = objGenre[0].trim().toLowerCase()
@@ -163,7 +176,30 @@ export default{
         }
       }
       console.log("HOME PAGE : movieGenre")
-      console.log(this.movieGenre)
+      console.log(this.movieGenre.sort())
+    },
+    setYear: function(data){
+      let tmp = []
+      for (let i = 0; i < data.length; i++){
+        let objYear = JSON.parse(data[i].year)
+        for (let j = 0; j < objYear.length; j++){
+          if (this.movieYear.length == '0'){
+            this.movieYear[0] = objYear[0].trim()
+          }
+          for (let k = 0; k < this.movieYear.length; k++){
+            if (objYear[j].trim() == this.movieYear[k]){
+              break;
+            }
+            if (objYear[j].trim() != this.movieYear[k] && k == (this.movieYear.length - 1)){
+              tmp.push(objYear[j].trim())
+            }
+          }
+          this.movieYear = this.movieYear.concat(tmp)
+          tmp = []
+        }
+      }
+      console.log("HOME PAGE : movieGenre")
+      console.log(this.movieYear.sort())
     },
     hasBeenSeen: function(id){
       this.videoSeen = localStorage.getItem('video-seen')
