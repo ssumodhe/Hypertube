@@ -45,18 +45,101 @@
       <searchbar class="col-sm-12 col-md-6 col-md-offset-3"></searchbar>
     </div>
 
-
     <div class="row">
-      <div class="col-sm-12 col-md-8 col-md-offset-2" style="background-color: #222222;">
-        <span>FILTER HERE</span>
-        
-      </div>
-      
+      <div id="sortnfilter" class="col-md-offset-1 col-md-2">
+  
+        <div id="accordion">
+          <div class="card">
+            <div class="card-header" id="headingOne">
+              <h5 class="mb-0">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" >
+                  Filter by Genre
+                </button>
+              </h5>
+            </div>
+
+            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion"  aria-expanded="false">
+              <div class="card-body">
+                <li v-for="genre in movieGenre"><a href="#">{{genre}}</a></li>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header" id="headingTwo">
+              <h5 class="mb-0">
+                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                  Filter by Year
+                </button>
+              </h5>
+            </div>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion"  aria-expanded="false">
+              <div class="card-body">
+                <li v-for="year in movieYear"><a href="#">{{year}}</a></li>
+                <li><a href="#all">old - 1970</a></li>
+                <li><a href="#all">1970 - 1990</a></li>
+                <li><a href="#all">1990 - 2010</a></li>
+                <li><a href="#all">2010 - new</a></li>
+                
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header" id="headingThree">
+              <h5 class="mb-0">
+                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                  Filter by Rating
+                </button>
+              </h5>
+            </div>
+            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion"  aria-expanded="false">
+              <div class="card-body">
+                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header" id="headingFour">
+              <h5 class="mb-0">
+                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                  Filter by Title
+                </button>
+              </h5>
+            </div>
+            <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion"  aria-expanded="false">
+              <div class="card-body">
+                <li><a href="#all"> A to Z </a></li>
+                <li><a href="#all"> Z to A </a></li>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header" id="headingFive">
+              <h5 class="mb-0">
+                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                  Sort By
+                </button>
+              </h5>
+            </div>
+            <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion"  aria-expanded="false">
+              <div class="card-body">
+                <li><a href="#">Title</a></li>
+                <li><a href="#">Genre</a></li>
+                <li><a href="#">Oldest</a></li>
+                <li><a href="#">Newest</a></li>
+                <li><a href="#">Votes</a></li>
+                <li class="divider"></li>
+                <li><a href="#all">Anything</a></li>
+              </div>
+            </div>
+          </div>
+        </div>
     </div>
-
-
-    <div class="row col-md-offset-2">
-    <div class="card col-md-3" style="min-height: 350px; border: 1px solid gainsboro; border-radius: 15px; padding-top: 20px; margin: auto 5px 5px auto;" v-for="lib in library">
+      
+    <div id="moviesCards" class="col-md-9">
+    <div class="card col-md-3" style="min-height: 350px; border: 1px solid gainsboro; border-radius: 15px; padding-top: 20px; margin: auto 10px 10px auto;" v-for="lib in library">
       <img v-if="lib.poster" class="card-img-top" :src="lib.poster" width="40%" max-height="40%">
       <img v-else class="card-img-top" src="/static/img/video-icon.png" width="40%" alt="Card image cap">
       <hr>
@@ -75,6 +158,7 @@
           <button @click="setAndSend(lib.id, lib.token, lib.title)" class="btn btn-default glyphicon glyphicon-film" style="margin-bottom: 5px;"><span v-lang.watch></span></button>
         </div>
       </div>
+    </div>
     </div>
     <infinite-loading @infinite="infiniteHandler">
       
@@ -187,6 +271,12 @@ export default{
           tmp = []
         }
       }
+      let alpha = []
+      for (let i = 0; i < this.movieGenre.length; i++){
+        if (this.movieGenre[i].match(/^[a-zA-Z]+$/))
+          alpha.push(this.movieGenre[i])
+      }
+      this.movieGenre = alpha
       console.log("HOME PAGE : movieGenre")
       console.log(this.movieGenre.sort())
     },
@@ -240,5 +330,13 @@ export default{
   }
   .card-title{
     word-wrap: break-word
+  }
+  #sortnfilter{
+    background-color: #353434;
+    color: #939393;
+    list-style: none;
+  }
+  a{
+    text-decoration: none;
   }
 </style>
