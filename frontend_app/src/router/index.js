@@ -11,6 +11,7 @@ import Movie from '@/components/video'
 import NotFound from '@/components/404NotFound'
 import Password from '@/components/forgotPassword'
 import Omniauth from '@/components/Omniauth'
+import Results from '@/components/Results'
 
 Vue.use(Router)
 Vue.use(vueResource)
@@ -288,6 +289,11 @@ export default new Router({
       path: '/',
       name: 'home',
       component: Home
+    },
+    {
+      path: '/search/:param',
+      name: 'results',
+      component: Results
     },
     {
       path: '/user/:username',

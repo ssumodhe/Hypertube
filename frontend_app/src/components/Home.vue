@@ -52,15 +52,14 @@
           <div class="card">
             <div class="card-header" id="headingOne">
               <h5 class="mb-0">
-                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" >
+                <button class="btn" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" >
                   Filter by Genre
                 </button>
               </h5>
             </div>
-
             <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion"  aria-expanded="false">
               <div class="card-body">
-                <li v-for="genre in movieGenre"><a href="#">{{genre}}</a></li>
+                <li v-for="genre in movieGenre"><router-link :to="{ name: 'results', params: { param: genre }}">{{genre}}</router-link></li>
               </div>
             </div>
           </div>
@@ -68,7 +67,7 @@
           <div class="card">
             <div class="card-header" id="headingTwo">
               <h5 class="mb-0">
-                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                <button class="btn collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                   Filter by Year
                 </button>
               </h5>
@@ -88,21 +87,21 @@
           <div class="card">
             <div class="card-header" id="headingThree">
               <h5 class="mb-0">
-                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                <button class="btn collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                   Filter by Rating
                 </button>
               </h5>
             </div>
             <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion"  aria-expanded="false">
               <div class="card-body">
-                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                Ratings
               </div>
             </div>
           </div>
           <div class="card">
             <div class="card-header" id="headingFour">
               <h5 class="mb-0">
-                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                <button class="btn collapsed" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
                   Filter by Title
                 </button>
               </h5>
@@ -118,7 +117,7 @@
           <div class="card">
             <div class="card-header" id="headingFive">
               <h5 class="mb-0">
-                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                <button class="btn collapsed" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
                   Sort By
                 </button>
               </h5>
@@ -163,7 +162,7 @@
     <infinite-loading @infinite="infiniteHandler">
       
       <span slot="no-more">
-        <div class=" col-md-9 alert alert-info" role="alert">
+        <div class=" col-md-offset-3 col-md-7 alert alert-info" role="alert">
         <span v-lang.all_we_got></span>
         </div>
       </span>
@@ -189,6 +188,7 @@ export default{
       videoSeen: [],
       movieGenre: [],
       movieYear: [],
+      movieRating: [],
       page: 0
     }
   },
@@ -276,14 +276,12 @@ export default{
         if (this.movieGenre[i].match(/^[a-zA-Z]+$/))
           alpha.push(this.movieGenre[i])
       }
-      this.movieGenre = alpha
-      console.log("HOME PAGE : movieGenre")
-      console.log(this.movieGenre.sort())
+      this.movieGenre = alpha.sort()
     },
     setYear: function(data){
       let tmp = []
       for (let i = 0; i < data.length; i++){
-        let objYear = JSON.parse(data[i].year)
+        let objYear = data[i].year
         for (let j = 0; j < objYear.length; j++){
           if (this.movieYear.length == '0'){
             this.movieYear[0] = objYear[0].trim()
@@ -300,7 +298,7 @@ export default{
           tmp = []
         }
       }
-      console.log("HOME PAGE : movieGenre")
+      console.log("HOME PAGE : movieYear")
       console.log(this.movieYear.sort())
     },
     hasBeenSeen: function(id){
@@ -333,10 +331,11 @@ export default{
   }
   #sortnfilter{
     background-color: #353434;
-    color: #939393;
     list-style: none;
+    border-radius: 8px;
   }
   a{
     text-decoration: none;
+    color: #939393;
   }
 </style>
