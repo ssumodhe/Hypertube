@@ -44,7 +44,7 @@ class Hypertube {
 		};
 		return new Promise((resolve, reject)=>{
 			this.request.put(options, (err, ret, body) => {
-				console.log(ret);
+				// console.log(ret);
 				if ((ret.statusCode != 200 && ret.statusCode != 201) || err) reject(err || "error");
 				else resolve(200);
 			});

@@ -53,7 +53,7 @@ app.post('/url', (req, res) => {
 				try {
 					const ret = await Hypertube.get(torrentParsed.infoHash);
 					const retBody = JSON.parse(ret.body)
-					console.log(retBody);
+					// console.log(retBody);
 
 					if ((ret.statusCode == 200 || ret.statusCode == 201) && ret.body != 'null' && retBody["download"] == 1) {
 						console.log('file already downloaded');
