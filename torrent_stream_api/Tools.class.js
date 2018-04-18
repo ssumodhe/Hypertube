@@ -180,7 +180,7 @@ class Tools {
 
 				console.log("infos:",infos);
 				if (download == 1) {
-					this.Hypertube.post({
+					this.Hypertube.update({
 						"title":title,
 						"token":torrentParsed.infoHash,
 						"path":t.name,
@@ -196,7 +196,8 @@ class Tools {
 						"writer":infos.writer,
 						"genre": JSON.stringify(infos.genre ? infos.genre : []),
 						"url": url,
-						"download": 1
+						"download": 1,
+            "year":infos.year
 					})
 					.then(r => {
 						const size = t.length / (1024 * 1024);
@@ -238,7 +239,7 @@ class Tools {
 						reject(404);
 					})
 				} else {
-					this.Hypertube.update({
+					this.Hypertube.post({
 						"title":title,
 						"token":torrentParsed.infoHash,
 						"path":t.name,
