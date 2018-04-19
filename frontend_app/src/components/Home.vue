@@ -52,7 +52,7 @@
           <div class="card">
             <div class="card-header" id="headingOne">
               <h5 class="mb-0">
-                <button class="btn" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" >
+                <button class="btn btn-secondary" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" >
                   Filter by Genre
                 </button>
               </h5>
@@ -67,7 +67,7 @@
           <div class="card">
             <div class="card-header" id="headingTwo">
               <h5 class="mb-0">
-                <button class="btn collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                <button class="btn btn-secondary collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                   Filter by Year
                 </button>
               </h5>
@@ -87,7 +87,7 @@
           <div class="card">
             <div class="card-header" id="headingThree">
               <h5 class="mb-0">
-                <button class="btn collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                <button class="btn btn-secondary collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                   Filter by Rating
                 </button>
               </h5>
@@ -101,7 +101,7 @@
           <div class="card">
             <div class="card-header" id="headingFour">
               <h5 class="mb-0">
-                <button class="btn collapsed" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                <button class="btn btn-secondary collapsed" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
                   Filter by Title
                 </button>
               </h5>
@@ -117,19 +117,18 @@
           <div class="card">
             <div class="card-header" id="headingFive">
               <h5 class="mb-0">
-                <button class="btn collapsed" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                <button class="btn btn-secondary collapsed" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
                   Sort By
                 </button>
               </h5>
             </div>
             <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion"  aria-expanded="false">
               <div class="card-body">
-                <li><a href="#">Title</a></li>
+                <li @click="sortBy('title')">Title</li>
                 <li><a href="#">Genre</a></li>
                 <li><a href="#">Oldest</a></li>
                 <li><a href="#">Newest</a></li>
                 <li><a href="#">Votes</a></li>
-                <li class="divider"></li>
                 <li><a href="#all">Anything</a></li>
               </div>
             </div>
@@ -184,6 +183,7 @@ export default{
   name: 'home',
   data(){
     return {
+      allVideos: [],
       library : [],
       videoSeen: [],
       movieGenre: [],
@@ -198,7 +198,7 @@ export default{
         url: videoUrl,
       })
       .then( (response) => {
-        console.log(response)
+        this.allVideos = response.data
         this.setGenre(response.data)
         this.setYear(response.data)
         
@@ -228,6 +228,8 @@ export default{
     infiniteHandler($state) {
       axios.get(videoUrl)
       .then(({ data }) => {
+        console.log("Printing Data")
+        console.log(data)
         if (data.length) {
           const temp = [];
           for (let i = this.page; i < this.page + 20; i++) {
@@ -240,9 +242,6 @@ export default{
           this.page = this.page + 20;
           this.library = this.library.concat(temp);
           $state.loaded();
-
-          
-
           if (data.length / 20 === 10) {
             $state.complete();
           }
@@ -316,6 +315,14 @@ export default{
       localStorage.setItem('video-db', true)
       localStorage.setItem('video-name', name)
       this.$router.push(link)
+    },
+    sortBy: function(item){
+      let all = this.allVideos
+      all.sort(function(a, b) {
+        var x = a[item].toLowerCase(); var y = b[item].toLowerCase();
+        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+      });
+
     }
   }
 }
