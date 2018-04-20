@@ -125,11 +125,10 @@
             <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion"  aria-expanded="false">
               <div class="card-body">
                 <li @click="sortBy('title')">Title</li>
-                <li><a href="#">Genre</a></li>
-                <li><a href="#">Oldest</a></li>
-                <li><a href="#">Newest</a></li>
-                <li><a href="#">Votes</a></li>
-                <li><a href="#all">Anything</a></li>
+                <li @click="sortBy('genre')">Genre</li>
+                <li @click="sortBy('oldest')">Oldest</li>
+                <li @click="sortBy('newest')">Newest</li>
+                <li @click="sortBy('rating')">Votes</li>
               </div>
             </div>
           </div>
@@ -276,29 +275,25 @@ export default{
           alpha.push(this.movieGenre[i])
       }
       this.movieGenre = alpha.sort()
+
     },
     setYear: function(data){
       let tmp = []
-      for (let i = 0; i < data.length; i++){
-        let objYear = data[i].year
-        for (let j = 0; j < objYear.length; j++){
-          if (this.movieYear.length == '0'){
-            this.movieYear[0] = objYear[0].trim()
-          }
-          for (let k = 0; k < this.movieYear.length; k++){
-            if (objYear[j].trim() == this.movieYear[k]){
-              break;
-            }
-            if (objYear[j].trim() != this.movieYear[k] && k == (this.movieYear.length - 1)){
-              tmp.push(objYear[j].trim())
-            }
-          }
-          this.movieYear = this.movieYear.concat(tmp)
-          tmp = []
+      for(let i = 0; i < data.length; i++){
+        if (this.movieYear.length == '0'){
+            this.movieYear[0] = data[0]['year'].trim()
         }
+        for(let j = 0; j < this.movieYear.length; j++){
+          if(data[i]['year'].trim() == this.movieYear[j]){
+            break
+          }
+          if(data[i]['year'].trim() != this.movieYear[j] && j == (this.movieYear.length - 1)){
+            tmp.push(data[i]['year'].trim())
+          }
+        }
+        this.movieYear = this.movieYear.concat(tmp)
+        tmp = []
       }
-      console.log("HOME PAGE : movieYear")
-      console.log(this.movieYear.sort())
     },
     hasBeenSeen: function(id){
       this.videoSeen = localStorage.getItem('video-seen')
@@ -318,11 +313,35 @@ export default{
     },
     sortBy: function(item){
       let all = this.allVideos
-      all.sort(function(a, b) {
-        var x = a[item].toLowerCase(); var y = b[item].toLowerCase();
-        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
-      });
-
+      if (item == "title"){
+       all.sort(function(a, b) {
+         var x = a[item].toLowerCase(); var y = b[item].toLowerCase();
+          return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+          });
+      }
+      else if (item == "genre"){ 
+        all.sort(function(a, b) {
+          JSON.parse(a[item])
+          var x = JSON.parse(a[item]); var y = JSON.parse(b[item]);
+          return ((x[0] < y[0]) ? -1 : ((x[0] > y[0]) ? 1 : 0));
+        });
+      }
+      else if (item == "oldest" || item == "newest"){ 
+        all.sort(function(a, b) {
+          var x = parseInt(a['year']); var y = parseInt(b['year`']);
+          return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+        });
+        if(item == "newest")
+          all.reverse()
+      }
+      else if (item == "rating"){ 
+        all.sort(function(a, b) {
+          var x = parseInt(a[item]); var y = parseInt(b[item]);
+          return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+        });
+        all.reverse()
+      }
+      this.library = all
     }
   }
 }
@@ -338,8 +357,11 @@ export default{
   }
   #sortnfilter{
     background-color: #353434;
-    list-style: none;
     border-radius: 8px;
+  }
+  li{
+    list-style: none;
+    color: #939393;
   }
   a{
     text-decoration: none;
