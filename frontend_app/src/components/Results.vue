@@ -48,6 +48,8 @@ export default{
       let item = this.getElem(this.$route.params.param)
       if (item == 'genre')
         this.displayGenre()
+      if (item == 'title')
+        this.displayTitle(this.$route.params.param)
 
       
     })
@@ -69,12 +71,24 @@ export default{
       this.displayMovies = getAll
       getAll = []
     },
+    displayTitle: function(item){
+      let getAll = this.allMovies.sort(function(a, b) {
+         var x = a['title'].toLowerCase(); var y = b['title'].toLowerCase();
+          return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+          });
+      if(item == 'Z')
+        getAll.reverse()
+      this.displayMovies = getAll
+      getAll = []
+    },
     getElem: function(elem){
       for(let i = 0; i < this.movieGenre.length; i++){
         if(elem == this.movieGenre[i]){
           return 'genre'
         }
       }
+      if(elem == 'A' || elem == 'Z')
+        return 'title'
 
     },
     setGenre: function(data){

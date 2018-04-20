@@ -108,8 +108,8 @@
             </div>
             <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion"  aria-expanded="false">
               <div class="card-body">
-                <li><a href="#all"> A to Z </a></li>
-                <li><a href="#all"> Z to A </a></li>
+                <li><router-link :to="{ name: 'results', params: { param: 'A' }}"> A to Z </router-link></li>
+                <li><router-link :to="{ name: 'results', params: { param: 'Z' }}"> Z to A </router-link></li>
               </div>
             </div>
           </div>
@@ -250,9 +250,6 @@ export default{
     setGenre: function(data){
       let tmp = []
       for (let i = 0; i < data.length; i++){
-        if(data[i].title == 'Coco'){
-          console.log(data[i].rating)
-        }
         let objGenre = JSON.parse(data[i].genre)
         for (let j = 0; j < objGenre.length; j++){
           if (this.movieGenre.length == '0'){
@@ -341,11 +338,6 @@ export default{
           return ((x < y) ? -1 : ((x > y) ? 1 : 0));
         });
         all.reverse()
-        let rates = []
-        for(let i = 0; i < all.length; i++){
-          rates.push(all[i]['rating'])
-        }
-        console.log(rates)
       }
       this.library = all
     }
