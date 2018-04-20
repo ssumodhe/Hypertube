@@ -227,8 +227,6 @@ export default{
     infiniteHandler($state) {
       axios.get(videoUrl)
       .then(({ data }) => {
-        console.log("Printing Data")
-        console.log(data)
         if (data.length) {
           const temp = [];
           for (let i = this.page; i < this.page + 20; i++) {
@@ -252,6 +250,9 @@ export default{
     setGenre: function(data){
       let tmp = []
       for (let i = 0; i < data.length; i++){
+        if(data[i].title == 'Coco'){
+          console.log(data[i].rating)
+        }
         let objGenre = JSON.parse(data[i].genre)
         for (let j = 0; j < objGenre.length; j++){
           if (this.movieGenre.length == '0'){
@@ -336,10 +337,15 @@ export default{
       }
       else if (item == "rating"){ 
         all.sort(function(a, b) {
-          var x = parseInt(a[item]); var y = parseInt(b[item]);
+          var x = parseFloat(a[item]); var y = parseFloat(b[item]);
           return ((x < y) ? -1 : ((x > y) ? 1 : 0));
         });
         all.reverse()
+        let rates = []
+        for(let i = 0; i < all.length; i++){
+          rates.push(all[i]['rating'])
+        }
+        console.log(rates)
       }
       this.library = all
     }
