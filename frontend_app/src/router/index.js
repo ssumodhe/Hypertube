@@ -10,6 +10,8 @@ import User from '@/components/user'
 import Movie from '@/components/video'
 import NotFound from '@/components/404NotFound'
 import Password from '@/components/forgotPassword'
+import Omniauth from '@/components/Omniauth'
+import Results from '@/components/Results'
 
 Vue.use(Router)
 Vue.use(vueResource)
@@ -42,6 +44,10 @@ Vue.use(MultiLanguage, {
     prev_cmt: 'Previous comments',
     commented : ' commented ',
     no_cmt: 'No comments yet! Be the first to share ! ;)',
+    description: 'Description: ',
+    directed_by: 'Directed by: ',
+    rating: 'Rating: ',
+    runtime: 'Runtime: ',
       // Home
     new: ' New',
     prev: 'Previous',
@@ -58,6 +64,7 @@ Vue.use(MultiLanguage, {
     msg_modif: 'Click on any item to modify your data.',
     old_pswd: 'Old password',
     new_pswd: 'New password',
+    edit: 'Edit',
       // Uplaod-file
     msg_upload: 'Drag and drop your profile picture here',
 
@@ -88,6 +95,10 @@ Vue.use(MultiLanguage, {
     prev_cmt: 'Commentaires précédents',
     commented : ' a commenté ',
     no_cmt: 'Pas encore de commentaires! Soyez le premier à partager ! ;)',
+    description: 'Description: ',
+    directed_by: 'Realisé par: ',
+    rating: 'Score: ',
+    runtime: 'Durée: ',
       // Home
     new: ' Nouveau',
     prev: 'Précédent',
@@ -104,6 +115,7 @@ Vue.use(MultiLanguage, {
     msg_modif: 'Cliquez sur vos informations pour en modifier la valeur',
     old_pswd: 'Ancien mot de passe',
     new_pswd: 'Nouveau mot de passe',
+    edit: 'Modif.',
       // Upload-file
     msg_upload: 'Ajoutez votre photo de profil ici.',
   },
@@ -133,6 +145,10 @@ Vue.use(MultiLanguage, {
     prev_cmt: 'Commenti precedenti',
     commented : ' ha commentato ',
     no_cmt: 'Ancora nessun commento! Sii il primo a condividere! ;)',
+    description: 'Descrizione: ',
+    directed_by: 'Diretto da: ',
+    rating: 'Valutazione: ',
+    runtime: 'Durata: ',
       // Home
     new: ' Nuovo',
     prev: 'precedente',
@@ -149,6 +165,7 @@ Vue.use(MultiLanguage, {
     msg_modif: 'Clicca sulle tue informazioni per cambiare il valore',
     old_pswd: 'Vecchia password',
     new_pswd: 'Nuova password',
+    edit: 'Modif.',
       // Upload-file
     msg_upload: 'Aggiungi la tua immagine del profilo qui.',
   },
@@ -178,6 +195,10 @@ Vue.use(MultiLanguage, {
     prev_cmt: 'Comentarios anteriores',
     commented : ' comentó ',
     no_cmt: 'No hay comentarios todavía ¡Sé el primero en compartir! ;)',
+    description: 'Descripción: ',
+    directed_by: 'Dirigido por: ',
+    rating: 'Clasificación: ',
+    runtime: 'Duración: ',
       // Home
     new: ' Nuevo',
     prev: 'Anterior',
@@ -194,6 +215,7 @@ Vue.use(MultiLanguage, {
     msg_modif: 'Haga clic en su información para modificar su valor',
     old_pswd: 'Antigua contraseña',
     new_pswd: 'Nuevo contraseña',
+    edit: 'Editar',
       // Upload-file
     msg_upload: 'Agrega tu foto de perfil aquí.',
   },
@@ -223,6 +245,10 @@ Vue.use(MultiLanguage, {
     prev_cmt: 'Vorige Kommentare',
     commented : ' kommentierte ',
     no_cmt: 'Noch keine Kommentare! Sei der Erste, der teilt ! ;)',
+    description: 'Beschreibung: ',
+    directed_by: 'Unter der Regie von: ',
+    rating: 'Bewertung: ',
+    runtime: 'Dauer: ',
       // Home
     new: ' Neu',
     prev: 'Früher',
@@ -239,6 +265,7 @@ Vue.use(MultiLanguage, {
     msg_modif: 'Klicken Sie auf Ihre Informationen, um den Wert zu ändern',
     old_pswd: 'Altes Passwort',
     new_pswd: 'Neues Passwort',
+    edit: 'Bearbeiten',
       // Upload-file
     msg_upload: 'Fügen Sie Ihr Profilbild hier hinzu.',
   },
@@ -264,6 +291,11 @@ export default new Router({
       component: Home
     },
     {
+      path: '/search/:param',
+      name: 'results',
+      component: Results
+    },
+    {
       path: '/user/:username',
       name: 'user',
       component: User
@@ -277,7 +309,13 @@ export default new Router({
       path: '/404',
       name: 'notFound',
       component: NotFound
+    },
+    {
+      path: '/thomatosupersecreturl',
+      name: 'omniauth',
+      component: Omniauth
     }
+
   ],
   mode: 'history'
   // to avoid # in url

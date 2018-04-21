@@ -1,7 +1,7 @@
 <template>
   <div class="user">
-    {{note}}
-    {{stalker}}
+
+    <div v-if="successMsg" class="alert alert-success" role="alert">{{successMsg}}</div>
 
     <div class="row">
       <div class="col-md-2 col-md-offset-3">
@@ -15,7 +15,7 @@
               <div class="card-block">
                 <uploadfile class="uploadfile" v-on:uploadedPicture="addPicture" remove='Remove Photo'></uploadfile>
                 <form @submit.prevent="submitPicture">
-                  <input v-bind:disabled="submitBtnDisabled" class="btn btn-default" type="submit" value="Modif.">
+                  <input v-bind:disabled="submitBtnDisabled" class="btn btn-default" type="submit" :value="edit">
                 </form>
 
               </div>
@@ -43,7 +43,7 @@
                   <div class="col-md-6 col-md-offset-1" v-bind:class="[userSuccessClass]">
                     <input ref="txtUser" type="text" id="UserName" class="form-control" name="username" :placeholder="userName" @input="checkUserValidation" pattern="^([a-zA-Z]*)$" required>
                   </div>
-                  <input v-bind:disabled="userSubmitBtnDisabled" class="btn btn-default" type="submit" value="Modif.">
+                  <input v-bind:disabled="userSubmitBtnDisabled" class="btn btn-default" type="submit" :value="edit">
                 </form>
               </div>
             </div>
@@ -64,7 +64,7 @@
                   <div class="col-md-6 col-md-offset-1" v-bind:class="[emailSuccessClass]">
                     <input ref="txtEmail" type="email" id="Email" class="form-control" name="email" :placeholder="email" @input="checkEmailValidation" required>
                   </div>
-                  <input v-bind:disabled="emailSubmitBtnDisabled" class="btn btn-default" type="submit" value="Modif.">
+                  <input v-bind:disabled="emailSubmitBtnDisabled" class="btn btn-default" type="submit" :value="edit">
                 </form>
               </div>
             </div>
@@ -92,7 +92,7 @@
                   <div class="form-group has-feedback" v-bind:class="[lastNameSuccessClass]">
                     <input ref="txtLastName" type="text" id="lastName" class="form-control" name="lastName" :placeholder="lastName" @input="checkLastNameValidation" pattern="^([a-zA-Z]*)$">
                   </div>
-                  <input v-bind:disabled="nameSubmitBtnDisabled" class="btn btn-default" type="submit" value="Modif.">
+                  <input v-bind:disabled="nameSubmitBtnDisabled" class="btn btn-default" type="submit" :value="edit">
                 </form>
 
               </div>
@@ -124,7 +124,7 @@
                   <div class="form-group has-feedback" v-bind:class="[cfmPwdSuccessClass]">
                     <input ref="txtCfmPwd" type="password" class="form-control" :placeholder="confirm_password" @input="cfmPwdValidation" pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]+).{7,}$" required>
                   </div>
-                  <input v-bind:disabled="pwdSubmitBtnDisabled" class="btn btn-default" type="submit" value="Modif.">
+                  <input v-bind:disabled="pwdSubmitBtnDisabled" class="btn btn-default" type="submit" :value="edit">
                 </form>
               </div>
             </div>
@@ -153,6 +153,11 @@ export default{
     if (this.$route.params.username == localStorage.getItem('username')){
       this.stalker = false
     }
+    else if(localStorage.getItem('omniauth') == 'true'){
+      this.stalker = false
+      let new_url = "/user/" + localStorage.getItem('uid')
+      this.$router.replace(new_url)
+    }
     else{
       this.stalker = true
     }
@@ -168,6 +173,7 @@ export default{
       this.firstName = response.data.firstname
       this.lastName = response.data.lastname
       this.usersPicture = userUrl + this.$route.params.username + '/avatar';
+      this.checkIfNull()
     })
     .catch( (error) => {
       console.log(error)
@@ -183,10 +189,12 @@ export default{
     confirm_password()  {
      return this.translate('confirm_password')
     },
+    edit(){
+     return this.translate('edit')
+    },
   },
   data(){
     return {
-      note: "This is " + this.$route.params.username + "'s profile page!!",
       stalker: false,
       headers: {
       'access-token': localStorage.getItem('token'),
@@ -214,7 +222,8 @@ export default{
       newPwdSuccessClass: '',
       cfmPwdSuccessClass: '',
       pwdSubmitBtnDisabled: true,
-      submitBtnDisabled: true
+      submitBtnDisabled: true,
+      successMsg: "",
 
     }
   },
@@ -238,7 +247,7 @@ export default{
       })
       .then( (response) => {
         this.usersPicture = userUrl + this.$route.params.username + '/avatar'
-        console.log("modif picture ok + set success msg + for pswd too")
+        this.successMsg = "Your changes have been correctly saved."
       })
       .catch( (error) => {
         if (error.response.status == "422"){
@@ -247,6 +256,20 @@ export default{
           console.log("An error occurred. Please try again.");
         }
       });
+    },
+    checkIfNull: function(){
+      if(!this.userName){
+        this.userName = 'N/A'
+      }
+      if (!this.email){
+        this.email = 'N/A'
+      }
+      if (!this.firstName){
+        this.firstName = 'N/A'
+      }
+      if (!this.lastName){
+        this.lastName = 'N/A'
+      }
     },
     setLocalStorage: function(response){
       localStorage.setItem('token', response.headers['access-token'])
@@ -430,6 +453,7 @@ export default{
         }
       })
       .then( (response) => {
+        this.successMsg = "Your changes have been correctly saved."
         this.setLocalStorage(response)
         this.$refs.txtCrtPwd.value = ''
         this.$refs.txtNewPwd.value = ''

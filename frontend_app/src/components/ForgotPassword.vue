@@ -15,7 +15,7 @@
                 <input ref="txtCfmPwd" type="password" class="form-control" :placeholder="confirm_password" @input="cfmPwdValidation" pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]+).{7,}$" required>
               </div>
 
-              <input v-bind:disabled="pwdSubmitBtnDisabled" class="btn btn-default" type="submit" value="Modif.">
+              <input v-bind:disabled="pwdSubmitBtnDisabled" class="btn btn-default" type="submit" :value="edit">
             
             </form>
             </div>
@@ -34,6 +34,9 @@ export default{
     },
     confirm_password()  {
      return this.translate('confirm_password')
+    },
+    edit(){
+     return this.translate('edit')
     },
   },
   data(){

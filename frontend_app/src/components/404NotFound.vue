@@ -21,11 +21,8 @@ export default{
 </script>
 
 <style scoped >
-
 img {
 	width: 100%;
 	padding : 10px 10px 10px 10px;
-
 }
-
 </style>

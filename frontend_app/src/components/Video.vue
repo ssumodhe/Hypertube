@@ -1,68 +1,70 @@
 <template>
   <div class="movie">
-    {{note}}
-
+    <span id="title-video">{{videoName}}</span>
     <br>
     <br>
     <br>
 
+    <!-- Video PART -->
     <div>
       <span v-if="advert" id="advertisement"><strong><span v-lang.msg_ad></span></strong></span>
-      <video autoplay="autoplay" loop controls preload="metadata" :src="movieSource" poster="/static/img/loading.gif">
-        <track kind="subtitles" src="https://streamingapi.tpayet.com/subtitles/Interstellar.2014.720p.BluRay.x264-DAA.vtt" srclang="en" label="English" default="">
-        <track kind="subtitles" src="https://streamingapi.tpayet.com/subtitles/Interstellar.2014.720p.BluRay.x264.DTS-WiKi.fr.vtt" srclang="fr" label="French">
-        <canvas></canvas>
+      <video ref="videoPlaying" :src="movieSource"  autoplay="autoplay" preload="metadata" loop controls>
+        <track kind="subtitles" :src="subEn" srclang="en" label="English" default="">
+        <track kind="subtitles" :src="subFr" srclang="fr" label="French">
       </video>
-      <!-- <video autoplay muted="true" controls="controls" poster="/static/img/emoji_kitty.png">
-        <source v-if="advert" :src="movieSource" type="video/mp4"></source> 
-        <source v-if="!advert" :src="movieSource" type="video/mp4"></source>
-      </video> -->
+
     </div>
 
-<!--     <video autoplay loop muted="true" controls class="video-js">
-      <source
-        src="http://e1r5p16.42.fr:5555/video/YmsorVS9x4x1YA4abxEV3LQ7LAoDH2xXXTjgyMcZWeXdYPmf1xutJJcSEQWESRRMMDSDaQQwXWR8JsK6tSkjpakbPKQszXLx1Tfu4EXDarC1Gk6xxdY6j5t5eL3NJihJPsrQBmmf6BtT1R42uLvHWxvYfBxJwJH6R7hCxRAbvQjTphupyj92" type="video/mp4">
-      <track kind="subtitles" src="http://localhost:8080/static/sub.vtt" srclang="en" label="English" default="">
-      <track kind="subtitles" src="http://e1r5p16.42.fr:5555/sub.vtt" srclang="fr" label="French" default="">
-    </video> -->
 
+    <!-- Infos PART -->
+    <div class="infos col-md-offset-1">
+      <div id="info-left" class="col-md-3"><img :src="poster" width="100%"></div>
+      <div id="info-mid" class="col-md-4">
+        <span><span v-lang.directed_by></span><strong>{{director}}</strong></span><br>
+        <span><span v-lang.runtime></span><strong>{{runtime}}</strong></span><br>
+        <span><span v-lang.rating></span><strong>{{rating}}</strong></span>
+      </div>
+      <div id="info-right" class="col-md-4"><span><span v-lang.description></span><strong>{{description}}</strong></span></div>
+    </div>
+    
+    <!-- Write Comments PART -->
     <div class="comments">
       <div id="comment-area">
         <textarea ref="commentTxtArea" @keydown="isEnter" @keydown.enter.prevent class="comment" cols="60" rows="6" :placeholder="msg_cmt"></textarea>
-        <button @click="sendComment" class="comment"><span v-lang.btn_share></span></button>
+        <button :disabled="btnCommentDisabled" @click="sendComment" class="comment"><span v-lang.btn_share></span></button>
       </div>
 
-      <div>
-        <span id="title-previous-comments" v-lang.prev_cmt></span>
-      </div>
-      <div v-if="comments.length != 0">
+    <!-- Read Comments PART -->
+    <div>
+      <span id="title-previous-comments" v-lang.prev_cmt></span>
+    </div>
+
+    <div v-if="comments.length != 0">
       <div class="container" v-for="comment in comments">
         <div class="row">
-
           <div class="col-sm-1">
             <div class="thumbnail">
-              <img class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+              <img class="img-responsive user-photo" :src="'https://hypertubeapi.tpayet.com/users/' + comment.username + '/avatar'">
             </div>
           </div>
 
           <div class="col-sm-5">
             <div class="panel panel-default">
               <div class="panel-heading">
-                <router-link to="/user/totolapaille"> <strong>{{comment.user_id}}</strong></router-link> <span class="text-muted"><span v-lang.commented></span>{{setCommentsCreatedAt(comment.created_at)}}</span>
+                <router-link :to="'/user/' + comment.username"><strong>{{comment.username}}</strong></router-link>
+                <span class="text-muted"><span v-lang.commented></span>{{setCommentsCreatedAt(comment.created_at)}}</span>
               </div>
               <div class="panel-body">
               {{comment.body}}
               </div>
             </div>
           </div>
-
         </div>
       </div>
-      </div>
-      <div v-if="comments.length == 0" class="badge badge-secondary">
-        <span v-lang.no_cmt></span>
-
-      </div>
+    </div>
+    <div v-if="comments.length == 0" class="badge badge-secondary">
+      <span v-lang.no_cmt></span>
+    </div>
   </div>
 
   </div>
@@ -71,6 +73,8 @@
 <script>
 import {videoUrl} from '@/config.js'
 import {commentsUrl} from '@/config.js'
+import {backApi} from '@/config.js'
+
 
 export default{
   name: 'movie',
@@ -81,7 +85,6 @@ export default{
   },
   data(){
     return {
-      note: "This is the Streaming page !",
       headers: {
           'Content-Type': 'application/json',
           'access-token': localStorage.getItem('token'),
@@ -92,62 +95,134 @@ export default{
         },
       comments: [],
       advert: true, 
-      movieSource: "https://www.w3schools.com/html/mov_bbb.mp4"
+      movieSource: "",
+      subEn: "",
+      subFr: "",
+      videoName: localStorage.getItem('video-name'),
+      btnCommentDisabled: false,
+      videoToken : localStorage.getItem('video-token'),
+      description: '',
+      director: '',
+      poster: '',
+      rating: '',
+      runtime: '',
     }
   },
   created: function(){
-    axios({
-      method: 'post',
-      // url: 'https://hypertubeapi.tpayet.com/streaming/download',
-      url: 'http://localhost:5555/url',
-      data: {
-        // "streaming": 
-        //   {
-        //     "url": "http://www.torrent9.red/get_torrent/interstellar-french-dvdrip-2014.torrent",
-        //     "title": "interstellar"
-        //   }
-          "url": localStorage.getItem('video-magnet'),
-          "title": localStorage.getItem('video-name')
-      },
-      headers:{
-          'Content-Type': 'application/json'
-      }
-    })
-    .then( (response) => {
-      this.note = response.data
-      console.log("response from streaming download | VIDEO")
-      console.log(response.data)
-      // this.movieSource = response.data
-      // need to set if localStorage.getItem('video_id') == null for comments
-      // + middware : any routes FROM video localStorage.removeItem('video_id')
-      // this.movieSource = "https://mdbootstrap.com/img/video/Tropical.mp4"
-      this.movieSource = 'https://streamingapi.tpayet.com/video/2bbfa58659e8d9541e803a4b803d2352b8bc4ecb'
-      this.advert = false
-    })
-    .catch( (error) => {
-      console.log(error)
-    });
+    this.movieSource = 'https://mdbootstrap.com/img/video/Tropical.mp4'
 
-    if (localStorage.getItem('video-db') == true){
+    if (localStorage.getItem('video-db') == 'false'){
+      this.advert = true
+      this.btnCommentDisabled = true
       axios({
-        method: 'get',
-        url: videoUrl + this.$route.params.which +'/comments'
+        method: 'post',
+        url: 'http://localhost:5555/url',
+        data: {
+            "url": localStorage.getItem('video-magnet'),
+            "title": localStorage.getItem('video-name')
+        },
+        headers:{
+            'Content-Type': 'application/json'
+        }
+      })
+      .then( (response) => {
+        this.movieSource = response.data.videoUrl
+        this.subEn = response.data.subtitles['en']
+        this.subFr = response.data.subtitles['fr']
+        this.$refs.videoPlaying.removeAttribute("loop")
+        this.$refs.videoPlaying.setAttribute('poster', '/static/img/loading.gif')
+        this.$refs.videoPlaying.setAttribute('crossorigin', 'anonymous')
+        this.advert = false
+        localStorage.setItem('video-token', response.data.token)
+        this.videoToken = response.data.token
+        let new_url = "/video/" + this.videoToken
+        this.$router.replace(new_url)
+        this.setView()
+        axios({
+          method: 'get',
+          url: videoUrl + this.$route.params.which
         })
         .then( (response) => {
-          //latest comment displayed last with .slice().reverse()
-          this.comments = response.data.slice().reverse()
+          localStorage.setItem('video-id', response.data.id)
+          this.btnCommentDisabled = false
+          this.description = response.data.description
+          this.director = response.data.director
+          this.poster = response.data.poster
+          this.rating = response.data.rating
+          this.runtime = response.data.runtime
         })
         .catch( (error) => {
           console.log(error)
         });
+      })
+      .catch( (error) => {
+        console.log(error)
+      });
+    }
+
+    if (localStorage.getItem('video-db') == 'true'){
+      this.advert = false
+      this.movieSource = 'http://localhost:5555/video/' + this.$route.params.which
+      
+      axios({
+        method: 'get',
+        url: videoUrl + this.$route.params.which,
+        headers:{
+            'Content-Type': 'application/json'
+        }
+      })
+      .then( (response) => {
+        this.$refs.videoPlaying.removeAttribute("loop")
+        this.$refs.videoPlaying.setAttribute('poster', '/static/img/loading.gif')
+        this.$refs.videoPlaying.setAttribute('crossorigin', 'anonymous')
+        this.setView()
+        this.subEn = backApi + response.data['subtitles_en']
+        this.subFr = backApi + response.data['subtitles_fr']
+        this.description = response.data.description
+        this.director = response.data.director
+        this.poster = response.data.poster
+        this.rating = response.data.rating
+        this.runtime = response.data.runtime
+      })
+      .catch( (error) => {
+        console.log(error)
+      });
+
+      this.getComments()
     }
   },
   methods:{
+    setView: function(){
+      axios({
+        method: 'get',
+        url: 'https://hypertubeapi.tpayet.com/videos/' + this.$route.params.which + '/perform',
+        headers: this.headers
+      })
+      .then( (response) => {
+      })
+      .catch( (error) => {
+        console.log(error)
+      });
+    },
+    getComments: function(){
+      axios({
+        method: 'get',
+        url: videoUrl + this.$route.params.which +'/comments',
+        headers: this.headers
+      })
+      .then( (response) => {
+        //latest comment displayed last with .slice().reverse()
+        this.comments = response.data.slice().reverse()
+      })
+      .catch( (error) => {
+        console.log(error)
+      });
+    },
     isEnter: function(e){
-      if (e.key == 'Enter')
+      if (e.key == 'Enter' && this.btnCommentDisabled == false && this.$refs.commentTxtArea.value != "")
         this.sendComment()
     },
-    sendComment: function(e){
+    sendComment: function(){
       axios({
         method: 'post',
         url: commentsUrl,
@@ -162,7 +237,7 @@ export default{
         headers: this.headers
       })
       .then( (response) => {
-        //do new axios get comments ?? + set infiniteLoader for comments
+        this.getComments()
       })
       .catch( (error) => {
         console.log(error)
@@ -230,6 +305,17 @@ export default{
     margin-right: 0px;
     padding-right: 0px;
   }
+  .infos{
+    display: flex;
+    margin-top: 10px;
+  }
+  #info-mid{
+    flex-direction: column;
+    margin-top: 10px;
+  }
+  #info-right{
+    margin-top: 10px;
+  }
   #comment-area{
     margin: 6% auto 8% auto;
   }
@@ -240,7 +326,11 @@ export default{
     padding: 5px 5px 5px 5px;
   }
   #title-previous-comments{
-    font-size: 8vw;
+    font-size: 6vw;
+    margin-bottom: 20px;
+  }
+  #title-video{
+    font-size: 7vw;
     margin-bottom: 20px;
   }
 </style>

@@ -18,6 +18,9 @@ router.beforeEach((to, from, next) => {
   else if (to.name == "password" && !localStorage.getItem('token')){
     next();
   }
+  else if (to.name == "omniauth" && !localStorage.getItem('token')){
+    next();
+  }
   else if (to.name != "login" && to.name != "notFound" && !localStorage.getItem('token')){
     next('/login');
   }
@@ -25,12 +28,12 @@ router.beforeEach((to, from, next) => {
     next(from.path);
   }
   else if (from.name == "movie"){
+    localStorage.removeItem('video-token')
     localStorage.removeItem('video-id')
     localStorage.removeItem('video-name')
     localStorage.removeItem('video-link')
     localStorage.removeItem('video-magnet')
     localStorage.removeItem('video-db')
-
     next()
   }
   else {

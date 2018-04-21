@@ -3,10 +3,11 @@
     
     <p v-lang.with></p>
     <div class="social-buttons">
-      <a href="#42"><img width="10%" src="/static/img/social-icons/42-icon.png" title="Connect with 42" alt="42-icon"></a>
-      <a href="#facebook"><img width="10%" src="/static/img/social-icons/facebook-icon.png" title="Connect with facebook" alt="facebook-icon"></a>
-      <a href="#github"><img width="10%" src="/static/img/social-icons/github-icon.png" title="Connect with github" alt="github-icon"></a>
-      <a href="#gmail"><img width="10%" src="/static/img/social-icons/gmail-icon.png" title="Connect with gmail" alt="gmail-icon"></a>
+      <a href="https://hypertubeapi.tpayet.com/auth/marvin"><img width="10%" src="/static/img/social-icons/42-icon.png" title="Connect with 42" alt="42-icon"></a>
+      <a href="https://hypertubeapi.tpayet.com/auth/twitter"><img width="10%" src="/static/img/social-icons/twitter-icon.png" title="Connect with twitter" alt="twitter-icon"></a>
+      <a><img width="10%" src="/static/img/social-icons/facebook-icon.png" title="Connect with facebook" alt="facebook-icon"></a>
+      <a><img width="10%" src="/static/img/social-icons/github-icon.png" title="Connect with github" alt="github-icon"></a>
+      <a><img width="10%" src="/static/img/social-icons/gmail-icon.png" title="Connect with gmail" alt="gmail-icon"></a>
     </div>
 
     <p v-lang.or></p>
@@ -120,12 +121,10 @@ export default{
       })
       .then( (response) => {
         this.errorFrgtPswd = response.data.message
-        console.log(response)
 
       })
       .catch( (error) => {
         this.errorFrgtPswd = "This email adress does not exists."
-        console.log(error)
       });
     },
     checkUserValidation: function(){
