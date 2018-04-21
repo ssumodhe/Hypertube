@@ -112,10 +112,8 @@ export default{
         .then( (response) => {
           this.errorMsgSignUp = ""
           this.successMsg = "Well done! You successfully signed up. Please check your mails."
-          console.log(response)
         })
         .catch( (error) => {
-          console.log(error)
           if (error.response.status == "422"){
             this.errorMsgSignUp = error.response.data.errors.full_messages[0];
           } else {

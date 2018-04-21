@@ -27,8 +27,6 @@ export default{
 	localStorage.setItem('token-type', 'Bearer')
   localStorage.setItem('uid', this.$route.query.uid)
 	localStorage.setItem('omniauth', true)
-	console.log(localStorage)
-
 
 	axios({
       method: 'get',
@@ -47,8 +45,6 @@ export default{
       localStorage.setItem('firstname', response.data['firstname'])
       localStorage.setItem('lastname', response.data['lastname'])
       localStorage.setItem('username', response.data['username'])
-	     console.log(localStorage)
-
     })
     .catch( (error) => {
       console.log(error)

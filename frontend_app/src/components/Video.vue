@@ -145,8 +145,6 @@ export default{
         .then( (response) => {
           localStorage.setItem('video-id', response.data.id)
           this.btnCommentDisabled = false
-          console.log("IN VIDEO GETTING INFOS IN created")
-          console.log(response)
           this.description = response.data.description
           this.director = response.data.director
           this.poster = response.data.poster
@@ -156,9 +154,6 @@ export default{
         .catch( (error) => {
           console.log(error)
         });
-        // need to set if localStorage.getItem('video_id') == null for comments
-        // + middware : any routes FROM video localStorage.removeItem('video_id')
-        // this.movieSource = "https://mdbootstrap.com/img/video/Tropical.mp4"
       })
       .catch( (error) => {
         console.log(error)
@@ -183,8 +178,6 @@ export default{
         this.setView()
         this.subEn = backApi + response.data['subtitles_en']
         this.subFr = backApi + response.data['subtitles_fr']
-        console.log("IN VIDEO GETTING INFOS IN created")
-        console.log(response)
         this.description = response.data.description
         this.director = response.data.director
         this.poster = response.data.poster
@@ -220,8 +213,6 @@ export default{
       .then( (response) => {
         //latest comment displayed last with .slice().reverse()
         this.comments = response.data.slice().reverse()
-        console.log("get Comments | this.comments")
-        console.log(this.comments)
       })
       .catch( (error) => {
         console.log(error)
