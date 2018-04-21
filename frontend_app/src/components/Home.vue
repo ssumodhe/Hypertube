@@ -74,11 +74,10 @@
             </div>
             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion"  aria-expanded="false">
               <div class="card-body">
-                <li v-for="year in movieYear"><a href="#">{{year}}</a></li>
-                <li><a href="#all">old - 1970</a></li>
-                <li><a href="#all">1970 - 1990</a></li>
-                <li><a href="#all">1990 - 2010</a></li>
-                <li><a href="#all">2010 - new</a></li>
+                <li><router-link to="/search/1970">old - 1970</router-link></li>
+                <li><router-link to="/search/1990">1970 - 1990</router-link></li>
+                <li><router-link to="/search/2010">1990 - 2010</router-link></li>
+                <li><router-link to="/search/now">2010 - new</router-link></li>
                 
               </div>
             </div>
@@ -94,7 +93,9 @@
             </div>
             <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion"  aria-expanded="false">
               <div class="card-body">
-                Ratings
+                <li><router-link to="/search/5">0 - 5</router-link></li>
+                <li><router-link to="/search/7">6 - 7</router-link></li>
+                <li><router-link to="/search/10">8 - 10</router-link></li>
               </div>
             </div>
           </div>
@@ -135,7 +136,7 @@
         </div>
     </div>
       
-    <div id="moviesCards" class="col-md-9">
+    <div class="col-md-9">
     <div class="card col-md-3" style="min-height: 350px; border: 1px solid gainsboro; border-radius: 15px; padding-top: 20px; margin: auto 10px 10px auto;" v-for="lib in library">
       <img v-if="lib.poster" class="card-img-top" :src="lib.poster" width="40%" max-height="40%">
       <img v-else class="card-img-top" src="/static/img/video-icon.png" width="40%" alt="Card image cap">
@@ -186,7 +187,6 @@ export default{
       library : [],
       videoSeen: [],
       movieGenre: [],
-      movieYear: [],
       movieRating: [],
       page: 0
     }
@@ -199,8 +199,6 @@ export default{
       .then( (response) => {
         this.allVideos = response.data
         this.setGenre(response.data)
-        this.setYear(response.data)
-        
       })
       .catch( (error) => {
         console.log(error)
@@ -274,24 +272,6 @@ export default{
       }
       this.movieGenre = alpha.sort()
 
-    },
-    setYear: function(data){
-      let tmp = []
-      for(let i = 0; i < data.length; i++){
-        if (this.movieYear.length == '0'){
-            this.movieYear[0] = data[0]['year'].trim()
-        }
-        for(let j = 0; j < this.movieYear.length; j++){
-          if(data[i]['year'].trim() == this.movieYear[j]){
-            break
-          }
-          if(data[i]['year'].trim() != this.movieYear[j] && j == (this.movieYear.length - 1)){
-            tmp.push(data[i]['year'].trim())
-          }
-        }
-        this.movieYear = this.movieYear.concat(tmp)
-        tmp = []
-      }
     },
     hasBeenSeen: function(id){
       this.videoSeen = localStorage.getItem('video-seen')

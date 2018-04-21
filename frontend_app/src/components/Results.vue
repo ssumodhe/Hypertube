@@ -1,6 +1,11 @@
 <template>
   <div class="results">
-    <div id="moviesCards" class="col-md-9">
+    <div class="row">
+    <div>
+      <button  id="homeBtn"><router-link to="/">&larr; Go back Home!</router-link></button>
+    </div>
+
+    <div class="col-md-11 col-md-offset-1">
     <div class="card col-md-3" style="min-height: 350px; border: 1px solid gainsboro; border-radius: 15px; padding-top: 20px; margin: auto 10px 10px auto;" v-for="lib in displayMovies">
       <img v-if="lib.poster" class="card-img-top" :src="lib.poster" width="40%" max-height="40%">
       <img v-else class="card-img-top" src="/static/img/video-icon.png" width="40%" alt="Card image cap">
@@ -19,6 +24,7 @@
           <button @click="setAndSend(lib.id, lib.token, lib.title)" class="btn btn-default glyphicon glyphicon-film" style="margin-bottom: 5px;"><span v-lang.watch></span></button>
         </div>
       </div>
+    </div>
     </div>
     </div>
 
@@ -50,8 +56,10 @@ export default{
         this.displayGenre()
       if (item == 'title')
         this.displayTitle(this.$route.params.param)
-
-      
+      if (item == 'year')
+        this.displayYear()
+      if (item == 'rating')
+        this.displayRating() 
     })
     .catch( (error) => {
       console.log(error)
@@ -70,6 +78,21 @@ export default{
       }
       this.displayMovies = getAll
       getAll = []
+    },  
+    displayRating: function(){
+      let theRate = parseFloat(this.$route.params.param)
+      let getRate = []
+      for (let i = 0; i < this.allMovies.length; i++){
+        if(parseFloat(this.allMovies[i]['rating']) <= theRate)
+          getRate.push(this.allMovies[i])
+      }
+      let getAll = getRate.sort(function(a, b) {
+          var x = parseFloat(a['rating']); var y = parseFloat(b['rating']);
+          return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+        });
+      getRate = []
+      this.displayMovies = getAll.reverse()
+      getAll = []
     },
     displayTitle: function(item){
       let getAll = this.allMovies.sort(function(a, b) {
@@ -81,6 +104,24 @@ export default{
       this.displayMovies = getAll
       getAll = []
     },
+    displayYear: function(){
+      let theYear = this.$route.params.param
+      if (theYear == 'now')
+        theYear = '2018'
+      theYear = parseInt(theYear)
+      let getYear = []
+      for (let i = 0; i < this.allMovies.length; i++){
+        if(parseInt(this.allMovies[i]['year']) <= theYear)
+          getYear.push(this.allMovies[i])
+      }
+      let getAll = getYear.sort(function(a, b) {
+          var x = parseInt(a['year']); var y = parseInt(b['year']);
+          return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+        });
+      getYear = []
+      this.displayMovies = getAll
+      getAll = []
+    },
     getElem: function(elem){
       for(let i = 0; i < this.movieGenre.length; i++){
         if(elem == this.movieGenre[i]){
@@ -89,7 +130,12 @@ export default{
       }
       if(elem == 'A' || elem == 'Z')
         return 'title'
-
+      if(elem == '1970' || elem == '1990' || elem == '2010' || elem == 'now')
+        return 'year'
+      if(elem == '5' || elem == '7' || elem == '10')
+        return 'rating'
+      else
+        this.$router.push('/')
     },
     setGenre: function(data){
       let tmp = []
@@ -133,5 +179,20 @@ export default{
 <style scoped>
 .results{
   position: relative;
+}
+#homeBtn{
+  border: 1px solid black;
+  background-color: #777777;
+  border-radius: 5px;
+  color: white;
+  margin-bottom: 20px;
+  padding: 5px 5px 5px 5px;
+}
+a {
+  color: white;
+  text-decoration: none
+}
+footer{
+  bottom: 0px;
 }
 </style>
