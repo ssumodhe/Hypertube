@@ -155,6 +155,10 @@
         <div>
           <button @click="setAndSend(lib.id, lib.token, lib.title)" class="btn btn-default glyphicon glyphicon-film" style="margin-bottom: 5px;"><span v-lang.watch></span></button>
         </div>
+        <div>
+          <span>Year : {{lib.year}}</span>
+          <span>Rating : {{lib.rating}}</span>
+        </div>
       </div>
     </div>
     </div>
