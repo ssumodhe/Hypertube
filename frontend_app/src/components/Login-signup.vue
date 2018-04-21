@@ -239,7 +239,6 @@ export default{
       let password = this.$refs.txtPassword.value.trim()
       let checkPassword = this.$refs.txtCheckPassword.value.trim()
 
-      // Reset values is not necessary --> redirect at end of process -> all value automaticaly reset
       this.$refs.txtEmail.value = ""
       this.$refs.txtUser.value = ""
       this.$refs.txtFirstName.value = ""
