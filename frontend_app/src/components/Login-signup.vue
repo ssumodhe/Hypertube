@@ -262,7 +262,7 @@ export default{
       this.picture = ''
 
 
-
+      window.location.hash = 'top';
       this.$emit('signupInfos',
           {
             'email': email,
