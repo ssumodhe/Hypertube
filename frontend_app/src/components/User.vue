@@ -1,6 +1,8 @@
 <template>
   <div class="user">
 
+    <div v-if="successMsg" class="alert alert-success" role="alert">{{successMsg}}</div>
+
     <div class="row">
       <div class="col-md-2 col-md-offset-3">
         <div class="card">
@@ -220,7 +222,8 @@ export default{
       newPwdSuccessClass: '',
       cfmPwdSuccessClass: '',
       pwdSubmitBtnDisabled: true,
-      submitBtnDisabled: true
+      submitBtnDisabled: true,
+      successMsg: "",
 
     }
   },
@@ -244,7 +247,7 @@ export default{
       })
       .then( (response) => {
         this.usersPicture = userUrl + this.$route.params.username + '/avatar'
-        console.log("modif picture ok + set success msg + for pswd too")
+        this.successMsg = "Your changes have been correctly saved."
       })
       .catch( (error) => {
         if (error.response.status == "422"){
@@ -450,6 +453,7 @@ export default{
         }
       })
       .then( (response) => {
+        this.successMsg = "Your changes have been correctly saved."
         this.setLocalStorage(response)
         this.$refs.txtCrtPwd.value = ''
         this.$refs.txtNewPwd.value = ''
