@@ -25,8 +25,14 @@ class Hypertube {
 		};
 		return new Promise((resolve, reject)=>{
 			this.request.post(options, (err, ret, body) => {
-				if ((ret.statusCode != 200 && ret.statusCode != 201) || err) reject(err || "error");
-				else resolve(200);
+				if ((ret.statusCode != 200 && ret.statusCode != 201) || err) {
+					this.update(datas)
+					.then(r=>{
+						resolve(r)
+					}).catch(e=>reject(e))
+				} else {
+					resolve(200);
+				}
 			});
 		});
 	}
@@ -44,7 +50,6 @@ class Hypertube {
 		};
 		return new Promise((resolve, reject)=>{
 			this.request.put(options, (err, ret, body) => {
-				// console.log(ret);
 				if ((ret.statusCode != 200 && ret.statusCode != 201) || err) reject(err || "error");
 				else resolve(200);
 			});
