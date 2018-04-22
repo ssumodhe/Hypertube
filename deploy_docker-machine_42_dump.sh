@@ -14,7 +14,7 @@ docker-machine -s /goinfre/$USER create --virtualbox-cpu-count "2" --virtualbox-
 docker-machine -s /goinfre/$USER stop 42
 
 # Update vram & cpuexecutioncap of docker-machine
-VBoxManage modifyvm 42 --vram 128 --cpuexecutioncap 90
+VBoxManage modifyvm 42 --vram 128 --cpuexecutioncap 80
 
 # Relaunch docker-machine
 docker-machine -s /goinfre/$USER start 42

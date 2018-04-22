@@ -6,6 +6,9 @@ export const forgotPswd = apiDomain + 'auth/password'
 export const videoUrl = apiDomain + 'videos/'
 export const commentsUrl = apiDomain + 'comments/'
 export const userUrl = apiDomain + 'users/'
+export const twitterUrl = signUpUrl + 'twitter'
+export const schoolUrl = signUpUrl + 'marvin'
+
 
 
 export const backApi = 'http://localhost:5555/'
