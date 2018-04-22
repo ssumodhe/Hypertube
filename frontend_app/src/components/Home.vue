@@ -156,8 +156,8 @@
           <button @click="setAndSend(lib.id, lib.token, lib.title)" class="btn btn-default glyphicon glyphicon-film" style="margin-bottom: 5px;"><span v-lang.watch></span></button>
         </div>
         <div>
-          <span>Year : {{lib.year}}</span>
-          <span>Rating : {{lib.rating}}</span>
+          <span><span v-lang.year></span> {{lib.year}}</span>
+          <span><span v-lang.rating></span> {{lib.rating}}</span>
         </div>
       </div>
     </div>
@@ -306,7 +306,12 @@ export default{
         all.sort(function(a, b) {
           JSON.parse(a[item])
           var x = JSON.parse(a[item]); var y = JSON.parse(b[item]);
-          return ((x[0] < y[0]) ? -1 : ((x[0] > y[0]) ? 1 : 0));
+          if(x[0] === y[0]){
+            var x = a['title'].toLowerCase().trim(); var y = b['title'].toLowerCase().trim();
+                return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+          }
+          else
+            return ((x[0] < y[0]) ? -1 : ((x[0] > y[0]) ? 1 : 0));
         });
       }
       else if (item == "oldest" || item == "newest"){
@@ -327,12 +332,18 @@ export default{
             return -1
           else if (isNaN(y))
             return 1
+          if(parseFloat(a['rating']) === parseFloat(b['rating'])){
+            var x = a['title'].toLowerCase().trim(); var y = b['title'].toLowerCase().trim();
+                return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+          }
           else
             return ((x < y) ? -1 : ((x > y) ? 1 : 0));
         });
         all.reverse()
       }
       this.library = all
+      if(item == "genre")
+        console.log(all)
       all = []
     }
   }

@@ -2,7 +2,7 @@
   <div class="results">
     <div class="row">
     <div>
-      <button  id="homeBtn"><router-link to="/">&larr; Go back Home!</router-link></button>
+      <button  id="homeBtn"><router-link to="/">&larr; <span v-lang.goHome></span></router-link></button>
     </div>
 
     <div class="col-md-11 col-md-offset-1">
@@ -22,6 +22,10 @@
         </div>
         <div>
           <button @click="setAndSend(lib.id, lib.token, lib.title)" class="btn btn-default glyphicon glyphicon-film" style="margin-bottom: 5px;"><span v-lang.watch></span></button>
+        </div>
+        <div>
+          <span><span v-lang.year></span> {{lib.year}}</span>
+          <span><span v-lang.rating></span> {{lib.rating}}</span>
         </div>
       </div>
     </div>

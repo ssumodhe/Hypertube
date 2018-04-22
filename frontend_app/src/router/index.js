@@ -54,6 +54,8 @@ Vue.use(MultiLanguage, {
     next: 'Next',
     watch: ' Watch',
     all_we_got: 'That\'s all we\'ve got !',
+    year: "Year: ",
+    rating: "Rating: ",
       // Searchbar
     looking_for: 'Are you looking for something in particular ?',
       // App (NavBar)
@@ -67,6 +69,8 @@ Vue.use(MultiLanguage, {
     edit: 'Edit',
       // Uplaod-file
     msg_upload: 'Drag and drop your profile picture here',
+          // Results
+    goHome: 'Go back Home!'
 
   },
   fr: {
@@ -105,6 +109,8 @@ Vue.use(MultiLanguage, {
     next: 'Suivant',
     watch: ' Regarder',
     all_we_got: 'Voilà tout ce que nous ayons !',
+    year: "Année: ",
+    rating: "Score: ",
       // Searchbar
     looking_for: 'Cherchez vous quelque chose ?',
       // App (NavBar)
@@ -118,6 +124,8 @@ Vue.use(MultiLanguage, {
     edit: 'Modif.',
       // Upload-file
     msg_upload: 'Ajoutez votre photo de profil ici.',
+          // Results
+    goHome: 'Retour à la page d\'accueil!'
   },
   it: {
     welcome: 'Benvenuto, {name}.',
@@ -155,6 +163,8 @@ Vue.use(MultiLanguage, {
     next: 'Seguente',
     watch: ' Guardare',
     all_we_got: 'Questo è tutto ciò che abbiamo!',
+    year: "Anno: ",
+    rating: "Valutazione: ",
       // Searchbar
     looking_for: 'Stai cercando qualcosa in particolare ?',
       // App (NavBar)
@@ -168,6 +178,8 @@ Vue.use(MultiLanguage, {
     edit: 'Modif.',
       // Upload-file
     msg_upload: 'Aggiungi la tua immagine del profilo qui.',
+          // Results
+    goHome: 'Torna alla pagina iniziale!'
   },
   es: {
     welcome: 'Bienvenida, {name}.',
@@ -205,6 +217,8 @@ Vue.use(MultiLanguage, {
     next: 'Próximo',
     watch: ' Mirar',
     all_we_got: 'Eso es todo lo que tenemos !',
+    year: "Año: ",
+    rating: "Clasificación: ",
       // Searchbar
     looking_for: '¿Estás buscando algo?',
       // App (NavBar)
@@ -218,6 +232,8 @@ Vue.use(MultiLanguage, {
     edit: 'Editar',
       // Upload-file
     msg_upload: 'Agrega tu foto de perfil aquí.',
+      // Results
+    goHome: '¡Volver a la página inicial!'
   },
   de: {
     welcome: 'Willkommen, {name}.',
@@ -255,6 +271,8 @@ Vue.use(MultiLanguage, {
     next: 'Folgende',
     watch: ' Aussehen',
     all_we_got: 'Das ist alles was wir haben !',
+    year: "Jahr: ",
+    rating: "Bewertung: ",
       // Searchbar
     looking_for: 'Suchst du etwas?',
       // App (NavBar)
@@ -268,6 +286,8 @@ Vue.use(MultiLanguage, {
     edit: 'Bearbeiten',
       // Upload-file
     msg_upload: 'Fügen Sie Ihr Profilbild hier hinzu.',
+    // Results
+    goHome: 'Zurück zur Homepage!'
   },
 
 })
