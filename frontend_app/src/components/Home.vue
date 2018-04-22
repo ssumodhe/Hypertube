@@ -153,11 +153,11 @@
         <p v-else class="card-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
         </div>
         <div>
-          <button @click="setAndSend(lib.id, lib.token, lib.title)" class="btn btn-default glyphicon glyphicon-film" style="margin-bottom: 5px;"><span v-lang.watch></span></button>
+          <button @click="setAndSend(lib.id, lib.token, lib.title, lib.download, lib.url)" class="btn btn-default glyphicon glyphicon-film" style="margin-bottom: 5px;"><span v-lang.watch></span></button>
         </div>
         <div>
-          <span>Year : {{lib.year}}</span>
-          <span>Rating : {{lib.rating}}</span>
+          <span><span v-lang.year></span> {{lib.year}}</span>
+          <span><span v-lang.rating></span> {{lib.rating}}</span>
         </div>
       </div>
     </div>
@@ -202,6 +202,7 @@ export default{
       })
       .then( (response) => {
         this.allVideos = response.data
+        console.log(this.allVideos)
         this.setGenre(response.data)
       })
       .catch( (error) => {
@@ -285,13 +286,22 @@ export default{
       }
       return false
     },
-    setAndSend: function(id, token, name){
-      let link = "/video/" + token
-      localStorage.setItem('video-id', id)
-      localStorage.setItem('video-token', token)
-      localStorage.setItem('video-db', true)
-      localStorage.setItem('video-name', name)
-      this.$router.push(link)
+    setAndSend: function(id, token, name, dl, link){
+      if (dl == "0"){
+        localStorage.setItem('video-name', name)
+        localStorage.setItem('video-link', link)
+        localStorage.setItem('video-magnet', link)
+        localStorage.setItem('video-db', false)
+        this.$router.push('/video/' + name)
+      }
+      else{
+        let link = "/video/" + token
+        localStorage.setItem('video-id', id)
+        localStorage.setItem('video-token', token)
+        localStorage.setItem('video-db', true)
+        localStorage.setItem('video-name', name)
+        this.$router.push(link)
+      }
     },
     sortBy: function(item){
       let all = this.allVideos
@@ -305,13 +315,21 @@ export default{
         all.sort(function(a, b) {
           JSON.parse(a[item])
           var x = JSON.parse(a[item]); var y = JSON.parse(b[item]);
-          return ((x[0] < y[0]) ? -1 : ((x[0] > y[0]) ? 1 : 0));
+          if(x[0] === y[0]){
+            var x = a['title'].toLowerCase().trim(); var y = b['title'].toLowerCase().trim();
+                return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+          }
+          else
+            return ((x[0] < y[0]) ? -1 : ((x[0] > y[0]) ? 1 : 0));
         });
       }
-      else if (item == "oldest" || item == "newest"){ 
+      else if (item == "oldest" || item == "newest"){
         all.sort(function(a, b) {
-          var x = parseInt(a['year']); var y = parseInt(b['year`']);
-          return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+          if(parseInt(a['year']) === parseInt(b['year'])){
+            var x = a['title'].toLowerCase().trim(); var y = b['title'].toLowerCase().trim();
+                return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+          }
+          return a['year'] - b['year'];
         });
         if(item == "newest")
           all.reverse()
@@ -319,11 +337,23 @@ export default{
       else if (item == "rating"){ 
         all.sort(function(a, b) {
           var x = parseFloat(a[item]); var y = parseFloat(b[item]);
-          return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+          if(isNaN(x))
+            return -1
+          else if (isNaN(y))
+            return 1
+          if(parseFloat(a['rating']) === parseFloat(b['rating'])){
+            var x = a['title'].toLowerCase().trim(); var y = b['title'].toLowerCase().trim();
+                return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+          }
+          else
+            return ((x < y) ? -1 : ((x > y) ? 1 : 0));
         });
         all.reverse()
       }
       this.library = all
+      if(item == "genre")
+        console.log(all)
+      all = []
     }
   }
 }
