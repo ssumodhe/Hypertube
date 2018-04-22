@@ -3,8 +3,8 @@
     
     <p v-lang.with></p>
     <div class="social-buttons">
-      <a href="https://hypertubeapi.tpayet.com/auth/marvin"><img width="10%" src="/static/img/social-icons/42-icon.png" title="Connect with 42" alt="42-icon"></a>
-      <a href="https://hypertubeapi.tpayet.com/auth/twitter"><img width="10%" src="/static/img/social-icons/twitter-icon.png" title="Connect with twitter" alt="twitter-icon"></a>
+      <a :href="forSchool"><img width="10%" src="/static/img/social-icons/42-icon.png" title="Connect with 42" alt="42-icon"></a>
+      <a :href="forTwitter"><img width="10%" src="/static/img/social-icons/twitter-icon.png" title="Connect with twitter" alt="twitter-icon"></a>
       <a><img width="10%" src="/static/img/social-icons/facebook-icon.png" title="Connect with facebook" alt="facebook-icon"></a>
       <a><img width="10%" src="/static/img/social-icons/github-icon.png" title="Connect with github" alt="github-icon"></a>
       <a><img width="10%" src="/static/img/social-icons/gmail-icon.png" title="Connect with gmail" alt="gmail-icon"></a>
@@ -57,6 +57,8 @@
 
 <script>
 import {forgotPswd} from '@/config.js'
+import {twitterUrl} from '@/config.js'
+import {schoolUrl} from '@/config.js'
 
 export default{
   name: 'signin',
@@ -88,7 +90,9 @@ export default{
       passwordIconClass: '',
       submitBtnDisabled: true,
       rememberMe: true,
-      submitBtnFrgtPswd: true
+      submitBtnFrgtPswd: true,
+      forTwitter: twitterUrl,
+      forSchool: schoolUrl,
     }
   },
   mounted: function(){
