@@ -1,6 +1,6 @@
 class Video < ApplicationRecord
-  has_many :comments
-  has_many :performances
+  has_many :comments, dependent: :delete_all
+  has_many :performances, dependent: :delete_all
   before_destroy :delete_file
 
   def to_param
@@ -8,6 +8,10 @@ class Video < ApplicationRecord
   end
 
   def delete_file
-    HTTParty.delete "$[STREAMING_API_URL]/video/#{token}"
+    begin
+      HTTParty.delete "#{ENV['STREAMING_API_URL']}/video/#{token}"
+    rescue Exception
+      puts "we are in dev :deso:"
+    end
   end
 end
