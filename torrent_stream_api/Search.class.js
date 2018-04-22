@@ -1,4 +1,4 @@
-const MIN_SEEDS = 10;
+const MIN_SEEDS = 100;
 const PirateBay = require('thepiratebay');
 const query = require('yify-search');
 const yifiSearch = (title) => {

@@ -13,7 +13,7 @@ const Imdb = new (require('./Imdb.class.js'))();
 const Hypertube = new (require('./Hypertube.class.js'))();
 const parseTorrent = require('parse-torrent');
 
-const MIN_SEEDS = 10;
+const MIN_SEEDS = 100;
 const formatRetSearch = (r) => {
 	console.log("format search");
 	let ret = []
@@ -81,7 +81,7 @@ class Search {
 			];
 			Promise.all(p)
 			.then(r=>{
-				// console.log(r);
+				console.log(r);
 				let ret = formatRetSearch(r);
 				resolve(ret.sort((a, b)=>{return b.seeds-a.seeds}).filter(a=>{return a.seeds > MIN_SEEDS}));
 			}).catch(e=>{console.log(e);reject(e)});
