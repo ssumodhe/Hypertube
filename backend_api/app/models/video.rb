@@ -10,7 +10,7 @@ class Video < ApplicationRecord
   def delete_file
     begin
       HTTParty.delete "#{ENV['STREAMING_API_URL']}/video/#{token}"
-    rescue Errno::ECONNREFUSED
+    rescue Exception
       puts "we are in dev :deso:"
     end
   end
