@@ -202,6 +202,7 @@ export default{
       })
       .then( (response) => {
         this.allVideos = response.data
+        console.log(this.allVideos)
         this.setGenre(response.data)
       })
       .catch( (error) => {
@@ -308,10 +309,13 @@ export default{
           return ((x[0] < y[0]) ? -1 : ((x[0] > y[0]) ? 1 : 0));
         });
       }
-      else if (item == "oldest" || item == "newest"){ 
+      else if (item == "oldest" || item == "newest"){
         all.sort(function(a, b) {
-          var x = parseInt(a['year']); var y = parseInt(b['year`']);
-          return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+          if(parseInt(a['year']) === parseInt(b['year'])){
+            var x = a['title'].toLowerCase().trim(); var y = b['title'].toLowerCase().trim();
+                return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+          }
+          return a['year'] - b['year'];
         });
         if(item == "newest")
           all.reverse()
@@ -319,11 +323,17 @@ export default{
       else if (item == "rating"){ 
         all.sort(function(a, b) {
           var x = parseFloat(a[item]); var y = parseFloat(b[item]);
-          return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+          if(isNaN(x))
+            return -1
+          else if (isNaN(y))
+            return 1
+          else
+            return ((x < y) ? -1 : ((x > y) ? 1 : 0));
         });
         all.reverse()
       }
       this.library = all
+      all = []
     }
   }
 }
