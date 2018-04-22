@@ -9,8 +9,8 @@ const yifiSearch = (title) => {
 	});
 }
 
-const Imdb = new (require('./Imdb.class.js'))();
-const Hypertube = new (require('./Hypertube.class.js'))();
+const Imdb = new (require('../Imdb.class.js'))();
+const Hypertube = new (require('../Hypertube.class.js'))();
 const parseTorrent = require('parse-torrent');
 
 const MIN_SEEDS = 100;
