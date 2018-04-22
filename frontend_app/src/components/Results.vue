@@ -21,7 +21,7 @@
         <p v-else class="card-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
         </div>
         <div>
-          <button @click="setAndSend(lib.id, lib.token, lib.title)" class="btn btn-default glyphicon glyphicon-film" style="margin-bottom: 5px;"><span v-lang.watch></span></button>
+          <button @click="setAndSend(lib.id, lib.token, lib.title, lib.download, lib.url)" class="btn btn-default glyphicon glyphicon-film" style="margin-bottom: 5px;"><span v-lang.watch></span></button>
         </div>
         <div>
           <span><span v-lang.year></span> {{lib.year}}</span>
@@ -168,13 +168,22 @@ export default{
       }
       this.movieGenre = alpha.sort()
     },
-    setAndSend: function(id, token, name){
-      let link = "/video/" + token
-      localStorage.setItem('video-id', id)
-      localStorage.setItem('video-token', token)
-      localStorage.setItem('video-db', true)
-      localStorage.setItem('video-name', name)
-      this.$router.push(link)
+    setAndSend: function(id, token, name, dl, link){
+      if (dl == "0"){
+        localStorage.setItem('video-name', name)
+        localStorage.setItem('video-link', link)
+        localStorage.setItem('video-magnet', link)
+        localStorage.setItem('video-db', false)
+        this.$router.push('/video/' + name)
+      }
+      else{
+        let link = "/video/" + token
+        localStorage.setItem('video-id', id)
+        localStorage.setItem('video-token', token)
+        localStorage.setItem('video-db', true)
+        localStorage.setItem('video-name', name)
+        this.$router.push(link)
+      }
     },
   }
 }
