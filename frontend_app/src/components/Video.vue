@@ -44,7 +44,7 @@
         <div class="row">
           <div class="col-sm-1">
             <div class="thumbnail">
-              <img class="img-responsive user-photo" :src="'https://hypertubeapi.tpayet.com/users/' + comment.username + '/avatar'">
+              <img class="img-responsive user-photo" :src="urlUser + comment.username + '/avatar'">
             </div>
           </div>
 
@@ -74,7 +74,9 @@
 import {videoUrl} from '@/config.js'
 import {commentsUrl} from '@/config.js'
 import {backApi} from '@/config.js'
-
+import {userUrl} from '@/config.js'
+import {movieUrl} from '@/config.js'
+import {movieSrc} from '@/config.js'
 
 export default{
   name: 'movie',
@@ -106,6 +108,7 @@ export default{
       poster: '',
       rating: '',
       runtime: '',
+      urlUser: userUrl,
     }
   },
   created: function(){
@@ -116,7 +119,7 @@ export default{
       this.btnCommentDisabled = true
       axios({
         method: 'post',
-        url: 'http://localhost:5555/url',
+        url: movieUrl,
         data: {
             "url": localStorage.getItem('video-magnet'),
             "title": localStorage.getItem('video-name')
@@ -162,7 +165,7 @@ export default{
 
     if (localStorage.getItem('video-db') == 'true'){
       this.advert = false
-      this.movieSource = 'http://localhost:5555/video/' + this.$route.params.which
+      this.movieSource = movieSrc + this.$route.params.which
       
       axios({
         method: 'get',
@@ -195,7 +198,7 @@ export default{
     setView: function(){
       axios({
         method: 'get',
-        url: 'https://hypertubeapi.tpayet.com/videos/' + this.$route.params.which + '/perform',
+        url: videoUrl + this.$route.params.which + '/perform',
         headers: this.headers
       })
       .then( (response) => {
