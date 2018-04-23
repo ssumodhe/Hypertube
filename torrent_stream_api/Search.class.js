@@ -20,9 +20,7 @@ const formatRetSearch = (r) => {
 	for (let i in r.search) {
 		if (r.api == "rarbg") {
 			if (r.search[i] != undefined && r.search[i].seeds >= MIN_SEEDS) {
-				console.log('push');
 				ret.push({
-					// id:r.search[i].id,
 					name:r.search[i].title.split(/\(?[0-9]{4}\)?/)[0].replace(/\./g, ' '),
 					seeds:parseInt(r.search[i].seeds),
 					leeches:parseInt(r.search[i].peers),
