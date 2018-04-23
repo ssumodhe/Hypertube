@@ -110,17 +110,16 @@ app.post('/url', (req, res) => {
 						.on('error', (err)=>{
 							console.log(err);
 						});
-						/* Add the new file in db, set MIN_SIZE downloaded file that trigger the stream */
-						if (TYPE == 0) {
-							console.log("TYPE 0");
-							// Tools.generalHandler(
-							// 	torrentParsed.files.sort((a, b)=>{return b.length - a.length})[0],
-							// 	torrentParsed,
-							// 	downloadPath,
-							// 	req.body.title,
-							// 	res
-							// );
-						}
+						// if (TYPE == 0) {
+						// 	console.log("TYPE 0");
+						// 	// Tools.generalHandler(
+						// 	// 	torrentParsed.files.sort((a, b)=>{return b.length - a.length})[0],
+						// 	// 	torrentParsed,
+						// 	// 	downloadPath,
+						// 	// 	req.body.title,
+						// 	// 	res
+						// 	// );
+						// }
 					}
 				} catch (e) {
 					console.error('error: check env variables:', e);
@@ -187,9 +186,6 @@ app.post('/url', (req, res) => {
 .get('/search/:title', async (req, res) => {
 	try {
 		const search = await Search.run(req.params.title);
-		// console.log(search);
-		// const imdbId = await Imdb.getIMDBid(req.body.title);
-		// const infos = await Imdb.getInfos(imdbId);
 		res.json(search);
 	} catch (e) {
 		res.sendStatus(404);
@@ -211,17 +207,5 @@ app.post('/url', (req, res) => {
 	}
 })
 
-// .get('/subtitles/:token', (req, res) => {
-// 	if (fs.existsSync('subtitles/subtitles/Interstellar.2014.720p.BluRay.x264.DTS-WiKi.fr.vtt'/* + req.params.token*/)) {
-// 		// console.log();
-// 		res.header('Content-Type', 'text/plain')
-// 		res.send('data:text/plain;base64,'+base64js.fromByteArray(fs.readFileSync('subtitles/subtitles/Interstellar.2014.720p.BluRay.x264.DTS-WiKi.fr.vtt'/* + req.params.token*/)));
-// 		res.end();
-// 		// const datab64 = base64js(fs.readFileSync())
-// 	} else {
-// 		res.sendStatus(404);
-// 		res.end();
-// 	}
-// })
 app.listen(5555);
 console.log('listening on:', process.env.HYPERTUBE_STREAMING_URL);
