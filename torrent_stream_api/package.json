@@ -23,7 +23,7 @@
     "sha1": "^1.1.1",
     "srt-to-vtt": "^1.1.1",
     "thepiratebay": "^1.4.7",
-    "torrent-search-api": "^1.0.27",
+    "torrent-search-api": "^1.1.2",
     "torrent-stream": "^1.0.3",
     "yify-search": "^1.0.0"
   }
